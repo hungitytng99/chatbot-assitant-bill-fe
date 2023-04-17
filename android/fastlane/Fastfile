@@ -1,0 +1,52 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  lane :dxg_th_firebase do
+    Dir.chdir "../.." do
+      sh("flutter", "build", "apk", "-t", "lib/main_th.dart", "--release")
+    end
+    copy_artifacts(
+      artifacts: ['../build/app/outputs/flutter-apk/app-release.apk'],
+      target_path: './build/apk'
+    )
+    firebase_app_distribution(
+      app: "1:180791018077:android:6cae8f7edd8474bbae43b4",
+      groups: "newwave",
+      release_notes: "Môi trường Thực hành",
+      apk_path: "./build/apk/app-release.apk",
+      firebase_cli_token: "1//0e5TdGLz2bofMCgYIARAAGA4SNwF-L9IrdShA4OBG781oHpBBB6SBHpZkd-cPqa_XMrQnriozkaG41iSy7jbkRwydQRf63QJLRUc"
+    )
+  end
+
+  lane :dxg_staging_firebase do
+    Dir.chdir "../.." do
+      sh("flutter", "build", "apk", "-t", "lib/main_stg.dart", "--release")
+    end
+    copy_artifacts(
+      artifacts: ['../build/app/outputs/flutter-apk/app-release.apk'],
+      target_path: './build/apk'
+    )
+    firebase_app_distribution(
+      app: "1:180791018077:android:6cae8f7edd8474bbae43b4",
+      groups: "newwave",
+      release_notes: "Môi trường Staging",
+      apk_path: "./build/apk/app-release.apk",
+      firebase_cli_token: "1//0e5TdGLz2bofMCgYIARAAGA4SNwF-L9IrdShA4OBG781oHpBBB6SBHpZkd-cPqa_XMrQnriozkaG41iSy7jbkRwydQRf63QJLRUc"
+    )
+  end
+end

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "180791018077",
+    "project_id": "building-management-90a4c",
+    "storage_bucket": "building-management-90a4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180791018077:android:6cae8f7edd8474bbae43b4",
+        "android_client_info": {
+          "package_name": "vn.realagent.building.management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180791018077-b3ge3gfc5kkas2sq94vavgjbr0r3pglh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHv_M1TDfcqdAYvsTR_MNwRP5lyE8kBVU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180791018077-b3ge3gfc5kkas2sq94vavgjbr0r3pglh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "180791018077-bchmcenc6dtliki9n6e0oochaml5di5h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.realagent.building.management"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

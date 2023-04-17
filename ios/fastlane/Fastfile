@@ -1,0 +1,97 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  lane :dxg_th_firebase do
+    Dir.chdir "../.." do
+      sh("flutter", "build", "ios", "-t", "lib/main_th.dart", "--release")
+    end
+    build_app(
+      workspace: "Runner.xcworkspace",
+      configuration: "Release",
+      scheme: "Runner",
+      export_options: {
+        provisioningProfiles: {
+          "vn.realagent.building.management" => "BQL Dev"
+        },
+        method: "development",
+      },
+      silent: true,
+      clean: true,
+      output_directory: "build/ipa",
+      output_name: "app.ipa",
+    )
+    firebase_app_distribution(
+      app: "1:180791018077:ios:93b694d62dd5b9efae43b4",
+      ipa_path:"./build/ipa/app.ipa",
+      groups: "newwave",
+      release_notes: "Môi trường thực hành",
+      firebase_cli_token: "1//0e5TdGLz2bofMCgYIARAAGA4SNwF-L9IrdShA4OBG781oHpBBB6SBHpZkd-cPqa_XMrQnriozkaG41iSy7jbkRwydQRf63QJLRUc"
+    )
+  end
+
+  lane :dxg_staging_firebase do
+    Dir.chdir "../.." do
+      sh("flutter", "build", "ios", "-t", "lib/main_stg.dart", "--release")
+    end
+    build_app(
+      workspace: "Runner.xcworkspace",
+      configuration: "Release",
+      scheme: "Runner",
+      export_options: {
+        provisioningProfiles: {
+          "vn.realagent.building.management" => "BQL Dev"
+        },
+        method: "development",
+      },
+      silent: true,
+      clean: true,
+      output_directory: "build/ipa",
+      output_name: "app.ipa",
+    )
+    firebase_app_distribution(
+      app: "1:180791018077:ios:93b694d62dd5b9efae43b4",
+      ipa_path:"./build/ipa/app.ipa",
+      groups: "newwave",
+      release_notes: "Môi trường Staging",
+      firebase_cli_token: "1//0e5TdGLz2bofMCgYIARAAGA4SNwF-L9IrdShA4OBG781oHpBBB6SBHpZkd-cPqa_XMrQnriozkaG41iSy7jbkRwydQRf63QJLRUc"
+    )
+  end
+
+  lane :dxg_prod_testflight do
+    Dir.chdir "../.." do
+      sh("flutter", "build", "ios", "-t", "lib/main.dart", "--release")
+    end
+    build_app(
+      workspace: "Runner.xcworkspace",
+      configuration: "Release",
+      scheme: "Runner",
+      export_options: {
+        provisioningProfiles: {
+          "vn.realagent.building.management" => "BQL Dev"
+        },
+        method: "app-store",
+      },
+      silent: true,
+      clean: true,
+    )
+    upload_to_testflight(
+      username: "huy@ihouzz.com",
+      app_identifier: "vn.realagent.building.management",
+    )
+  end
+end

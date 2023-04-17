@@ -1,0 +1,11 @@
+<svg id="Component_24_53" data-name="Component 24 – 53" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="375" height="150" viewBox="0 0 375 150">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f17b00"/>
+      <stop offset="1" stop-color="#d20043"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="0.062" y1="0.018" x2="0.533" y2="1.937" xlink:href="#linear-gradient"/>
+  </defs>
+  <path id="Rectangle_9934" data-name="Rectangle 9934" d="M0,0H375a0,0,0,0,1,0,0V120a30,30,0,0,1-30,30H30A30,30,0,0,1,0,120V0A0,0,0,0,1,0,0Z" fill="url(#linear-gradient)"/>
+  <path id="Path_53676" data-name="Path 53676" d="M55.234,210.556s1.122,28.088,35.91,27.906c55.1-.287,89.91-25,106.885-50.039,22.785-33.6,42.682-60.5,98.133-54.709s71.561-45.09,71.561-45.09H55.234Z" transform="translate(-55.234 -88.624)" opacity="0.703" fill="url(#linear-gradient-2)"/>
+</svg>
