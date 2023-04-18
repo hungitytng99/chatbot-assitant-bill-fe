@@ -1,4 +1,6 @@
 import 'package:fluro/fluro.dart';
+import 'package:ihz_bql/routers/router_handlers/update_profile_handler.dart';
+import 'package:ihz_bql/routers/router_handlers/update_profile_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/my_profile_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/course_list_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/contact_list_handler.dart';
@@ -24,7 +26,13 @@ class Routes {
   static String contactList = '/contactList';
   static String courseList = '/courseList';
   static String myProfile = '/myProfile';
+  static String updateProfile = '/updateProfile';
   static void configureRoutes(FluroRouter router) {
+    router.define(
+      updateProfile,
+      handler: updateProfileHandler,
+      transitionType: TransitionType.inFromRight,
+    );
     router.define(
       myProfile,
       handler: myProfileHandler,
@@ -33,22 +41,22 @@ class Routes {
     router.define(
       courseList,
       handler: courseListHandler,
-      transitionType: TransitionType.native,
+      transitionType: TransitionType.inFromRight,
     );
     router.define(
       contactList,
       handler: contactListHandler,
-      transitionType: TransitionType.native,
+      transitionType: TransitionType.inFromRight,
     );
     router.define(
       chatConversation,
       handler: chatConversationHandler,
-      transitionType: TransitionType.native,
+      transitionType: TransitionType.inFromRight,
     );
     router.define(
       chatList,
       handler: chatListHandler,
-      transitionType: TransitionType.native,
+      transitionType: TransitionType.inFromRight,
     );
 
     /// Home
@@ -62,7 +70,15 @@ class Routes {
     router.define(root, handler: splashHandler);
 
     /// Login
-    router.define(signIn, handler: signInHandler);
-    router.define(signUp, handler: signUpHandler);
+    router.define(
+      signIn,
+      handler: signInHandler,
+      transitionType: TransitionType.inFromRight,
+    );
+    router.define(
+      signUp,
+      handler: signUpHandler,
+      transitionType: TransitionType.inFromRight,
+    );
   }
 }

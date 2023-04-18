@@ -7,6 +7,8 @@ import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/common/otp_layout.dart';
 import 'package:ihz_bql/models/enums/file_source_type.dart';
+import 'package:ihz_bql/routers/application.dart';
+import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/components/app_cache_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/ui/pages/profile/my_profile/my_profile_cubit.dart';
@@ -95,7 +97,7 @@ class _MyProfilePageState extends State<MyProfilePage>
                 title: "Cập nhật thông tin cá nhân",
                 iconUrl: AppImages.icUserGrey,
                 onPressed: () async {
-                  print("Press");
+                  Application.router.navigateTo(context, Routes.updateProfile);
                 },
                 rightSettingWidget: Image.asset(
                   AppImages.icArrowRight,
@@ -126,7 +128,7 @@ class _MyProfilePageState extends State<MyProfilePage>
                       fontSize: 16,
                     ),
                     width: MediaQuery.of(context).size.width - 90,
-                    height: 55,
+                    height: 45,
                     isLoading: false,
                     onPressed: () {
                       // _appCubit.logout();

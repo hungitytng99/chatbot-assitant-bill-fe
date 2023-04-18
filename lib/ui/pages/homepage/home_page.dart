@@ -244,8 +244,6 @@ class _HomePageState extends State<HomePage> {
                                 AppImages.icSettings,
                                 "Cá nhân",
                                 onPressed: () async {
-                                  // _homeCubit.changePage(3);
-                                  // pageController.jumpToPage(3);
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => MultiBlocProvider(

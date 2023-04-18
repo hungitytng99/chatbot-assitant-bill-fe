@@ -46,8 +46,8 @@ class AppTextField extends StatelessWidget {
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: AppColors.lineGray),
         ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.lineGray),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primary),
         ),
         isDense: true,
         filled: true,
@@ -55,6 +55,7 @@ class AppTextField extends StatelessWidget {
         suffixIcon: suffixIcon,
         suffixIconConstraints:
             const BoxConstraints(maxHeight: 38, maxWidth: 38),
+        fillColor: AppColors.white,
       ),
       keyboardType: keyboardType,
       onChanged: onChanged,
