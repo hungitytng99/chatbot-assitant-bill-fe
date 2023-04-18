@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/blocs/app_cubit.dart';
 import 'package:ihz_bql/common/app_colors.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/ui/pages/profile/my_profile/my_profile_cubit.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/utils/dialog_utils.dart';
+import 'package:ihz_bql/utils/flush_bar_utils.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage();
@@ -73,7 +76,7 @@ class _MyProfilePageState extends State<MyProfilePage>
     return OTPLayout(
       // isShowBack: !(widget.redirectFromHomePage ?? true),
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,6 +91,17 @@ class _MyProfilePageState extends State<MyProfilePage>
               const SizedBox(
                 height: 35,
               ),
+              _buildSettingItem(
+                title: "Cập nhật thông tin cá nhân",
+                iconUrl: AppImages.icUserGrey,
+                onPressed: () async {
+                  print("Press");
+                },
+                rightSettingWidget: Image.asset(
+                  AppImages.icArrowRight,
+                ),
+              ),
+              const Expanded(child: SizedBox()),
               BlocConsumer<AppCubit, AppState>(
                 buildWhen: (previous, current) => true,
                 listener: (context, state) {
@@ -108,7 +122,7 @@ class _MyProfilePageState extends State<MyProfilePage>
                 builder: (context, state) {
                   return AppButton(
                     title: "Đăng xuất".toUpperCase(),
-                    textStyle: AppTextStyle.primaryS12Bold.copyWith(
+                    textStyle: AppTextStyle.whiteS14Bold.copyWith(
                       fontSize: 16,
                     ),
                     width: MediaQuery.of(context).size.width - 90,
@@ -120,8 +134,8 @@ class _MyProfilePageState extends State<MyProfilePage>
                   );
                 },
               ),
-              const SizedBox(
-                height: 100,
+              SizedBox(
+                height: Platform.isIOS ? 40 : 50,
               ),
             ],
           ),
@@ -211,34 +225,37 @@ class _MyProfilePageState extends State<MyProfilePage>
     Widget? rightSettingWidget,
   }) {
     return GestureDetector(
-      onTap: () {
-        onPressed();
-      },
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            iconUrl,
-            width: 18,
-          ),
-          SizedBox(
-            width: 12,
-          ),
-          Expanded(
-            child: Text(
-              title,
-              style: AppTextStyle.black.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
+        onTap: () {
+          onPressed();
+        },
+        child: Container(
+          padding:
+              const EdgeInsets.only(top: 15, bottom: 20, right: 25, left: 25),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                iconUrl,
+                width: 18,
               ),
-            ),
+              const SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTextStyle.black.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: rightSettingWidget != null,
+                child: rightSettingWidget ?? Container(),
+              )
+            ],
           ),
-          Visibility(
-            visible: rightSettingWidget != null,
-            child: rightSettingWidget ?? Container(),
-          )
-        ],
-      ),
-    );
+        ));
   }
 }

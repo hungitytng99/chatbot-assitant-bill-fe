@@ -244,8 +244,23 @@ class _HomePageState extends State<HomePage> {
                                 AppImages.icSettings,
                                 "Cá nhân",
                                 onPressed: () async {
-                                  _homeCubit.changePage(3);
-                                  pageController.jumpToPage(3);
+                                  // _homeCubit.changePage(3);
+                                  // pageController.jumpToPage(3);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => MultiBlocProvider(
+                                        providers: [
+                                          BlocProvider.value(value: _homeCubit),
+                                          BlocProvider(
+                                            create: (context) {
+                                              return MyProfileCubit();
+                                            },
+                                          ),
+                                        ],
+                                        child: const MyProfilePage(),
+                                      ),
+                                    ),
+                                  );
                                 },
                                 isSelected:
                                     state.currentPage == 3 ? true : false,

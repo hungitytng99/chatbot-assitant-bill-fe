@@ -187,6 +187,8 @@ flutter:
     - assets/images/ic_attach_image.png
     - assets/images/ic_close_no_bg.png
     - assets/images/ic_error.png
+    - assets/images/ic_arrow_right_grey.png
+    - assets/images/ic_user_grey.png
   fonts:
     - family: Quicksand
       fonts:

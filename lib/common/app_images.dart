@@ -26,4 +26,6 @@ class AppImages {
   static const icCloseNoBg = 'assets/images/ic_close_no_bg.png';
   static const icError = 'assets/images/ic_error.png';
   static const icSuccess = 'assets/images/ic_success.png';
+  static const icArrowRight = 'assets/images/ic_arrow_right_grey.png';
+  static const icUserGrey = 'assets/images/ic_user_grey.png';
 }
