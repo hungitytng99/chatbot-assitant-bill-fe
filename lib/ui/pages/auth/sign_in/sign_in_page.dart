@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -15,6 +12,7 @@ import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:ihz_bql/configs/env_configs.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ihz_bql/ui/pages/auth/sign_up/sign_up_page.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/ui/widgets/commons/app_snackbar.dart';
 import 'package:package_info/package_info.dart';
@@ -122,15 +120,15 @@ class _SignInPageState extends State<SignInPage> {
                 ? null
                 : () {
                     _removeFocus();
-                    if(state.emailOrPhone.trim().isEmpty){
+                    if (state.emailOrPhone.trim().isEmpty) {
                       AppSnackbar.showValidate(
                         message: 'Chưa nhập email hoặc số điện thoại',
                       );
-                    }else if(state.password.trim().isEmpty){
+                    } else if (state.password.trim().isEmpty) {
                       AppSnackbar.showValidate(
                         message: 'Chưa nhập mật khẩu',
                       );
-                    }else{
+                    } else {
                       // _cubit.signIn(state.emailOrPhone.trim(), state.password, context: context);
                     }
                   },
@@ -144,7 +142,11 @@ class _SignInPageState extends State<SignInPage> {
   Widget _buildBody() {
     return Stack(
       children: [
-        Positioned.fill(child: SvgPicture.asset(AppVectors.icSignInBg,fit: BoxFit.cover,)),
+        Positioned.fill(
+            child: SvgPicture.asset(
+          AppVectors.icSignInBg,
+          fit: BoxFit.cover,
+        )),
         _buildInput(),
         Positioned(
           bottom: 25,
@@ -303,6 +305,7 @@ class _SignInPageState extends State<SignInPage> {
     return GestureDetector(
       onTap: () {
         _removeFocus();
+        /// TODO: Thêm màn quên mật khẩu
         // Get.to(() => const ForgotPasswordPage(), popGesture: true);
       },
       child: Text(
@@ -328,7 +331,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget _buildNoHaveAccount() {
     return GestureDetector(
       onTap: () {
-        // Get.to(const SignUpPage());
+        Get.to(const SignUpPage());
       },
       child: RichText(
         text: TextSpan(children: [

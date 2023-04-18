@@ -7,7 +7,8 @@ import 'package:ihz_bql/blocs/setting/app_setting_cubit.dart';
 import 'package:ihz_bql/common/app_theme.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' as AppGet;
+import 'package:ihz_bql/repositories/auth_repository.dart';
 import 'package:ihz_bql/repositories/user_repository.dart';
 import 'generated/l10n.dart';
 import 'networks/api_client.dart';
@@ -18,6 +19,7 @@ import 'routers/route_config.dart';
 
 Future initApp() async {
   await Firebase.initializeApp();
+
   /// Here is where you put get_storage, hive, shared_pref initialization.
   /// or moor connection, or whatever that's async.
   // await AddressUtils.instance.load();
@@ -37,7 +39,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 class _MyAppState extends State<MyApp> {
   late ApiClient _apiClient;
   @override
-  void initState()  {
+  void initState() {
     _apiClient = ApiUtil.getApiClient();
     super.initState();
   }
@@ -51,9 +53,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        // RepositoryProvider<AuthRepository>(create: (context) {
-        //   return AuthRepositoryImpl(_apiClient);
-        // }),
+        RepositoryProvider<AuthRepository>(create: (context) {
+          return AuthRepositoryImpl(_apiClient);
+        }),
         RepositoryProvider<UserRepository>(create: (context) {
           return UserRepositoryImpl(_apiClient);
         }),
@@ -66,9 +68,9 @@ class _MyAppState extends State<MyApp> {
             // final _authRepository =
             //     RepositoryProvider.of<AuthRepository>(context);
             return AppCubit(
-              // userRepository: _userRepository,
-              // authRepository: _authRepository,
-            );
+                // userRepository: _userRepository,
+                // authRepository: _authRepository,
+                );
           }),
           BlocProvider<AppSettingCubit>(create: (context) {
             return AppSettingCubit();
@@ -83,10 +85,11 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    return GetMaterialApp(
+    return AppGet.GetMaterialApp(
       title: AppConfigs.appName,
       initialRoute: RouteConfig.splash,
       getPages: RouteConfig.getPages,
+      defaultTransition: AppGet.Transition.rightToLeft,
       theme: const AppTheme().toThemeData(),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

@@ -13,6 +13,7 @@ class AppTextField extends StatelessWidget {
   final int maxLines;
   final int minLines;
   final bool readOnly;
+  final Widget? suffixIcon;
 
   const AppTextField({
     Key? key,
@@ -25,6 +26,7 @@ class AppTextField extends StatelessWidget {
     this.hintText = '',
     this.maxLines = 1,
     this.minLines = 1,
+    this.suffixIcon,
   }) : super(key: key);
 
   @override
@@ -34,30 +36,30 @@ class AppTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         contentPadding: const EdgeInsets.only(
-          // left: 8,
-          // right: 8,
           top: 8,
-          bottom: 12,
+          bottom: 8,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: AppColors.lineGray),
         ),
         enabledBorder: const UnderlineInputBorder(
-          // borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: AppColors.lineGray),
         ),
         focusedBorder: const UnderlineInputBorder(
-          // borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: AppColors.lineGray),
         ),
         isDense: true,
+        filled: true,
         hintStyle: AppTextStyle.greyS16,
+        suffixIcon: suffixIcon,
+        suffixIconConstraints:
+            const BoxConstraints(maxHeight: 38, maxWidth: 38),
       ),
       keyboardType: keyboardType,
       onChanged: onChanged,
       maxLines: maxLines,
-      style: AppTextStyle.blackS14,
+      style: AppTextStyle.blackS16,
       onSaved: onSaved,
       obscureText: obscureText,
       readOnly: readOnly,

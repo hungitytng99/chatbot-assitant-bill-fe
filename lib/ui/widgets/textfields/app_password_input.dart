@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/generated/l10n.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_label_text_field.dart';
 import 'package:ihz_bql/utils/validator_utils.dart';
@@ -13,7 +14,7 @@ class ObscureTextController extends ValueNotifier<bool> {
   }
 }
 
-class AppPasswordInput extends StatelessWidget {
+class AppPasswordInput extends StatefulWidget {
   final String? labelText;
   final ObscureTextController obscureTextController;
   final TextEditingController textEditingController;
@@ -34,6 +35,15 @@ class AppPasswordInput extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() {
+    return _AppPasswordInputState();
+  }
+}
+
+class _AppPasswordInputState extends State<AppPasswordInput> {
+  bool _obscuredText = true;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,16 +51,16 @@ class AppPasswordInput extends StatelessWidget {
         Stack(
           children: [
             ValueListenableBuilder(
-              valueListenable: obscureTextController,
+              valueListenable: widget.obscureTextController,
               child: Container(),
               builder: (context, bool obscureText, child) {
                 return AppLabelTextField(
-                  labelText: labelText ?? S.of(context).common_password,
-                  controller: textEditingController,
-                  onChanged: onChanged,
-                  isRequire: isRequire,
+                  labelText: widget.labelText ?? S.of(context).common_password,
+                  controller: widget.textEditingController,
+                  onChanged: widget.onChanged,
+                  isRequire: widget.isRequire,
                   keyboardType: TextInputType.emailAddress,
-                  validator: (text){
+                  validator: (text) {
                     if (ValidatorUtils.validatePassword(text ?? "")) {
                       return "";
                     } else if (text!.isEmpty) {
@@ -59,6 +69,28 @@ class AppPasswordInput extends StatelessWidget {
                       return S.current.common_validatorNumberCharacter;
                     }
                   },
+                  obscureText: _obscuredText,
+                  suffixIcon: GestureDetector(
+                    onTap: _toggle,
+                    child: Container(
+                      height: 34,
+                      width: 38,
+                      alignment: Alignment.centerRight,
+                      child: _obscuredText
+                          ? Image.asset(
+                              'assets/images/ic_eye_close.png',
+                              fit: BoxFit.fitWidth,
+                              width: 18,
+                              height: 24,
+                            )
+                          : Image.asset(
+                              'assets/images/ic_eye_open.png',
+                              fit: BoxFit.fitWidth,
+                              width: 18,
+                              height: 24,
+                            ),
+                    ),
+                  ),
                 );
               },
             ),
@@ -66,5 +98,11 @@ class AppPasswordInput extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  _toggle() {
+    setState(() {
+      _obscuredText = !_obscuredText;
+    });
   }
 }

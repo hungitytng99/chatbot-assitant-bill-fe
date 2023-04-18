@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -257,8 +256,8 @@ class AppDialog {
         showDialogRequest(content: 'Truy cập vào Settings để cho phép chọn ảnh!', context: context, title: '');
       }
 
-      String fileImage =
-          await FlutterAbsolutePath.getAbsolutePath(resultList[0].identifier ?? "") ?? "";
+      String fileImage = "";
+          // await FlutterAbsolutePath.getAbsolutePath(resultList[0].identifier ?? "") ?? "";
       return File(fileImage);
     } catch (e) {
       logger.d(e);

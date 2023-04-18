@@ -21,6 +21,8 @@ class AppLabelTextField extends StatelessWidget {
   final int maxLines;
   final int minLines;
   final bool? readOnly;
+  final Widget? suffixIcon;
+  final bool obscureText;
 
   const AppLabelTextField({
     Key? key,
@@ -36,6 +38,8 @@ class AppLabelTextField extends StatelessWidget {
     this.labelStyle,
     this.maxLines = 1,
     this.minLines = 1,
+    this.suffixIcon,
+    this.obscureText = false,
   }) : super(key: key);
 
   @override
@@ -60,6 +64,8 @@ class AppLabelTextField extends StatelessWidget {
           maxLines: maxLines,
           minLines: minLines,
           readOnly: readOnly ?? false,
+          suffixIcon: suffixIcon,
+          obscureText: obscureText,
         ),
         validator != null
             ? ValueListenableBuilder(
@@ -67,7 +73,8 @@ class AppLabelTextField extends StatelessWidget {
                 builder: (context, TextEditingValue controller, child) {
                   final isValid = validator?.call(controller.text) ?? "";
                   return Container(
-                    padding: const EdgeInsets.only(top: AppDimens.paddingS2, bottom: AppDimens.paddingS4),
+                    padding: const EdgeInsets.only(
+                        top: AppDimens.paddingS2, bottom: AppDimens.paddingS4),
                     child: Text(
                       isValid,
                       style: AppTextStyle.redS12,
