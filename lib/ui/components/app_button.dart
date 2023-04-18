@@ -45,7 +45,7 @@ class _AppButton extends StatelessWidget {
       ),
       decoration: buttonBoxDecoration ??
           BoxDecoration(
-            color: isEnable! ? backgroundColor : Color(0xFFCBCBCB),
+            color: isEnable! ? backgroundColor : const Color(0xFFCBCBCB),
             borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
             boxShadow: isEnable! ? AppShadow.boxShadow : [],
             border: border,
@@ -55,7 +55,7 @@ class _AppButton extends StatelessWidget {
 
   Widget _buildBodyWidget() {
     if (isLoading) {
-      return LoadingIndicatorWidget(color: Colors.white);
+      return const LoadingIndicatorWidget(color: Colors.white);
     } else {
       return Text(
         title!,
@@ -82,7 +82,7 @@ class AppWhiteButton extends _AppButton {
     backgroundColor = Colors.white;
     this.borderRadius = borderRadius;
     this.buttonBoxDecoration = BoxDecoration(
-        color: isEnable ? backgroundColor : Color(0xFFCBCBCB),
+        color: isEnable ? backgroundColor : const Color(0xFFCBCBCB),
         borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
         border: Border.all(color: AppColors.gray, width: 1));
   }
@@ -233,10 +233,10 @@ class AppWhiteCustomButton extends StatelessWidget {
       child: ButtonTheme(
         minWidth: 0.0,
         height: 0.0,
-        padding: EdgeInsets.all(AppDimens.paddingNone),
+        padding: const EdgeInsets.all(AppDimens.paddingNone),
         child: FlatButton(
           child: isLoading
-              ? LoadingIndicatorWidget(color: Colors.white)
+              ? const LoadingIndicatorWidget(color: Colors.white)
               : Text(
                   title,
                   style: isEnable
@@ -250,10 +250,10 @@ class AppWhiteCustomButton extends StatelessWidget {
         ),
       ),
       decoration: BoxDecoration(
-        color: isEnable ? Colors.white : Color(0xFFCBCBCB),
+        color: isEnable ? Colors.white : const Color(0xFFCBCBCB),
         border:
             isEnable ? Border.all(width: 0.4, color: AppColors.lineGray) : null,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(const Radius.circular(20)),
       ),
     );
   }

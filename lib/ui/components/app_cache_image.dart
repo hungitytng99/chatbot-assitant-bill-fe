@@ -13,14 +13,14 @@ class AppCacheImage extends StatelessWidget {
   final BoxFit fit;
   final bool showLoading;
 
-  AppCacheImage({
+  AppCacheImage({Key? key,
     this.url,
     this.width,
     this.height,
     this.borderRadius,
     this.fit = BoxFit.cover,
     this.showLoading = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +82,7 @@ class AppCacheImage extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius ?? 0),
       child: Container(
+        // ignore: prefer_const_constructors
         color: Color(0xFFe6e6e6),
         child: Center(
           child: Image.asset(

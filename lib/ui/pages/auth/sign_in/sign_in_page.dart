@@ -13,6 +13,7 @@ import 'package:ihz_bql/configs/env_configs.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/ui/pages/auth/sign_up/sign_up_page.dart';
+import 'package:ihz_bql/ui/pages/homepage/home_page.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/ui/widgets/commons/app_snackbar.dart';
 import 'package:package_info/package_info.dart';
@@ -120,17 +121,19 @@ class _SignInPageState extends State<SignInPage> {
                 ? null
                 : () {
                     _removeFocus();
-                    if (state.emailOrPhone.trim().isEmpty) {
-                      AppSnackbar.showValidate(
-                        message: 'Chưa nhập email hoặc số điện thoại',
-                      );
-                    } else if (state.password.trim().isEmpty) {
-                      AppSnackbar.showValidate(
-                        message: 'Chưa nhập mật khẩu',
-                      );
-                    } else {
-                      // _cubit.signIn(state.emailOrPhone.trim(), state.password, context: context);
-                    }
+                    Get.to(HomePage());
+                    /// TODO: Handle login
+                    // if (state.emailOrPhone.trim().isEmpty) {
+                    //   AppSnackbar.showValidate(
+                    //     message: 'Chưa nhập email hoặc số điện thoại',
+                    //   );
+                    // } else if (state.password.trim().isEmpty) {
+                    //   AppSnackbar.showValidate(
+                    //     message: 'Chưa nhập mật khẩu',
+                    //   );
+                    // } else {
+                    //   Get.to(HomePage());
+                    // }
                   },
             isLoading: isLoading,
           ),
@@ -305,6 +308,7 @@ class _SignInPageState extends State<SignInPage> {
     return GestureDetector(
       onTap: () {
         _removeFocus();
+
         /// TODO: Thêm màn quên mật khẩu
         // Get.to(() => const ForgotPasswordPage(), popGesture: true);
       },
