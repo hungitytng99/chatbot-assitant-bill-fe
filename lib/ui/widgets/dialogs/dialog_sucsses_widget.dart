@@ -61,7 +61,7 @@ class _DialogSuccessWidgetState extends State<DialogSuccessWidget> {
                   horizontal: AppDimens.paddingNormal,
                   vertical: AppDimens.paddingNormal),
               decoration: BoxDecoration(
-                  color: AppColors.background,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.circular(10)),
               margin: const EdgeInsets.symmetric(
                   horizontal: AppDimens.marginExtra,

@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:math';
+import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,10 +17,14 @@ import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/ui/pages/auth/sign_up/sign_up_page.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_page.dart';
+import 'package:ihz_bql/repositories/auth_repository.dart';
+import 'package:ihz_bql/routers/application.dart';
+import 'package:ihz_bql/ui/pages/auth/sign_up/sign_up_page.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/ui/widgets/commons/app_snackbar.dart';
 import 'package:package_info/package_info.dart';
 
+import '../../../../routers/routers.dart';
 import 'sign_in_cubit.dart';
 
 class SignInPage extends StatefulWidget {
@@ -45,13 +52,14 @@ class _SignInPageState extends State<SignInPage> {
 
   late SignInCubit _cubit;
 
-  late AppCubit _appCubit;
-
   @override
   void initState() {
-    _appCubit = BlocProvider.of<AppCubit>(context);
+    final _appCubit = BlocProvider.of<AppCubit>(context);
+    final _authRepository = RepositoryProvider.of<AuthRepository>(context);
+
     _cubit = SignInCubit(
       appCubit: _appCubit,
+      authRepository: _authRepository,
     );
     super.initState();
     _initPackageInfo();
@@ -76,6 +84,7 @@ class _SignInPageState extends State<SignInPage> {
         key: _scaffoldKey,
         body: WillPopScope(
           onWillPop: () async {
+            /// TODO: Hiển thị xác nhận thoát ứng dụng
             return false;
           },
           child: BlocListener<SignInCubit, SignInState>(
@@ -121,7 +130,7 @@ class _SignInPageState extends State<SignInPage> {
                 ? null
                 : () {
                     _removeFocus();
-                    Get.to(HomePage());
+                    Application.router.navigateTo(context, Routes.home);
                     /// TODO: Handle login
                     // if (state.emailOrPhone.trim().isEmpty) {
                     //   AppSnackbar.showValidate(
@@ -274,7 +283,7 @@ class _SignInPageState extends State<SignInPage> {
             child: Container(
               height: 34,
               width: 38,
-              color: AppColors.background,
+              color: AppColors.white,
               alignment: Alignment.centerRight,
               child: _obscuredText
                   ? Image.asset(
@@ -335,7 +344,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget _buildNoHaveAccount() {
     return GestureDetector(
       onTap: () {
-        Get.to(const SignUpPage());
+        Application.router.navigateTo(context, Routes.signUp);
       },
       child: RichText(
         text: TextSpan(children: [

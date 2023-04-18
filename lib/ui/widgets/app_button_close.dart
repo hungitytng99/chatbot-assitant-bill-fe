@@ -18,7 +18,7 @@ class AppButtonClose extends StatelessWidget {
         },
         child: Container(
             decoration: BoxDecoration(
-                color: AppColors.background,
+                color: AppColors.white,
                 border: Border.all(
                   color: AppColors.textGray,
                   style: BorderStyle.solid,

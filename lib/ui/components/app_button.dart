@@ -35,11 +35,13 @@ class _AppButton extends StatelessWidget {
         minWidth: 0.0,
         height: 0.0,
         padding: const EdgeInsets.all(AppDimens.paddingNone),
-        child: FlatButton(
+        child: TextButton(
           child: _buildBodyWidget(),
-          shape: RoundedRectangleBorder(
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
-          ),
+          ))),
           onPressed: isEnable! ? (isLoading ? null : onPressed) : null,
         ),
       ),

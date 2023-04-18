@@ -5,12 +5,18 @@ import 'package:ihz_bql/models/entities/index.dart';
 import 'package:ihz_bql/models/entities/token_entity.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ihz_bql/repositories/auth_repository.dart';
+import 'package:ihz_bql/repositories/user_repository.dart';
 
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
+  AuthRepository authRepository;
+  UserRepository userRepository;
+
   // late SocketIO _socket;
-  AppCubit() : super(const AppState());
+  AppCubit({required this.authRepository, required this.userRepository})
+      : super(const AppState());
 
   void removeUserSection() {
     GlobalData.instance.token = null;

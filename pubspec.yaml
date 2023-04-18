@@ -38,7 +38,7 @@ dependencies:
 
   #Utilities
   package_info: ^2.0.0
-  permission_handler: 8.3.0
+  permission_handler: 10.2.0
   intl_utils: ^2.1.0
   equatable: ^2.0.3
 
@@ -87,10 +87,10 @@ dependencies:
 
   #Firebase
   #firebase_analytics: ^8.3.2
-  firebase_core: ^1.8.0
-  firebase_messaging: ^10.0.9
-  firebase_messaging_platform_interface: ^3.1.6
-  firebase_crashlytics: ^2.2.1
+  firebase_core: ^2.8.0
+  firebase_messaging: ^14.2.6
+  firebase_messaging_platform_interface: ^4.2.16
+  firebase_crashlytics: ^3.0.17
   #firebase_dynamic_links: ^2.0.9
 
   # The following adds the Cupertino Icons font to your application.
@@ -102,7 +102,9 @@ dependencies:
   charts_flutter: ^0.12.0
   video_player: ^2.2.10
   custom_navigation_bar: ^0.8.2
-  flutter_icons: ^1.1.0
+  fluro: ^2.0.5
+  photo_manager: ^2.6.0
+  wechat_assets_picker: ^7.2.0
 
 dev_dependencies:
   flutter_test:
@@ -175,6 +177,16 @@ flutter:
     - assets/images/ic_close.png
     - assets/images/ic_user.png
     - assets/images/ic_success_dialog.png
+    - assets/images/chat_bubble.png
+    - assets/images/contact-book.png
+    - assets/images/ic_learning.png
+    - assets/images/ic_settings.png
+    - assets/images/ic_image_place_holder.png
+    - assets/images/ic_edit_red.png
+    - assets/images/ic_attach_camera.png
+    - assets/images/ic_attach_image.png
+    - assets/images/ic_close_no_bg.png
+    - assets/images/ic_error.png
   fonts:
     - family: Quicksand
       fonts:

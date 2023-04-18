@@ -21,7 +21,7 @@ class AppStatusDialog {
   final bool autoDismiss;
   final VoidCallback? overrideDismiss;
 
-  AppStatusDialog( {
+  AppStatusDialog({
     required this.context,
     this.type = DialogType.info,
     this.title,
@@ -71,7 +71,8 @@ class AppStatusDialog {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: AppDimens.marginExtra),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: AppDimens.marginExtra),
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -149,36 +150,38 @@ class AppStatusDialog {
       children: [
         showOkButton
             ? Expanded(
-            child: Container(
-              child: _buildOkButton,
-            ))
+                child: Container(
+                child: _buildOkButton,
+              ))
 
-        /// check xem nút cancel có còn dùng ko? nếu ko dùng thì padding button 1 đoạn
+            /// check xem nút cancel có còn dùng ko? nếu ko dùng thì padding button 1 đoạn
             : showCancelButton
-            ? Container()
-            : Container(
-          height: 15,
-        ),
+                ? Container()
+                : Container(
+                    height: 15,
+                  ),
         showCancelButton
             ? Expanded(
-            child: Container(
-              child: _buildCancelButton,
-            ))
+                child: Container(
+                child: _buildCancelButton,
+              ))
 
-        /// check xem nút ok có còn dùng ko? nếu ko dùng thì padding button 1 đoạn
+            /// check xem nút ok có còn dùng ko? nếu ko dùng thì padding button 1 đoạn
             : showOkButton
-            ? Container()
-            : Container(
-          height: 15,
-        ),
+                ? Container()
+                : Container(
+                    height: 15,
+                  ),
       ],
     );
   }
 
   Widget get _buildOkButton {
-    return FlatButton(
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
+    return TextButton(
+      style: ButtonStyle(
+        overlayColor:
+            MaterialStateColor.resolveWith((states) => Colors.transparent),
+      ),
       onPressed: () {
         dismiss();
         onOkPressed?.call();
@@ -190,20 +193,18 @@ class AppStatusDialog {
     );
   }
 
-  Widget get _buildCancelButton => FlatButton(
-    onPressed: () {
-      dismiss();
-      onCancelPressed?.call();
-    },
-    child: Text(
-        cancelText,
-        style: AppTextStyle.blackS14Bold.copyWith(color: AppColors.main)
-    ),
-    color: Colors.transparent,
-  );
+  Widget get _buildCancelButton => TextButton(
+        onPressed: () {
+          dismiss();
+          onCancelPressed?.call();
+        },
+        child: Text(cancelText,
+            style: AppTextStyle.blackS14Bold.copyWith(color: AppColors.main)),
+        style: TextButton.styleFrom(backgroundColor: Colors.transparent),
+      );
 
   dismiss() {
-    if(overrideDismiss == null) {
+    if (overrideDismiss == null) {
       Navigator.of(context).pop();
     } else {
       overrideDismiss?.call();

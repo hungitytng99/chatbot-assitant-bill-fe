@@ -171,7 +171,7 @@ class AppDialog {
   }) async {
     final result = await Get.bottomSheet(
       Container(
-        color: AppColors.background,
+        color: AppColors.white,
         child: ListView.separated(
           shrinkWrap: true,
           itemBuilder: (context, index) {
@@ -255,7 +255,7 @@ class AppDialog {
       } else {
         showDialogRequest(content: 'Truy cập vào Settings để cho phép chọn ảnh!', context: context, title: '');
       }
-
+      // TODO
       String fileImage = "";
           // await FlutterAbsolutePath.getAbsolutePath(resultList[0].identifier ?? "") ?? "";
       return File(fileImage);

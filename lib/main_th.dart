@@ -13,6 +13,6 @@ void main() async {
   /// AWAIT SERVICES INITIALIZATION.
   await initApp();
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 

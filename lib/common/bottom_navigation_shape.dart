@@ -53,10 +53,6 @@ class BottomNavBarClippath extends CustomClipper<Path> {
 
     double loc = l; //0.4
 
-    final paint = Paint()
-      ..color = Colors.red
-      ..style = PaintingStyle.fill;
-
     final path = Path()
       ..moveTo(0, 0)
       ..lineTo((loc - 0.1) * size.width, 0)

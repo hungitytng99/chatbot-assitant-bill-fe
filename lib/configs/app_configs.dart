@@ -56,4 +56,5 @@ class AppConfigs {
   static const maxAttachFile = 5;
 
   static const secondsNotificationReloadTime = 15;
+  static const double FILE_SIZE_LIMITED = 10;
 }

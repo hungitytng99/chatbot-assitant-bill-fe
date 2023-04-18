@@ -60,7 +60,7 @@ class _ItemPickerPageState extends State<ItemPickerPage> {
     return Container(
       height: MediaQuery.of(context).size.height / 1.5,
       decoration: const BoxDecoration(
-        color: AppColors.background,
+        color: AppColors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(25),
           topRight: Radius.circular(25),

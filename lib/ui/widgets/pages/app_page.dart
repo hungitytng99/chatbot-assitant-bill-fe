@@ -37,7 +37,7 @@ class AppPage extends StatelessWidget {
     this.endDrawer,
     this.floatingActionButton,
     this.bottomNavigationBar,
-    this.bodyColor = AppColors.background,
+    this.bodyColor = AppColors.white,
     this.enableTopBodyShadow = false,
     this.showBackButton = true,
     this.bodyMarginAppbar = 0,
@@ -67,7 +67,7 @@ class AppPage extends StatelessWidget {
             child: Container(
               height: 144,
               decoration: BoxDecoration(
-                color: AppColors.background,
+                color: AppColors.white,
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,

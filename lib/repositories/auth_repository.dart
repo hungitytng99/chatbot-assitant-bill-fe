@@ -2,9 +2,8 @@ import 'dart:io';
 import 'package:ihz_bql/networks/api_client.dart';
 
 abstract class AuthRepository {
-
-
   Future updateProfile(Map<String, dynamic> body);
+
 
 }
 

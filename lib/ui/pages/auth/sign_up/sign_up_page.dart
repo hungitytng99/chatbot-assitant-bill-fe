@@ -20,8 +20,6 @@ import 'package:ihz_bql/ui/widgets/pickers/app_identity_date_picker.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_email_input.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_label_text_field.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_password_input.dart';
-import 'package:ihz_bql/ui/widgets/textfields/app_phone_input.dart';
-import 'package:ihz_bql/ui/widgets/textfields/text_field_dropdown_widget.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -33,14 +31,11 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final _dropDownController = TextFieldDropDownController(value: 0);
   final _fullNameController = TextEditingController(text: '');
-  final _phoneNumberController = TextEditingController(text: '');
   final _emailController = TextEditingController(text: '');
   final _passwordController = TextEditingController(text: '');
   final _obscureTextController = ObscureTextController(obscureText: true);
   final _identityDateController = DatePickerController(dateTime: null);
-  final _identityCodeController = TextEditingController();
 
   late SignUpCubit _cubit;
   final lstBuilding = ['Hotel', 'Nhà nghỉ', 'kangnam', 'sun'];
@@ -49,7 +44,6 @@ class _SignUpPageState extends State<SignUpPage> {
   void initState() {
     final authRepository = RepositoryProvider.of<AuthRepository>(context);
     _cubit = SignUpCubit(authRepository: authRepository);
-
     super.initState();
   }
 

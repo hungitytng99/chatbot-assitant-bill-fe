@@ -67,7 +67,6 @@ class _SplashPageState extends State<SplashPage> {
   void _setup() async {
     await Future.delayed(const Duration(seconds: 1));
     //Request permission
-    // await _firebaseMessaging.requestPermission();
     await Permission.photos.request();
     await Permission.camera.request();
     await Permission.storage.request();
@@ -78,8 +77,6 @@ class _SplashPageState extends State<SplashPage> {
     if (Platform.isIOS) {
       await FirebaseMessaging.instance.requestPermission();
     }
-    String? token = await FirebaseMessaging.instance.getToken();
-    logger.d('FCM Token: $token');
     _cubit.checkLogin();
   }
 

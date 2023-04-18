@@ -15,5 +15,15 @@ class AppImages {
   static const bgHomeFooter = 'assets/images/bg_home_footer.png'; //
   static const icClose = 'assets/images/ic_close.png';
   static const icCircleClose = 'assets/images/ic_circle_close.png';
+  static const icChatBubble = 'assets/images/chat_bubble.png';
+  static const icContactBook = 'assets/images/contact-book.png';
+  static const icLearning = 'assets/images/ic_learning.png';
+  static const icSettings = 'assets/images/ic_settings.png';
+  static const icImagePlaceHolder = 'assets/images/ic_image_place_holder.png';
+  static const icEditRed = 'assets/images/ic_edit_red.png';
+  static const icAttachCamera = 'assets/images/ic_attach_camera.png';
+  static const icAttachImage = 'assets/images/ic_attach_image.png';
+  static const icCloseNoBg = 'assets/images/ic_close_no_bg.png';
+  static const icError = 'assets/images/ic_error.png';
   static const icSuccess = 'assets/images/ic_success.png';
 }

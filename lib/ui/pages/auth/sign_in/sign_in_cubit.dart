@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:ihz_bql/blocs/app_cubit.dart';
 import 'package:ihz_bql/models/entities/index.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
+import 'package:ihz_bql/repositories/auth_repository.dart';
 import 'package:ihz_bql/utils/validator_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,9 +15,11 @@ enum SignInNavigator {
 
 class SignInCubit extends Cubit<SignInState> {
   AppCubit appCubit;
+  AuthRepository authRepository;
 
   SignInCubit({
     required this.appCubit,
+    required this.authRepository,
   }) : super(SignInState());
 
   @override

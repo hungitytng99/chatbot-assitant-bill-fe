@@ -10,9 +10,6 @@ class GlobalData {
 
   TokenEntity? token;
 
-  ///Removed => try get Profile from AppCubit
-  // UserEntity? myProfile;
-
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   final notificationCountController = BehaviorSubject<int>.seeded(0);

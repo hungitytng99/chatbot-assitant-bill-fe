@@ -43,7 +43,7 @@ class AppColors {
   static Color get main => primary;
 
   static Color mainLighter = primaryLighter;
-  static const Color background = Color(0xFFFFFFFF);
+  static const Color white = Color(0xFFFFFFFF);
   static const Color backgroundGray = Color(0xFFF8F8F8);
   static const Color loadingIndicator = Color(0xFF00AFA5);
   static const Color shadowColor = Color(0x29000000);
@@ -122,4 +122,6 @@ class AppColors {
   static const Color lightYellow = Color(0xFFF6BD43);
   static const Color matterOrange = Color(0xFFF17B00);
   static const Color lightBlue = Color(0xFF0065FF);
+  static const Color grey = Color(0xFFE6E6E4);
+  static const Color greyE9 = Color(0xFFE9E9E9);
 }

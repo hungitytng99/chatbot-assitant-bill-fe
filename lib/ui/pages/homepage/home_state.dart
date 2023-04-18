@@ -2,10 +2,11 @@ part of 'home_cubit.dart';
 
 class HomeState extends Equatable {
   final int currentPage;
+
   @override
   List<Object?> get props => [currentPage];
 
-  HomeState({
+  const HomeState({
     required this.currentPage,
   });
 

@@ -5,13 +5,15 @@ import 'package:ihz_bql/blocs/app_cubit.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/common/bottom_navigation_shape.dart';
-import 'package:ihz_bql/common/screen_size.dart';
-import 'package:ihz_bql/generated/l10n.dart';
-import 'package:ihz_bql/repositories/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/shims/dart_ui.dart';
+import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
+import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_page.dart';
+import 'package:ihz_bql/ui/pages/course/course_list/course_list_page.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_cubit.dart';
+import 'package:ihz_bql/ui/pages/profile/my_profile/my_profile_cubit.dart';
+
+import '../profile/my_profile/my_profile_page.dart';
 
 enum RestaurantOrderTypeEnum { onlyTakeaway, onlyDineIn, both, none }
 
@@ -32,7 +34,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late AppCubit _appCubit;
-  late HomeCubit _cubit;
+  late HomeCubit _homeCubit;
+
   final PageController pageController = PageController();
   late bool? inPageOrderType;
   late final pages;
@@ -47,7 +50,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _appCubit = BlocProvider.of<AppCubit>(context);
-    _cubit = HomeCubit();
+    _homeCubit = BlocProvider.of<HomeCubit>(context);
     pages = [
       Navigator(
         key: widget.chatNavigatorKey,
@@ -55,23 +58,14 @@ class _HomePageState extends State<HomePage> {
           late Widget page;
           switch (routeSettings.name) {
             case "/":
-              page = Container(
-                child: Text("Chat page"),
+              page = MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: _homeCubit,
+                  ),
+                ],
+                child: ChatListPage(),
               );
-              // page = MultiBlocProvider(
-              //   providers: [
-              //     BlocProvider.value(
-              //       value: _homeCubit,
-              //     ),
-              //     BlocProvider.value(value: _cubit)
-              //   ],
-              //   child: RestaurantHomePage(
-              //     restaurantId: widget.param.restaurantId,
-              //     orderType: widget.param.checkDineInOrTake,
-              //     orderTypeSetting: widget.param.restaurantOrderType,
-              //     controller: _homeScrollController,
-              //   ),
-              // );
               break;
           }
           return MaterialPageRoute<dynamic>(
@@ -88,27 +82,11 @@ class _HomePageState extends State<HomePage> {
           late Widget page;
           switch (routeSettings.name) {
             case "/":
-              page = Container(
-                child: Text("Contact page"),
+              page = const Text("Contact page");
+              page = MultiBlocProvider(
+                providers: [BlocProvider.value(value: _homeCubit)],
+                child: ContactListPage(),
               );
-              // page = MultiBlocProvider(
-              //   providers: [
-              //     BlocProvider(
-              //       create: (context) {
-              //         RestaurantRepository restaurantRepository =
-              //         RepositoryProvider.of<RestaurantRepository>(context);
-              //         return RestaurantFavoriteCubit(restaurantRepository);
-              //       },
-              //     ),
-              //     BlocProvider.value(value: _cubit)
-              //   ],
-              //   child: RestaurantFavoritePage(
-              //     restaurantId: widget.param.restaurantId,
-              //     restaurantName: widget.param.restaurantName,
-              //     orderType: widget.param.checkDineInOrTake,
-              //     pageController: pageController,
-              //   ),
-              // );
 
               break;
           }
@@ -126,26 +104,37 @@ class _HomePageState extends State<HomePage> {
           late Widget page;
           switch (routeSettings.name) {
             case "/":
-              page = Container(
-                child: Text("Course page"),
+              page = MultiBlocProvider(
+                providers: [BlocProvider.value(value: _homeCubit)],
+                child: CourseListPage(),
               );
-              // page = MultiBlocProvider(
-              //   providers: [
-              //     BlocProvider(
-              //       create: (context) {
-              //         RestaurantRepository restaurantRepository =
-              //         RepositoryProvider.of<RestaurantRepository>(context);
-              //         return RestaurantOrderCubit(restaurantRepository);
-              //       },
-              //     ),
-              //     BlocProvider.value(value: _cubit)
-              //   ],
-              //   child: RestaurantOrderPage(
-              //     restaurantId: widget.param.restaurantId,
-              //     restaurantName: widget.param.restaurantName,
-              //     pageController: pageController,
-              //   ),
-              // );
+              break;
+          }
+          return MaterialPageRoute<dynamic>(
+            builder: (context) {
+              return page;
+            },
+            settings: routeSettings,
+          );
+        },
+      ),
+      Navigator(
+        key: widget.profileNavigatorKey,
+        onGenerateRoute: (routeSettings) {
+          late Widget page;
+          switch (routeSettings.name) {
+            case "/":
+              page = MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: _homeCubit),
+                  BlocProvider(
+                    create: (context) {
+                      return MyProfileCubit();
+                    },
+                  ),
+                ],
+                child: const MyProfilePage(),
+              );
               break;
           }
           return MaterialPageRoute<dynamic>(
@@ -161,7 +150,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).viewPadding.bottom);
     return BlocBuilder<HomeCubit, HomeState>(
       buildWhen: (previous, current) =>
           previous.currentPage != current.currentPage,
@@ -173,10 +161,11 @@ class _HomePageState extends State<HomePage> {
                 if (widget.chatNavigatorKey.currentState != null) {
                   final bool result =
                       await widget.chatNavigatorKey.currentState!.maybePop();
-                  if (result)
+                  if (result) {
                     return false;
-                  else
+                  } else {
                     return true;
+                  }
                 }
                 break;
             }
@@ -190,140 +179,82 @@ class _HomePageState extends State<HomePage> {
                 PageView(
                   children: pages,
                   controller: pageController,
-                  physics: NeverScrollableScrollPhysics(),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ClipShadowPath(
-                    clipper: BottomNavBarClippath(),
-                    shadow: Shadow(color: Colors.grey, blurRadius: 20),
-                    child: Container(
-                      height: Platform.isIOS
-                          ? MediaQuery.of(context).viewPadding.bottom + 60
-                          : 60,
-                      padding: EdgeInsets.only(
-                          bottom: Platform.isIOS
-                              ? (MediaQuery.of(context).viewPadding.bottom == 0
-                                  ? 0
-                                  : 10)
-                              : 0),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20))),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: _buildNavButton(
-                              AppImages.icWarning,
-                              "Đoạn chat",
-                              onPressed: () {
-                                _cubit.changePage(0);
-                                pageController.jumpToPage(0);
-                              },
-                              isSelected: state.currentPage == 0 ? true : false,
-                            ),
-                          ),
-                          Expanded(
-                            child: _buildNavButton(
-                              AppImages.icSearch,
-                              "Danh bạ",
-                              onPressed: () async {
-                                bool? result = true;
-                                // if (GlobalData.instance.isGuest) {
-                                //   result =
-                                //   await DialogUtils.showAuthDialog(context);
-                                //   if (result == true)
-                                //     _homeCubit.getRestaurantDetail(
-                                //         widget.param.restaurantId);
-                                //   return;
-                                // }
-
-                                _cubit.changePage(1);
-                                pageController.jumpToPage(1);
-                              },
-                              isSelected: state.currentPage == 1 ? true : false,
-                            ),
-                          ),
-                          Expanded(
-                            child: SizedBox(),
-                          ),
-                          Expanded(
-                            child: _buildNavButton(
-                              AppImages.icClose,
-                              "Khóa học",
-                              onPressed: () async {
-                                _cubit.changePage(2);
-                                pageController.jumpToPage(2);
-                              },
-                              isSelected: state.currentPage == 2 ? true : false,
-                            ),
-                          ),
-                          Expanded(
-                            child: _buildNavButton(
-                              AppImages.icUser,
-                              "Tôi",
-                              onPressed: () async {
-                                _cubit.changePage(3);
-                                pageController.jumpToPage(3);
-                              },
-                              isSelected: state.currentPage == 3 ? true : false,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  physics: const NeverScrollableScrollPhysics(),
                 ),
                 Positioned(
-                  left: ScreenSize.of(context).width / 2 - 30,
-                  bottom: Platform.isIOS
-                      ? ((MediaQuery.of(context).viewPadding.bottom == 0)
-                          ? 30
-                          : MediaQuery.of(context).viewPadding.bottom + 15)
-                      : 30,
-                  child: InkWell(
-                    onTap: () async {},
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: AppColors.main,
-                          radius: 30,
-                          child: Image.asset(AppImages.icUser),
-                        ),
-                        Positioned(
-                          top: -4,
-                          right: -6,
-                          child: Container(
-                              height: 25,
-                              width: 25,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(13)),
-                                  color: AppColors.main,
-                                  border: Border.all(
-                                    color: AppColors.primaryLighter,
-                                    width: 2,
-                                  )),
-                              child: BlocConsumer<AppCubit, AppState>(
-                                bloc: _appCubit,
-                                buildWhen: (prev, curr) => true,
-                                listener: (context, state) {},
-                                builder: (context, state) {
-                                  return Center(
-                                      child: Text(
-                                    "123",
-                                    style: AppTextStyle.whiteS16Bold,
-                                  ));
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 10, top: 5),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 3,
+                            blurRadius: 5,
+                            offset: const Offset(
+                                0, 4), // changes position of shadow
+                          ),
+                        ],
+                        color: Colors.white.withOpacity(0.9),
+                      ),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: _buildNavButton(
+                                AppImages.icChatBubble,
+                                "Đoạn chat",
+                                onPressed: () {
+                                  _homeCubit.changePage(0);
+                                  pageController.jumpToPage(0);
                                 },
-                              )),
+                                isSelected:
+                                    state.currentPage == 0 ? true : false,
+                              ),
+                            ),
+                            Expanded(
+                              child: _buildNavButton(
+                                AppImages.icContactBook,
+                                "Danh bạ",
+                                onPressed: () async {
+                                  _homeCubit.changePage(1);
+                                  pageController.jumpToPage(1);
+                                },
+                                isSelected:
+                                    state.currentPage == 1 ? true : false,
+                              ),
+                            ),
+                            Expanded(
+                              child: _buildNavButton(
+                                AppImages.icLearning,
+                                "Khóa học",
+                                onPressed: () async {
+                                  _homeCubit.changePage(2);
+                                  pageController.jumpToPage(2);
+                                },
+                                isSelected:
+                                    state.currentPage == 2 ? true : false,
+                              ),
+                            ),
+                            Expanded(
+                              child: _buildNavButton(
+                                AppImages.icSettings,
+                                "Cá nhân",
+                                onPressed: () async {
+                                  _homeCubit.changePage(3);
+                                  pageController.jumpToPage(3);
+                                },
+                                isSelected:
+                                    state.currentPage == 3 ? true : false,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                )
+                      ),
+                    ))
               ],
             ),
           ),
@@ -348,14 +279,16 @@ class _HomePageState extends State<HomePage> {
             width: 24,
             child: Image.asset(
               iconUrl,
-              color: isSelected ? AppColors.main : null,
+              color: isSelected ? AppColors.main : AppColors.shadowColor,
             ),
           ),
-          SizedBox(height: 7.5),
+          const SizedBox(height: 7.5),
           Text(
             title,
             style: AppTextStyle.blackS12.copyWith(
-                color: isSelected ? AppColors.main : AppColors.textBlack),
+              color: isSelected ? AppColors.primary : AppColors.textBlack,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
