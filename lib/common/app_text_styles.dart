@@ -25,6 +25,8 @@ class AppTextStyle {
   static final blackS14 = black.copyWith(fontSize: 14);
   static final blackS14Bold = blackS14.copyWith(fontWeight: FontWeight.bold);
   static final blackS14W800 = blackS14.copyWith(fontWeight: FontWeight.w800);
+  static final blackS14W600 = blackS14.copyWith(fontWeight: FontWeight.w600);
+  static final blackS14W500 = blackS14.copyWith(fontWeight: FontWeight.w500);
   static final blackS14W300 = blackS14.copyWith(fontWeight: FontWeight.w300);
   static final blackS14Regular = blackS14.copyWith(fontWeight: FontWeight.w400);
 
@@ -98,6 +100,7 @@ class AppTextStyle {
   //s14
   static final greyS14 = grey.copyWith(fontSize: 14);
   static final greyS14Bold = greyS14.copyWith(fontWeight: FontWeight.bold);
+  static final greyS14W600 = greyS14.copyWith(fontWeight: FontWeight.w600);
   static final greyS14W800 = greyS14.copyWith(fontWeight: FontWeight.w800);
   static final greyS14W300 = greyS14.copyWith(fontWeight: FontWeight.w300);
 
@@ -105,6 +108,7 @@ class AppTextStyle {
   static final greyS16 = grey.copyWith(fontSize: 16);
   static final greyS16Bold = greyS16.copyWith(fontWeight: FontWeight.bold);
   static final greyS16W300 = greyS16.copyWith(fontWeight: FontWeight.w300);
+  static final greyS16W600 = greyS16.copyWith(fontWeight: FontWeight.w600);
   static final greyS16W800 = greyS16.copyWith(fontWeight: FontWeight.w800);
 
   //s18

@@ -10,6 +10,8 @@ import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_page.dart';
 import 'package:ihz_bql/ui/pages/course/course_list/course_list_page.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_cubit.dart';
+import 'package:ihz_bql/ui/pages/profile/my_profile/my_profile_cubit.dart';
+import 'package:ihz_bql/ui/pages/profile/my_profile/my_profile_page.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/utils/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,7 +50,7 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   bool isCollapsed = true;
   double? screenWidth, screenHeight;
-  final Duration duration = const Duration(milliseconds: 300);
+  final Duration duration = const Duration(milliseconds: 200);
   AnimationController? _animationController;
   Animation<double>? _scaleAnimation;
   Animation<double>? _menuScaleAnimation;
@@ -162,7 +164,6 @@ class _HomePageState extends State<HomePage>
     screenWidth = size.width;
 
     return Scaffold(
-      backgroundColor: AppColors.white,
       body: Stack(
         children: <Widget>[
           Menu(context),
@@ -235,20 +236,18 @@ class _HomePageState extends State<HomePage>
                           padding: const EdgeInsets.only(left: 14),
                           child: _buildAppBar(context),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 2),
                         Expanded(
                           child: PageView(
                             children: pages,
                             controller: pageController,
-                            onPageChanged: (value) {
-                              _homeCubit.changePage(value);
-                            },
+                            physics: const NeverScrollableScrollPhysics(),
                           ),
                         ),
                         Container(
                           padding: const EdgeInsets.only(bottom: 10, top: 5),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
+                            color: Colors.white.withOpacity(0.8),
                             border: const Border(
                               top: BorderSide(
                                   width: 1.0, color: AppColors.borderColorD6),
@@ -307,9 +306,23 @@ class _HomePageState extends State<HomePage>
         ),
         _buildItemCategory(
           title: 'Hồ sơ cá nhân',
-          iconUrl: AppImages.icUserGrey ,
+          iconUrl: AppImages.icUserGrey,
           onPressed: () {
-            logger.d("Go to my profile page");
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider.value(value: _homeCubit),
+                    BlocProvider(
+                      create: (context) {
+                        return MyProfileCubit();
+                      },
+                    ),
+                  ],
+                  child: const MyProfilePage(),
+                ),
+              ),
+            );
           },
         ),
       ],
@@ -329,9 +342,8 @@ class _HomePageState extends State<HomePage>
         ),
         AppButton(
           leadingIcon: Container(
-              margin: EdgeInsets.only(right: 6),
-              child: Image.asset(AppImages.icLogout)
-          ),
+              margin: const EdgeInsets.only(right: 6),
+              child: Image.asset(AppImages.icLogout)),
           title: 'Đăng xuất',
           height: 45,
           width: 150,
