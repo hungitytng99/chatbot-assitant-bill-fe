@@ -1,20 +1,13 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_dimens.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/common/app_vectors.dart';
 import 'package:ihz_bql/models/enums/file_source_type.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/repositories/auth_repository.dart';
-import 'package:ihz_bql/ui/pages/auth/sign_up/sign_up_cubit.dart';
 import 'package:ihz_bql/ui/pages/profile/update_profile/update_profile_cubit.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_back_button.dart';
@@ -23,7 +16,6 @@ import 'package:ihz_bql/ui/widgets/pickers/app_date_picker.dart';
 import 'package:ihz_bql/ui/widgets/pickers/app_identity_date_picker.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_email_input.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_label_text_field.dart';
-import 'package:ihz_bql/ui/widgets/textfields/app_password_input.dart';
 import 'package:ihz_bql/utils/dialog_utils.dart';
 
 class UpdateProfilePage extends StatefulWidget {
@@ -38,12 +30,9 @@ class UpdateProfilePage extends StatefulWidget {
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
   final _fullNameController = TextEditingController(text: 'Trần Mạnh Hùng');
   final _emailController = TextEditingController(text: 'mhungict99@gmail.com');
-  final _obscureTextController = ObscureTextController(obscureText: true);
   final _identityDateController = DatePickerController(dateTime: DateTime.now());
 
   late UpdateProfileCubit _cubit;
-  final lstBuilding = ['Hotel', 'Nhà nghỉ', 'kangnam', 'sun'];
-
   @override
   void initState() {
     final authRepository = RepositoryProvider.of<AuthRepository>(context);

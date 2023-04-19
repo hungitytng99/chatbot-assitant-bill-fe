@@ -1,6 +1,7 @@
 # GUIDE
 #./hobbit.sh c filename file_path
 # Ex: ./hobbit.sh c payment_info cart/payment_info
+# Only view, without handler: hobbit.sh c app_header common/app_header --no-handler
 # This command will create file SCREEN_FOLDER/cart/payment_info
 # and create three file: payment_info_cubit,payment_info_state,payment_info_page
 # hobbit.sh c home homepage
@@ -9,6 +10,11 @@
 SCREEN_FOLDER="ui/pages"
 ROUTER_FOLDER="routers"
 
+if [ "$4" == "--no-handler" ]
+then
+  echo 'Generate without handler';
+fi
+#
 # Helper function
 exitApp()
 {
@@ -17,11 +23,6 @@ exitApp()
 }
 
 # Check arguments
-if [[ $# -eq 0 ]];
-then
-  exitApp;
-fi
-
 # Excute
 ## If create cubit
 if [ "$1" == "c" ] || [ "$1" == "create" ]
@@ -225,12 +226,16 @@ Handler ${CAMEL_CASE_NAME}Handler = new Handler(handlerFunc: (context, parameter
   mkdir -p "${SCREEN_FOLDER}" && touch "${SCREEN_FOLDER}/$2_state.dart" && echo "$STATE" > "${SCREEN_FOLDER}/$2_state.dart"
   mkdir -p "${SCREEN_FOLDER}" && touch "${SCREEN_FOLDER}/$2_page.dart" && echo "$PAGE" > "${SCREEN_FOLDER}/$2_page.dart"
 #### Router handler
-  if test -f "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart"
+#### Options --no-handler to only generate view
+  if [ "$4" != "--no-handler" ]
   then
-    echo "${HANDLER_EXIST}" >> "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart";
-  else
-    touch "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart"
-    echo "${HANDLER_NOT_EXIST}" > "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart";
+    if test -f "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart"
+    then
+      echo "${HANDLER_EXIST}" >> "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart";
+    else
+      touch "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart"
+      echo "${HANDLER_NOT_EXIST}" > "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart";
+    fi
   fi
 #### Router
   ROUTE_CONFIG_LINE_NUMBER=$(grep -rne "static void configureRoutes(FluroRouter router) {" "lib/$ROUTER_FOLDER/routers.dart" | cut -d : -f 1)

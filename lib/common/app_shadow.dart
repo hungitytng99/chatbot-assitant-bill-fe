@@ -18,4 +18,13 @@ class AppShadow {
       offset: Offset(0, 0),
     ),
   ];
+
+  static final boxShadowLarge = [
+    const BoxShadow(
+      color: AppColors.shadowColor,
+      spreadRadius: 20,
+      blurRadius: 100,
+      offset: Offset(0, 0),
+    )
+  ];
 }

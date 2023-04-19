@@ -1,9 +1,9 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/common/app_images.dart';
+import 'package:ihz_bql/ui/pages/common/app_header/app_header.dart';
 
 class CourseListPage extends StatefulWidget {
   CourseListPage({
@@ -81,7 +81,10 @@ class _CourseListPageState extends State<CourseListPage> {
     );
   }
 
-  Stack _buildAppBar(BuildContext context) {
+  Widget _buildAppBar(BuildContext context) {
+    return AppHeader(
+      title: "Khóa học",
+    );
     return Stack(
       children: [
         Container(
@@ -119,4 +122,3 @@ class _CourseListPageState extends State<CourseListPage> {
     );
   }
 }
-  

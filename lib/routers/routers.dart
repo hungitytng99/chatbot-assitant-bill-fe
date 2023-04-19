@@ -1,13 +1,10 @@
 import 'package:fluro/fluro.dart';
 import 'package:ihz_bql/routers/router_handlers/update_profile_handler.dart';
-import 'package:ihz_bql/routers/router_handlers/update_profile_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/my_profile_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/course_list_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/contact_list_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/chat_conversation_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/chat_list_handler.dart';
-import 'package:ihz_bql/routers/router_handlers/chat_list_handler.dart';
-import 'package:ihz_bql/routers/router_handlers/home_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/home_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/auth_router_handler.dart';
 

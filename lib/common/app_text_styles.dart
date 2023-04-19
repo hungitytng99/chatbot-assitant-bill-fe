@@ -38,10 +38,13 @@ class AppTextStyle {
   //s18
   static final blackS18 = black.copyWith(fontSize: 18);
   static final blackS18Bold = blackS18.copyWith(fontWeight: FontWeight.bold);
+  static final blackS18W500 = blackS18.copyWith(fontWeight: FontWeight.w500);
+  static final blackS18W600 = blackS18.copyWith(fontWeight: FontWeight.w600);
+  static final blackS18W700 = blackS18.copyWith(fontWeight: FontWeight.w700);
   static final blackS18W800 = blackS18.copyWith(fontWeight: FontWeight.w800);
 
   ///White
-  static final white =
+  static const white =
       TextStyle(color: Colors.white, fontFamily: AppConfigs.fontFamily);
 
   //s10
