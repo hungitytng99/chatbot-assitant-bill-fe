@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage>
   List<Tabs> listTabs = [
     Tabs(index: 0, title: 'Đoạn chat', iconUrl: AppImages.icChatBubble),
     Tabs(index: 1, title: 'Danh bạ', iconUrl: AppImages.icContactBook),
-    Tabs(index: 2, title: 'Khóa học', iconUrl: AppImages.icLearning),
+    Tabs(index: 2, title: 'Khóa học', iconUrl: AppImages.icDoExercise),
   ];
 
   @override

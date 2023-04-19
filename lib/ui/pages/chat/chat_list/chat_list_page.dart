@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
+import 'package:ihz_bql/routers/application.dart';
+import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_vertical.dart';
 
@@ -77,6 +79,13 @@ class _ChatListPageState extends State<ChatListPage> {
                                       ),
                                       child: UserAvatarCardVertical(
                                         userFullName: 'Trần Mạnh Hùng',
+                                        onPressed: () {
+                                          Application.router.navigateTo(
+                                            context,
+                                            Routes.chatConversation,
+                                            rootNavigator: true,
+                                          );
+                                        },
                                       ),
                                     ),
                                   }
@@ -91,6 +100,14 @@ class _ChatListPageState extends State<ChatListPage> {
                           padding: const EdgeInsets.only(top: 8, bottom: 8),
                           child: UserAvatarCardHorizontal(
                             userFullName: 'Trần Mạnh Hùng',
+                            time: "12:39",
+                            onPressed: () {
+                              Application.router.navigateTo(
+                                context,
+                                Routes.chatConversation,
+                                rootNavigator: true,
+                              );
+                            },
                           ),
                         ),
                       }

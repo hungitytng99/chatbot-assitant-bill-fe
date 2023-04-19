@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
-import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_vertical.dart';
+import 'package:ihz_bql/routers/application.dart';
+import 'package:ihz_bql/routers/routers.dart';
 
 class ContactListPage extends StatefulWidget {
   ContactListPage({
@@ -47,8 +47,8 @@ class _ContactListPageState extends State<ContactListPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        padding: const EdgeInsets.only(
-                            left: 10, bottom: 2, top: 5),
+                        padding:
+                            const EdgeInsets.only(left: 10, bottom: 2, top: 5),
                         child: Text(
                           "Đang hoạt động",
                           textAlign: TextAlign.start,
@@ -60,12 +60,19 @@ class _ContactListPageState extends State<ContactListPage> {
                           padding: const EdgeInsets.only(top: 8, bottom: 8),
                           child: UserAvatarCardHorizontal(
                             userFullName: 'Trần Mạnh Hùng',
+                            onPressed: () {
+                              Application.router.navigateTo(
+                                context,
+                                Routes.chatConversation,
+                                rootNavigator: true,
+                              );
+                            },
                           ),
                         ),
                       },
                       Container(
-                        padding: const EdgeInsets.only(
-                            left: 10, bottom: 2, top: 5),
+                        padding:
+                            const EdgeInsets.only(left: 10, bottom: 2, top: 5),
                         child: Text(
                           "Không hoạt động",
                           textAlign: TextAlign.start,
@@ -77,6 +84,14 @@ class _ContactListPageState extends State<ContactListPage> {
                           padding: const EdgeInsets.only(top: 8, bottom: 8),
                           child: UserAvatarCardHorizontal(
                             userFullName: 'Trần Mạnh Hùng',
+                            time: "12:39",
+                            onPressed: () {
+                              Application.router.navigateTo(
+                                context,
+                                Routes.chatConversation,
+                                rootNavigator: true,
+                              );
+                            },
                           ),
                         ),
                       }

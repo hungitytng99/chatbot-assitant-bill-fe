@@ -29,4 +29,9 @@ class AppImages {
   static const icArrowRight = 'assets/images/ic_arrow_right_grey.png';
   static const icUserGrey = 'assets/images/ic_user_grey.png';
   static const icLogout = 'assets/images/ic_logout.png';
+  static const icPushUp = 'assets/images/ic_push_up.png';
+  static const icDoExercise = 'assets/images/ic_do_exercise.png';
+  static const icSend = 'assets/images/ic_send.png';
+
+
 }

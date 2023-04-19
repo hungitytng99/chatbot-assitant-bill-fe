@@ -105,6 +105,7 @@ dependencies:
   fluro: ^2.0.5
   photo_manager: ^2.6.0
   wechat_assets_picker: ^7.2.0
+  infinite_scroll_pagination: ^3.2.0
 
 dev_dependencies:
   flutter_test:
@@ -190,6 +191,9 @@ flutter:
     - assets/images/ic_arrow_right_grey.png
     - assets/images/ic_user_grey.png
     - assets/images/ic_logout.png
+    - assets/images/ic_push_up.png
+    - assets/images/ic_do_exercise.png
+    - assets/images/ic_send.png
   fonts:
     - family: Quicksand
       fonts:

@@ -11,9 +11,11 @@ class UserAvatarCardVertical extends StatefulWidget {
   double avatarSize;
   UserOnlineStatusEnum status;
   String userFullName;
+  VoidCallback onPressed;
 
   UserAvatarCardVertical({
     required this.userFullName,
+    required this.onPressed,
     this.avatarSize = 55,
     this.status = UserOnlineStatusEnum.ONLINE,
     Key? key,

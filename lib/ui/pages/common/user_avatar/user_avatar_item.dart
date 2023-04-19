@@ -42,23 +42,23 @@ class _UserAvatarItemState extends State<UserAvatarItem> {
         Positioned(
           bottom: 0,
           right: 0,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 3),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: AppColors.white,
-            ),
-            child: widget.status == UserOnlineStatusEnum.ONLINE
-                ? Container(
+          child: widget.status == UserOnlineStatusEnum.ONLINE
+              ? Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 3, horizontal: 3),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppColors.white,
+                  ),
+                  child: Container(
                     width: 10,
                     height: 10,
                     decoration: BoxDecoration(
                       color: AppColors.greenRequest,
                       borderRadius: BorderRadius.circular(5),
                     ),
-                  )
-                : null,
-          ),
+                  ))
+              : Container(),
         ),
       ],
     );
