@@ -5,9 +5,6 @@ import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_shadow.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
-
-import 'package:ihz_bql/generated/l10n.dart';
-import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/ui/components/app_cache_image.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_page.dart';
@@ -16,7 +13,21 @@ import 'package:ihz_bql/ui/pages/homepage/home_cubit.dart';
 import 'package:ihz_bql/utils/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/ui/widgets/images/app_cache_image.dart';
+
+import 'package:json_annotation/json_annotation.dart';
+
+@JsonSerializable()
+class Tabs {
+  String title;
+  String iconUrl;
+  int index;
+
+  Tabs({
+    required this.index,
+    required this.title,
+    required this.iconUrl,
+  });
+}
 
 class HomePage extends StatefulWidget {
   final GlobalKey<NavigatorState> chatNavigatorKey =
@@ -47,19 +58,15 @@ class _HomePageState extends State<HomePage>
   late bool? inPageOrderType;
   late final pages;
 
+  List<Tabs> listTabs = [
+    Tabs(index: 0, title: 'Đoạn chat', iconUrl: AppImages.icChatBubble),
+    Tabs(index: 1, title: 'Danh bạ', iconUrl: AppImages.icContactBook),
+    Tabs(index: 2, title: 'Khóa học', iconUrl: AppImages.icLearning),
+  ];
+
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: duration);
-    _scaleAnimation =
-        Tween<double>(begin: 1, end: 0.8).animate(_animationController!);
-    _menuScaleAnimation =
-        Tween<double>(begin: 0.5, end: 1).animate(_animationController!);
-    _slideAnimation =
-        Tween<Offset>(begin: const Offset(-1, 0), end: const Offset(0, 0))
-            .animate(_animationController!);
-    _appCubit = BlocProvider.of<AppCubit>(context);
-    _homeCubit = BlocProvider.of<HomeCubit>(context);
     pages = [
       Navigator(
         key: widget.chatNavigatorKey,
@@ -128,6 +135,16 @@ class _HomePageState extends State<HomePage>
         },
       ),
     ];
+    _animationController = AnimationController(vsync: this, duration: duration);
+    _scaleAnimation =
+        Tween<double>(begin: 1, end: 0.8).animate(_animationController!);
+    _menuScaleAnimation =
+        Tween<double>(begin: 0.5, end: 1).animate(_animationController!);
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(-1, 0), end: const Offset(0, 0))
+            .animate(_animationController!);
+    _appCubit = BlocProvider.of<AppCubit>(context);
+    _homeCubit = BlocProvider.of<HomeCubit>(context);
   }
 
   @override
@@ -205,107 +222,62 @@ class _HomePageState extends State<HomePage>
                   BorderRadius.all(Radius.circular(isCollapsed ? 0 : 25)),
             ),
             child: SafeArea(
+                top: isCollapsed,
                 child: BlocBuilder<HomeCubit, HomeState>(
-              buildWhen: (previous, current) =>
-                  previous.currentPage != current.currentPage,
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
+                  buildWhen: (previous, current) =>
+                      previous.currentPage != current.currentPage,
+                  builder: (context, state) {
+                    return Column(
                       children: [
-                        InkWell(
-                          child: const Icon(
-                            Icons.menu,
-                            color: Colors.red,
-                          ),
-                          onTap: () {
-                            setState(() {
-                              if (isCollapsed) {
-                                _animationController?.forward();
-                              } else {
-                                _animationController?.reverse();
-                              }
-
-                              isCollapsed = !isCollapsed;
-                            });
-                          },
+                        Container(
+                          height: 55,
+                          padding: const EdgeInsets.only(left: 14),
+                          child: _buildAppBar(context),
                         ),
+                        const SizedBox(height: 10),
+                        Expanded(
+                          child: PageView(
+                            children: pages,
+                            controller: pageController,
+                            onPageChanged: (value) {
+                              _homeCubit.changePage(value);
+                            },
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(bottom: 10, top: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            border: const Border(
+                              top: BorderSide(
+                                  width: 1.0, color: AppColors.borderColorD6),
+                            ),
+                          ),
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Row(children: [
+                              ...listTabs.map(
+                                (tab) => Expanded(
+                                  child: _buildNavButton(
+                                    tab.iconUrl,
+                                    tab.title,
+                                    onPressed: () async {
+                                      _homeCubit.changePage(tab.index);
+                                      pageController.jumpToPage(tab.index);
+                                    },
+                                    isSelected: state.currentPage == tab.index
+                                        ? true
+                                        : false,
+                                  ),
+                                ),
+                              )
+                            ]),
+                          ),
+                        )
                       ],
-                    ),
-                    const SizedBox(height: 50),
-                    Expanded(
-                      child: PageView(
-                        children: pages,
-                        controller: pageController,
-                        onPageChanged: (value) {
-                          _homeCubit.changePage(value);
-                        },
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 10, top: 5),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 3,
-                            blurRadius: 5,
-                            offset: const Offset(
-                                0, 4), // changes position of shadow
-                          ),
-                        ],
-                        color: Colors.white.withOpacity(0.9),
-                      ),
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: _buildNavButton(
-                                AppImages.icChatBubble,
-                                "Đoạn chat",
-                                onPressed: () {
-                                  _homeCubit.changePage(0);
-                                  pageController.jumpToPage(0);
-                                },
-                                isSelected:
-                                    state.currentPage == 0 ? true : false,
-                              ),
-                            ),
-                            Expanded(
-                              child: _buildNavButton(
-                                AppImages.icContactBook,
-                                "Danh bạ",
-                                onPressed: () async {
-                                  _homeCubit.changePage(1);
-                                  pageController.jumpToPage(1);
-                                },
-                                isSelected:
-                                    state.currentPage == 1 ? true : false,
-                              ),
-                            ),
-                            Expanded(
-                              child: _buildNavButton(
-                                AppImages.icLearning,
-                                "Khóa học",
-                                onPressed: () async {
-                                  _homeCubit.changePage(2);
-                                  pageController.jumpToPage(2);
-                                },
-                                isSelected:
-                                    state.currentPage == 2 ? true : false,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                );
-              },
-            ))),
+                    );
+                  },
+                ))),
       ),
     );
   }
@@ -425,6 +397,54 @@ class _HomePageState extends State<HomePage>
           )
         ],
       ),
+    );
+  }
+
+  Stack _buildAppBar(BuildContext context) {
+    return Stack(
+      children: [
+        BlocConsumer<HomeCubit, HomeState>(
+          buildWhen: (previous, current) =>
+              previous.currentPage != current.currentPage,
+          listener: (context, state) {},
+          builder: (context, state) {
+            return Container(
+              height: 55,
+              margin: EdgeInsets.only(left: isCollapsed ? 0 : 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    listTabs[state.currentPage].title,
+                    style: AppTextStyle.blackS18Bold,
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (isCollapsed) {
+                    _animationController?.forward();
+                  } else {
+                    _animationController?.reverse();
+                  }
+                  isCollapsed = !isCollapsed;
+                });
+              },
+              child: AppCacheImage(
+                width: 40,
+                height: 40,
+                borderRadius: 45,
+                url:
+                    "https://assets1.cbsnewsstatic.com/hub/i/2018/11/06/0c1af1b8-155a-458e-b105-78f1e7344bf4/2018-11-06t054310z-1334124005-rc1be15a8050-rtrmadp-3-people-sexiest-man.jpg",
+              )),
+        )
+      ],
     );
   }
 }

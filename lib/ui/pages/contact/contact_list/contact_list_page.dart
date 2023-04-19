@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
@@ -26,30 +25,7 @@ class _ContactListPageState extends State<ContactListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        shadowColor: AppColors.primaryLighter,
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        bottom: PreferredSize(
-          child: Container(
-            color: AppColors.textBlack,
-            height: 1.0,
-          ),
-          preferredSize: Size.fromHeight(1.0),
-        ),
-        title: _buildAppBar(context),
-      ),
-      body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.primaryLighter,
-          ),
-          child: _buildBody(),
-        ),
-      ),
-    );
+    return _buildBody();
   }
 
   Widget _buildBody() {
@@ -80,43 +56,4 @@ class _ContactListPageState extends State<ContactListPage> {
       ),
     );
   }
-
-  Stack _buildAppBar(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 34,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Danh bạ',
-                style: AppTextStyle.blackS18Bold,
-              ),
-            ],
-          ),
-        ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).pop();
-            },
-            child: Container(
-              margin: EdgeInsets.only(
-                top: 8,
-              ),
-              child: Image.asset(
-                AppImages.icBack,
-                color: AppColors.textBlack,
-                height: 20,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
 }
-  
