@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/common/app_images.dart';
+import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
+import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_vertical.dart';
 
 class ContactListPage extends StatefulWidget {
   ContactListPage({
@@ -29,7 +30,7 @@ class _ContactListPageState extends State<ContactListPage> {
   }
 
   Widget _buildBody() {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,13 +40,46 @@ class _ContactListPageState extends State<ContactListPage> {
               color: Colors.white,
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                physics: ClampingScrollPhysics(),
-                child: Container(
+                physics: const ClampingScrollPhysics(),
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('DETAIL'),
+                      Container(
+                        padding: const EdgeInsets.only(
+                            left: 10, bottom: 2, top: 5),
+                        child: Text(
+                          "Đang hoạt động",
+                          textAlign: TextAlign.start,
+                          style: AppTextStyle.greyS14W600,
+                        ),
+                      ),
+                      for (int i = 0; i < 5; i++) ...{
+                        Container(
+                          padding: const EdgeInsets.only(top: 8, bottom: 8),
+                          child: UserAvatarCardHorizontal(
+                            userFullName: 'Trần Mạnh Hùng',
+                          ),
+                        ),
+                      },
+                      Container(
+                        padding: const EdgeInsets.only(
+                            left: 10, bottom: 2, top: 5),
+                        child: Text(
+                          "Không hoạt động",
+                          textAlign: TextAlign.start,
+                          style: AppTextStyle.greyS14W600,
+                        ),
+                      ),
+                      for (int i = 0; i < 5; i++) ...{
+                        Container(
+                          padding: const EdgeInsets.only(top: 8, bottom: 8),
+                          child: UserAvatarCardHorizontal(
+                            userFullName: 'Trần Mạnh Hùng',
+                          ),
+                        ),
+                      }
                     ],
                   ),
                 ),
