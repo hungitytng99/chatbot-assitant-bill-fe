@@ -10,6 +10,7 @@ import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_page.dart';
 import 'package:ihz_bql/ui/pages/course/course_list/course_list_page.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_cubit.dart';
+import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/utils/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
@@ -305,8 +306,8 @@ class _HomePageState extends State<HomePage>
           height: 30,
         ),
         _buildItemCategory(
-          title: '123',
-          iconUrl: AppImages.icUser,
+          title: 'Hồ sơ cá nhân',
+          iconUrl: AppImages.icUserGrey ,
           onPressed: () {
             logger.d("Go to my profile page");
           },
@@ -326,12 +327,24 @@ class _HomePageState extends State<HomePage>
         const SizedBox(
           height: 25,
         ),
-        _buildItemCategory(
-          title: '123',
-          iconUrl: AppImages.icUserGrey,
+        AppButton(
+          leadingIcon: Container(
+              margin: EdgeInsets.only(right: 6),
+              child: Image.asset(AppImages.icLogout)
+          ),
+          title: 'Đăng xuất',
+          height: 45,
+          width: 150,
+          textStyle: AppTextStyle.whiteS14Bold.copyWith(
+            fontSize: 16,
+          ),
+          cornerRadius: 25,
+          backgroundColor: AppColors.signInPrimary,
+          disableBackgroundColor: Colors.black,
           onPressed: () {
-            logger.d("Go to my profile page");
+            /// TODO: Xử lý đăng xuất
           },
+          isLoading: false,
         ),
       ],
     );
@@ -383,7 +396,7 @@ class _HomePageState extends State<HomePage>
         children: [
           Image.asset(
             iconUrl,
-            width: 18,
+            width: 24,
           ),
           const SizedBox(
             width: 15,
