@@ -1,13 +1,17 @@
 import 'dart:math';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/models/entities/chat_content_entity.dart';
 import 'package:ihz_bql/models/entities/chat_content_refactor_entity.dart';
+import 'package:ihz_bql/routers/application.dart';
+import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_conversation/chat_conversation.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_detai/chat_detail_cubit.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
+import 'package:ihz_bql/ui/pages/homepage/home_page.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ChatDetailPage extends StatefulWidget {
@@ -183,12 +187,27 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             onPressed: () {},
           ),
         ),
-        SizedBox(
-          width: 30,
-          height: 30,
-          child: Image.asset(
-            AppImages.icDoExercise,
-            color: AppColors.primary,
+        InkWell(
+          onTap: () {
+            Application.router.navigateTo(
+              context,
+              Routes.home,
+              clearStack: true,
+              transition: TransitionType.materialFullScreenDialog,
+              routeSettings: RouteSettings(
+                arguments: HomePageArgument(
+                  pageIndex: 2,
+                ),
+              ),
+            );
+          },
+          child: SizedBox(
+            width: 30,
+            height: 30,
+            child: Image.asset(
+              AppImages.icDoExercise,
+              color: AppColors.primary,
+            ),
           ),
         ),
       ],

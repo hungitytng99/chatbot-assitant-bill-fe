@@ -42,6 +42,12 @@ class HomePage extends StatefulWidget {
   final GlobalKey<NavigatorState> profileNavigatorKey =
       GlobalKey<NavigatorState>();
 
+  int pageIndex;
+  HomePage({
+    Key? key,
+    this.pageIndex = 2,
+  }) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -57,7 +63,7 @@ class _HomePageState extends State<HomePage>
   Animation<Offset>? _slideAnimation;
   AppCubit? _appCubit;
   late HomeCubit _homeCubit;
-  final PageController pageController = PageController();
+  late PageController pageController;
   late bool? inPageOrderType;
   late final pages;
 
@@ -148,6 +154,9 @@ class _HomePageState extends State<HomePage>
             .animate(_animationController!);
     _appCubit = BlocProvider.of<AppCubit>(context);
     _homeCubit = BlocProvider.of<HomeCubit>(context);
+
+    pageController = PageController(initialPage: widget.pageIndex);
+    _homeCubit.changePage(widget.pageIndex);
   }
 
   @override
@@ -164,11 +173,16 @@ class _HomePageState extends State<HomePage>
     screenWidth = size.width;
 
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Menu(context),
-          MainPage(context),
-        ],
+      body: WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: Stack(
+          children: <Widget>[
+            Menu(context),
+            MainPage(context),
+          ],
+        ),
       ),
     );
   }
@@ -241,6 +255,9 @@ class _HomePageState extends State<HomePage>
                           child: PageView(
                             children: pages,
                             controller: pageController,
+                            onPageChanged: (pageIndex) {
+                              _homeCubit.changePage(pageIndex);
+                            },
                             physics: const NeverScrollableScrollPhysics(),
                           ),
                         ),
@@ -262,8 +279,9 @@ class _HomePageState extends State<HomePage>
                                     tab.iconUrl,
                                     tab.title,
                                     onPressed: () async {
-                                      _homeCubit.changePage(tab.index);
-                                      pageController.jumpToPage(tab.index);
+                                      pageController.jumpToPage(
+                                        tab.index,
+                                      );
                                     },
                                     isSelected: state.currentPage == tab.index
                                         ? true
@@ -472,4 +490,11 @@ class _HomePageState extends State<HomePage>
       ],
     );
   }
+}
+
+class HomePageArgument {
+  int pageIndex;
+  HomePageArgument({
+    required this.pageIndex,
+  });
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/models/entities/chat_content_refactor_entity.dart';
@@ -99,54 +98,50 @@ class _ChatConversationState extends State<ChatConversation> {
   }
 
   Widget _buildPartnerMessage({required ChatContentRefactorEntity content}) {
-    return Column(
-      children: [
-        for (int i = 0; i < content.chatContent.length; i++) ...[
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: const EdgeInsets.only(
-                bottom: 10,
-              ),
-              margin: const EdgeInsets.only(left: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  UserAvatarItem(
-                    size: 20,
-                    status: UserOnlineStatusEnum.OFFLINE,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 8,
-                        ),
-                        decoration: const BoxDecoration(
-                          color: AppColors.grayLighter,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(14),
-                            bottomRight: Radius.circular(14),
-                            topLeft: Radius.circular(4),
-                            bottomLeft: Radius.circular(4),
-                          ),
-                        ),
-                        margin: const EdgeInsets.only(
-                          left: 8,
-                          top: 4,
-                        ),
-                        child: Text(content.chatContent[i]),
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.only(
+          bottom: 10,
+        ),
+        margin: const EdgeInsets.only(left: 10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            UserAvatarItem(
+              size: 20,
+              status: UserOnlineStatusEnum.OFFLINE,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (int i = 0; i < content.chatContent.length; i++) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: AppColors.grayLighter,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(14),
+                        bottomRight: Radius.circular(14),
+                        topLeft: Radius.circular(4),
+                        bottomLeft: Radius.circular(4),
                       ),
-                    ],
+                    ),
+                    margin: const EdgeInsets.only(
+                      left: 8,
+                      top: 4,
+                    ),
+                    child: Text(content.chatContent[i]),
                   ),
                 ],
-              ),
+              ],
             ),
-          )
-        ]
-      ],
+          ],
+        ),
+      ),
     );
   }
 }

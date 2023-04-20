@@ -130,7 +130,14 @@ class _SignInPageState extends State<SignInPage> {
                 ? null
                 : () {
                     _removeFocus();
-                    Application.router.navigateTo(context, Routes.home);
+                    Application.router.navigateTo(
+                      context,
+                      Routes.home,
+                      routeSettings: RouteSettings(
+                        arguments: HomePageArgument(pageIndex: 0),
+                      ),
+                    );
+
                     /// TODO: Handle login
                     // if (state.emailOrPhone.trim().isEmpty) {
                     //   AppSnackbar.showValidate(
