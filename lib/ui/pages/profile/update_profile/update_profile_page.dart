@@ -30,7 +30,8 @@ class UpdateProfilePage extends StatefulWidget {
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
   final _fullNameController = TextEditingController(text: 'Trần Mạnh Hùng');
   final _emailController = TextEditingController(text: 'mhungict99@gmail.com');
-  final _identityDateController = DatePickerController(dateTime: DateTime.now());
+  final _identityDateController =
+      DatePickerController(dateTime: DateTime.now());
 
   late UpdateProfileCubit _cubit;
   @override
@@ -64,13 +65,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 // },
                 builder: (context, state) {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          AppBackButton(
-                            onBackPressed: Get.back,
-                          ),
-                        ],
+                      Container(
+                        margin: const EdgeInsets.only(top: 10, left: 15),
+                        child: AppBackButton(
+                          onBackPressed: Get.back,
+                        ),
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(

@@ -59,17 +59,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: Container(
-              color: Colors.white,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                physics: const ClampingScrollPhysics(),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: ChatConversation(),
-                ),
-              ),
-            ),
+            child: ChatConversation()
           ),
           _buildChatType(),
         ],

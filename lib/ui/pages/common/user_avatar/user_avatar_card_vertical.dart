@@ -37,25 +37,28 @@ class _UserAvatarCardVerticalState extends State<UserAvatarCardVertical> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        UserAvatarItem(
-          size: widget.avatarSize,
-          status: widget.status,
-        ),
-        Container(
-          width: widget.avatarSize,
-          padding: const EdgeInsets.only(top: 6),
-          child: Text(
-            widget.userFullName,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyle.blackS14W600,
-            textAlign: TextAlign.center,
-            maxLines: 2,
+    return InkWell(
+      onTap: widget.onPressed,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          UserAvatarItem(
+            size: widget.avatarSize,
+            status: widget.status,
           ),
-        ),
-      ],
+          Container(
+            width: widget.avatarSize,
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(
+              widget.userFullName,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyle.blackS14W600,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

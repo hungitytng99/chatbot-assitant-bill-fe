@@ -124,4 +124,6 @@ class AppVectors {
   static const icExpandMoreDown = 'assets/vectors/ic_expand_more_down.svg';
 
 
+
+
 }

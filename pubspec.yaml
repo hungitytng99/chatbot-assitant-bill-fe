@@ -105,7 +105,7 @@ dependencies:
   fluro: ^2.0.5
   photo_manager: ^2.6.0
   wechat_assets_picker: ^7.2.0
-  infinite_scroll_pagination: ^3.2.0
+  infinite_scroll_pagination: 3.1.0
 
 dev_dependencies:
   flutter_test:
