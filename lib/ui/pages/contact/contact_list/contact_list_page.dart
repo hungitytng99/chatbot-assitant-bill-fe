@@ -63,7 +63,7 @@ class _ContactListPageState extends State<ContactListPage> {
                             onPressed: () {
                               Application.router.navigateTo(
                                 context,
-                                Routes.chatConversation,
+                                Routes.chatDetail,
                                 rootNavigator: true,
                               );
                             },
@@ -88,7 +88,7 @@ class _ContactListPageState extends State<ContactListPage> {
                             onPressed: () {
                               Application.router.navigateTo(
                                 context,
-                                Routes.chatConversation,
+                                Routes.chatDetail,
                                 rootNavigator: true,
                               );
                             },

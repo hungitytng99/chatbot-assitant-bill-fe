@@ -82,7 +82,7 @@ class _ChatListPageState extends State<ChatListPage> {
                                         onPressed: () {
                                           Application.router.navigateTo(
                                             context,
-                                            Routes.chatConversation,
+                                            Routes.chatDetail,
                                             rootNavigator: true,
                                           );
                                         },
@@ -104,7 +104,7 @@ class _ChatListPageState extends State<ChatListPage> {
                             onPressed: () {
                               Application.router.navigateTo(
                                 context,
-                                Routes.chatConversation,
+                                Routes.chatDetail,
                                 rootNavigator: true,
                               );
                             },

@@ -225,19 +225,20 @@ Handler ${CAMEL_CASE_NAME}Handler = new Handler(handlerFunc: (context, parameter
   mkdir -p "${SCREEN_FOLDER}" && touch "${SCREEN_FOLDER}/$2_cubit.dart" && echo "$CUBIT" > "${SCREEN_FOLDER}/$2_cubit.dart"
   mkdir -p "${SCREEN_FOLDER}" && touch "${SCREEN_FOLDER}/$2_state.dart" && echo "$STATE" > "${SCREEN_FOLDER}/$2_state.dart"
   mkdir -p "${SCREEN_FOLDER}" && touch "${SCREEN_FOLDER}/$2_page.dart" && echo "$PAGE" > "${SCREEN_FOLDER}/$2_page.dart"
-#### Router handler
-#### Options --no-handler to only generate view
-  if [ "$4" != "--no-handler" ]
+
+if [ "$4" != "--no-handler" ]
+then
+  #### Router handler
+  #### Options --no-handler to only generate view
+  if test -f "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart"
   then
-    if test -f "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart"
-    then
-      echo "${HANDLER_EXIST}" >> "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart";
-    else
-      touch "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart"
-      echo "${HANDLER_NOT_EXIST}" > "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart";
-    fi
+    echo "${HANDLER_EXIST}" >> "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart";
+  else
+    touch "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart"
+    echo "${HANDLER_NOT_EXIST}" > "lib/$ROUTER_FOLDER/router_handlers/$2_handler.dart";
   fi
-#### Router
+  #### Router
+
   ROUTE_CONFIG_LINE_NUMBER=$(grep -rne "static void configureRoutes(FluroRouter router) {" "lib/$ROUTER_FOLDER/routers.dart" | cut -d : -f 1)
   sed -i "$ROUTE_CONFIG_LINE_NUMBER a router.define(${CAMEL_CASE_NAME},handler:${CAMEL_CASE_NAME}Handler,transitionType:TransitionType.native,);" "lib/$ROUTER_FOLDER/routers.dart"
   sed -i "$((ROUTE_CONFIG_LINE_NUMBER-1)) a static String $CAMEL_CASE_NAME = '/$CAMEL_CASE_NAME';" "lib/$ROUTER_FOLDER/routers.dart"
@@ -246,5 +247,7 @@ Handler ${CAMEL_CASE_NAME}Handler = new Handler(handlerFunc: (context, parameter
   printf "Successfully! Have a good day!\n";
   printf "Navigate to page by: \n";
   echo -e "\x1b[1;31m Application.router!.navigateTo(context, Routes.$CAMEL_CASE_NAME); \e[0m"
+  fi
 fi
+
 

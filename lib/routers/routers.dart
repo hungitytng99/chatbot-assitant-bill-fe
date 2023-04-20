@@ -1,9 +1,9 @@
 import 'package:fluro/fluro.dart';
+import 'package:ihz_bql/routers/router_handlers/chat_detail_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/update_profile_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/my_profile_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/course_list_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/contact_list_handler.dart';
-import 'package:ihz_bql/routers/router_handlers/chat_conversation_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/chat_list_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/home_handler.dart';
 import 'package:ihz_bql/routers/router_handlers/auth_router_handler.dart';
@@ -19,7 +19,7 @@ class Routes {
 
   static String home = '/home';
   static String chatList = '/chatList';
-  static String chatConversation = '/chatConversation';
+  static String chatDetail = '/chatDetail';
   static String contactList = '/contactList';
   static String courseList = '/courseList';
   static String myProfile = '/myProfile';
@@ -46,8 +46,8 @@ class Routes {
       transitionType: TransitionType.inFromRight,
     );
     router.define(
-      chatConversation,
-      handler: chatConversationHandler,
+      chatDetail,
+      handler: chatDetailHandler,
       transitionType: TransitionType.inFromRight,
     );
     router.define(
