@@ -1,12 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
-import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/common/app_images.dart';
-import 'package:ihz_bql/models/enums/user_online_status.dart';
+import 'package:ihz_bql/models/entities/chat_content_entity.dart';
+import 'package:ihz_bql/models/entities/chat_content_refactor_entity.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_conversation/chat_conversation.dart';
+import 'package:ihz_bql/ui/pages/chat/chat_detai/chat_detail_cubit.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
-import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_item.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ChatDetailPage extends StatefulWidget {
   ChatDetailPage({
@@ -17,14 +19,40 @@ class ChatDetailPage extends StatefulWidget {
 }
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
+  static const _pageSize = 20;
+  final _chatController = TextEditingController(text: '');
+  late final ChatDetailCubit _chatDetailCubit;
+  final PagingController<int, ChatContentRefactorEntity> _pagingController =
+      PagingController(firstPageKey: 0);
+
   @override
   void initState() {
     super.initState();
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+    _chatDetailCubit = BlocProvider.of<ChatDetailCubit>(context);
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final List<ChatContentRefactorEntity> chatConversation =
+          await _chatDetailCubit.getChatConversation(pageKey);
+      final bool isLastPage = chatConversation.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(chatConversation);
+      } else {
+        final int nextPageKey = pageKey + chatConversation.length;
+        _pagingController.appendPage(chatConversation, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
   }
 
   @override
@@ -59,7 +87,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: ChatConversation()
+            child: ChatConversation(
+              pagingController: _pagingController,
+            ),
           ),
           _buildChatType(),
         ],
@@ -71,17 +101,43 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     return Container(
       margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 8),
       child: TextField(
+        controller: _chatController,
         decoration: InputDecoration(
             border: const OutlineInputBorder(),
             hintText: 'Bạn muốn hỏi gì nào...',
-            suffixIcon: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 20.0),
-              child: Image.asset(
-                AppImages.icSend,
-                color: AppColors.primary,
-                fit: BoxFit.contain,
-                width: 6,
-                height: 6,
+            suffixIcon: InkWell(
+              onTap: () {
+                if (_chatController.text.isNotEmpty) {
+                  _pagingController.itemList = [
+                    ChatContentRefactorEntity(
+                      id: -1,
+                      chatContent: [_chatController.text],
+                      isOwner: true,
+                    ),
+                    ...?_pagingController.itemList,
+                  ];
+                  // _pagingController.appendPage(
+                  //   [
+                  //     ChatContentRefactorEntity(
+                  //       id: -1,
+                  //       chatContent: _chatController.text,
+                  //       isOwner: true,
+                  //     ),
+                  //   ],
+                  //   0,
+                  // );
+                  _chatController.text = '';
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsetsDirectional.only(end: 20.0),
+                child: Image.asset(
+                  AppImages.icSend,
+                  color: AppColors.primary,
+                  fit: BoxFit.contain,
+                  width: 6,
+                  height: 6,
+                ),
               ),
             ),
             enabledBorder: OutlineInputBorder(
