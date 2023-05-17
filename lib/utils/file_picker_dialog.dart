@@ -52,7 +52,7 @@ class FilePickerDialog extends StatelessWidget {
   final String title;
   final List<FileSourceType>? sources;
 
-  FilePickerDialog({
+  const FilePickerDialog({
     this.title = "Select image to upload",
     this.sources,
   });
@@ -77,7 +77,7 @@ class FilePickerDialog extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Container(
+                child: SizedBox(
                   width: 40,
                   height: 40,
                   child: Image.asset(AppImages.icCloseNoBg),
@@ -172,7 +172,7 @@ class SourceItemWidget extends StatelessWidget {
   final FileSourceType? sourceType;
   final VoidCallback? onPressed;
 
-  SourceItemWidget({this.sourceType, this.onPressed});
+  const SourceItemWidget({this.sourceType, this.onPressed});
 
   @override
   Widget build(BuildContext context) {

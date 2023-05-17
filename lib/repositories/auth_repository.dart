@@ -1,10 +1,9 @@
-import 'dart:io';
+import 'package:ihz_bql/models/entities/auth_token_entity.dart';
+import 'package:ihz_bql/models/params/auth/sign_in_body.dart';
 import 'package:ihz_bql/networks/api_client.dart';
 
 abstract class AuthRepository {
-  Future updateProfile(Map<String, dynamic> body);
-
-
+  Future signIn(SignInBody body);
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -15,9 +14,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future updateProfile(Map<String, dynamic> body) {
-    // TODO: implement updateProfile
-    throw UnimplementedError();
+  Future<AuthTokenEntity> signIn(SignInBody body) {
+    return _apiClient.signIn(body.username, body.password);
   }
-
 }

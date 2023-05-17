@@ -16,7 +16,7 @@ class SearchTextField extends StatelessWidget {
   final double? height;
   final bool? isShowDeleteIcon;
 
-  SearchTextField({
+  const SearchTextField({
     this.textEditingController,
     this.textStyle,
     this.hintText,

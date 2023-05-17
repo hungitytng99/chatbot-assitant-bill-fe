@@ -1,6 +1,4 @@
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,8 +13,6 @@ import 'package:ihz_bql/repositories/auth_repository.dart';
 import 'package:ihz_bql/ui/pages/auth/sign_up/sign_up_cubit.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_back_button.dart';
-import 'package:ihz_bql/ui/widgets/pickers/app_date_picker.dart';
-import 'package:ihz_bql/ui/widgets/pickers/app_identity_date_picker.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_email_input.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_label_text_field.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_password_input.dart';
@@ -35,7 +31,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final _emailController = TextEditingController(text: '');
   final _passwordController = TextEditingController(text: '');
   final _obscureTextController = ObscureTextController(obscureText: true);
-  final _identityDateController = DatePickerController(dateTime: null);
 
   late SignUpCubit _cubit;
   final lstBuilding = ['Hotel', 'Nhà nghỉ', 'kangnam', 'sun'];
@@ -115,13 +110,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 _cubit.changeEmail(value);
                               },
                             ),
-                            AppIdentifyDatePicker(
-                              controller: _identityDateController,
-                              label: "Ngày/tháng/năm sinh",
-                              onChanged: (date) =>
-                                  _cubit.changeBornDate(date),
-                            ),
-                            const SizedBox(height: 16),
                             AppPasswordInput(
                               obscureTextController: _obscureTextController,
                               textEditingController: _passwordController,

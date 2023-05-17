@@ -70,12 +70,16 @@ class AppTheme {
       primaryColor: primaryColor,
       backgroundColor: AppColors.white,
       scaffoldBackgroundColor: AppColors.white,
-      accentColor: secondaryColor,
-      colorScheme: ColorScheme(
+      textTheme: textTheme,
+      iconTheme: IconThemeData(
+        color: secondaryColor,
+      ),
+      shadowColor: AppColors.shadowColor,
+      dividerColor: AppColors.divider,
+      unselectedWidgetColor: AppColors.borderColor,
+      fontFamily: _fontFamily, colorScheme: ColorScheme(
         primary: primaryColor,
-        primaryVariant: primaryColor,
         secondary: secondaryColor,
-        secondaryVariant: secondaryColor,
         surface: AppColors.white,
         background: AppColors.white,
         error: Colors.red,
@@ -85,15 +89,7 @@ class AppTheme {
         onBackground: Colors.white,
         onError: Colors.red,
         brightness: brightness,
-      ),
-      textTheme: textTheme,
-      iconTheme: IconThemeData(
-        color: secondaryColor,
-      ),
-      shadowColor: AppColors.shadowColor,
-      dividerColor: AppColors.divider,
-      unselectedWidgetColor: AppColors.borderColor,
-      fontFamily: _fontFamily,
+      ).copyWith(secondary: secondaryColor),
     );
   }
 

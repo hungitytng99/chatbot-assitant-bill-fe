@@ -5,7 +5,7 @@ class SplashState extends Equatable {
   final LoadStatus loadUserStatus;
   final LoadStatus loadServerConfigStatus;
 
-  SplashState({
+  const SplashState({
     this.loginState = LoadStatus.initial,
     this.loadUserStatus = LoadStatus.initial,
     this.loadServerConfigStatus = LoadStatus.initial,
@@ -26,8 +26,8 @@ class SplashState extends Equatable {
 
   @override
   List<Object?> get props => [
-        this.loginState,
-        this.loadUserStatus,
-        this.loadServerConfigStatus,
+        loginState,
+        loadUserStatus,
+        loadServerConfigStatus,
       ];
 }

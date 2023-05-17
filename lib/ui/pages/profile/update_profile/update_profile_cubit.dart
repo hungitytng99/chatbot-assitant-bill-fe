@@ -1,10 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
-import 'package:ihz_bql/repositories/auth_repository.dart';
 import 'package:ihz_bql/utils/validator_utils.dart';
-import 'package:ihz_bql/models/entities/index.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'update_profile_state.dart';
 

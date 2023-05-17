@@ -12,8 +12,6 @@ import 'package:ihz_bql/ui/pages/profile/update_profile/update_profile_cubit.dar
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_back_button.dart';
 import 'package:ihz_bql/ui/widgets/images/app_cache_image.dart';
-import 'package:ihz_bql/ui/widgets/pickers/app_date_picker.dart';
-import 'package:ihz_bql/ui/widgets/pickers/app_identity_date_picker.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_email_input.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_label_text_field.dart';
 import 'package:ihz_bql/utils/dialog_utils.dart';
@@ -28,15 +26,11 @@ class UpdateProfilePage extends StatefulWidget {
 }
 
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
-  final _fullNameController = TextEditingController(text: 'Trần Mạnh Hùng');
-  final _emailController = TextEditingController(text: 'mhungict99@gmail.com');
-  final _identityDateController =
-      DatePickerController(dateTime: DateTime.now());
-
+  final _fullNameController = TextEditingController(text: 'Vũ Ngọc Nam');
+  final _emailController = TextEditingController(text: 'namvu@gmail.com');
   late UpdateProfileCubit _cubit;
   @override
   void initState() {
-    final authRepository = RepositoryProvider.of<AuthRepository>(context);
     _cubit = UpdateProfileCubit();
     super.initState();
   }
@@ -106,11 +100,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                               onChanged: (value) {
                                 _cubit.changeEmail(value);
                               },
-                            ),
-                            AppIdentifyDatePicker(
-                              controller: _identityDateController,
-                              label: "Ngày/tháng/năm sinh",
-                              onChanged: (date) => _cubit.changeBornDate(date),
                             ),
                             const SizedBox(height: 35),
                             _buildSignupButton(),

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_dimens.dart';
-import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/ui/components/app_cache_image.dart';
 
 class ButtonTile extends StatelessWidget {
-  Widget? title = Text("");
-  Widget? subTitle = Text("");
-  Widget? secondSubTitle = Text("");
+  Widget? title = const Text("");
+  Widget? subTitle = const Text("");
+  Widget? secondSubTitle = const Text("");
   VoidCallback? onPressed = () => {};
   Widget? iconWidget =
-      AppCacheImage(url: "", fit: BoxFit.cover, width: 41, height: 41);
-  Widget? iconExpandMore = SizedBox.shrink();
+      const AppCacheImage(url: "", fit: BoxFit.cover, width: 41, height: 41);
+  Widget? iconExpandMore = const SizedBox.shrink();
   Color? backgroundColor = Colors.white;
   final Color? borderColor;
   double? distanceIconText = 5;
@@ -35,7 +34,7 @@ class ButtonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: width ?? double.infinity,
       height: height ?? 60,
       child: OutlinedButton(
@@ -59,15 +58,15 @@ class ButtonTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   title!,
-                  subTitle == null ? SizedBox() : SizedBox(height: 4),
-                  subTitle ?? SizedBox(),
-                  secondSubTitle == null ? SizedBox() : SizedBox(height: 4),
-                  secondSubTitle ?? SizedBox(),
+                  subTitle == null ? const SizedBox() : const SizedBox(height: 4),
+                  subTitle ?? const SizedBox(),
+                  secondSubTitle == null ? const SizedBox() : const SizedBox(height: 4),
+                  secondSubTitle ?? const SizedBox(),
                 ],
               ),
             ),
             iconExpandMore == null
-                ? Text("")
+                ? const Text("")
                 : Container(
                     padding: const EdgeInsets.only(left: AppDimens.paddingS8, right: AppDimens.paddingSmall, top: AppDimens.paddingSmall),
                     child: iconExpandMore,

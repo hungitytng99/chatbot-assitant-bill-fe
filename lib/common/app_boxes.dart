@@ -7,7 +7,7 @@ class AppBoxes {
   static final boxBorderTop = BoxDecoration(
     boxShadow: AppShadow.boxShadow,
     color: Colors.white,
-    borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+    borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
   );
 
   static final boxBorderItemGrey = BoxDecoration(

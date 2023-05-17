@@ -1,11 +1,7 @@
 import 'dart:async';
-import 'dart:math';
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:ihz_bql/blocs/app_cubit.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_dimens.dart';
@@ -15,11 +11,10 @@ import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:ihz_bql/configs/env_configs.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ihz_bql/ui/pages/auth/sign_up/sign_up_page.dart';
+import 'package:ihz_bql/models/params/auth/sign_in_body.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_page.dart';
 import 'package:ihz_bql/repositories/auth_repository.dart';
 import 'package:ihz_bql/routers/application.dart';
-import 'package:ihz_bql/ui/pages/auth/sign_up/sign_up_page.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/ui/widgets/commons/app_snackbar.dart';
 import 'package:package_info/package_info.dart';
@@ -40,8 +35,8 @@ class _SignInPageState extends State<SignInPage> {
   StreamSubscription? _navigationSubscription;
   StreamSubscription? _showMessageSubscription;
 
-  final _emailController = TextEditingController(text: '');
-  final _passwordController = TextEditingController(text: '');
+  final _emailController = TextEditingController(text: 'demo@gmail.com');
+  final _passwordController = TextEditingController(text: 'test');
 
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
@@ -50,14 +45,14 @@ class _SignInPageState extends State<SignInPage> {
 
   bool _obscuredText = true;
 
-  late SignInCubit _cubit;
+  late SignInCubit _signInCubit;
 
   @override
   void initState() {
     final _appCubit = BlocProvider.of<AppCubit>(context);
     final _authRepository = RepositoryProvider.of<AuthRepository>(context);
 
-    _cubit = SignInCubit(
+    _signInCubit = SignInCubit(
       appCubit: _appCubit,
       authRepository: _authRepository,
     );
@@ -67,7 +62,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   void dispose() {
-    _cubit.close();
+    _signInCubit.close();
     _emailController.dispose();
     _passwordController.dispose();
     _showMessageSubscription?.cancel();
@@ -88,17 +83,25 @@ class _SignInPageState extends State<SignInPage> {
             return false;
           },
           child: BlocListener<SignInCubit, SignInState>(
-            bloc: _cubit,
+            bloc: _signInCubit,
             listenWhen: (prev, current) {
-              return prev.sharedPreferenceStatus !=
-                  current.sharedPreferenceStatus;
+              return prev.signInStatus != current.signInStatus;
             },
             listener: (context, state) {
-              if (state.sharedPreferenceStatus == LoadStatus.success) {
-                _emailController.text =
-                    state.prefs?.getString('email_or_phone') ?? "";
-                _emailController.selection = TextSelection.fromPosition(
-                    TextPosition(offset: _emailController.text.length));
+              if (state.signInStatus == LoadStatus.success) {
+                Application.router.navigateTo(
+                  context,
+                  Routes.home,
+                  routeSettings: RouteSettings(
+                    arguments: HomePageArgument(pageIndex: 0),
+                  ),
+                );
+              }
+
+              if (state.signInStatus == LoadStatus.failure) {
+                AppSnackbar.showError(
+                    title: 'Đăng nhập thất bại',
+                    message: 'Email hoặc mật khẩu không chính xác!');
               }
             },
             child: _buildBody(),
@@ -110,10 +113,10 @@ class _SignInPageState extends State<SignInPage> {
 
   Widget _buildSignButton() {
     return BlocBuilder<SignInCubit, SignInState>(
-      bloc: _cubit,
+      bloc: _signInCubit,
       buildWhen: (prev, current) {
         return (prev.signInStatus != current.signInStatus) ||
-            (prev.emailOrPhone != current.emailOrPhone) ||
+            (prev.email != current.email) ||
             (prev.password != current.password);
       },
       builder: (context, state) {
@@ -130,26 +133,11 @@ class _SignInPageState extends State<SignInPage> {
                 ? null
                 : () {
                     _removeFocus();
-                    Application.router.navigateTo(
-                      context,
-                      Routes.home,
-                      routeSettings: RouteSettings(
-                        arguments: HomePageArgument(pageIndex: 0),
-                      ),
-                    );
-
-                    /// TODO: Handle login
-                    // if (state.emailOrPhone.trim().isEmpty) {
-                    //   AppSnackbar.showValidate(
-                    //     message: 'Chưa nhập email hoặc số điện thoại',
-                    //   );
-                    // } else if (state.password.trim().isEmpty) {
-                    //   AppSnackbar.showValidate(
-                    //     message: 'Chưa nhập mật khẩu',
-                    //   );
-                    // } else {
-                    //   Get.to(HomePage());
-                    // }
+                    _signInCubit.signIn(
+                        body: SignInBody(
+                      username: _emailController.text,
+                      password: _passwordController.text,
+                    ));
                   },
             isLoading: isLoading,
           ),
@@ -324,9 +312,6 @@ class _SignInPageState extends State<SignInPage> {
     return GestureDetector(
       onTap: () {
         _removeFocus();
-
-        /// TODO: Thêm màn quên mật khẩu
-        // Get.to(() => const ForgotPasswordPage(), popGesture: true);
       },
       child: Text(
         'Quên mật khẩu?',

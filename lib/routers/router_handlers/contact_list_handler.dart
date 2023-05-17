@@ -1,15 +1,16 @@
-
 import 'package:fluro/fluro.dart';
+import 'package:ihz_bql/repositories/expert_repository.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_cubit.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Handler contactListHandler = new Handler(handlerFunc: (context, parameters) {
+Handler contactListHandler = Handler(handlerFunc: (context, parameters) {
   return BlocProvider(
     create: (context) {
-      return ContactListCubit();
+      ExpertRepository expertRepository =
+          RepositoryProvider.of<ExpertRepository>(context);
+      return ContactListCubit(expertRepository: expertRepository);
     },
-    child: ContactListPage(),
+    child: const ContactListPage(),
   );
 });
-  

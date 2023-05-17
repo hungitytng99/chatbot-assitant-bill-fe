@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:ihz_bql/generated/l10n.dart';
 
 class ErrorUtils{
   static String errorToMessage(dynamic e,String key) {

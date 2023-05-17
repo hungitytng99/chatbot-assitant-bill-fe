@@ -11,7 +11,7 @@ class HighlightText extends StatelessWidget {
     required this.text,
     required this.highlight,
     TextStyle? highlightStyle,
-    this.ignoreCase: false,
+    this.ignoreCase = false,
   }) : super(key: key);
 
   @override

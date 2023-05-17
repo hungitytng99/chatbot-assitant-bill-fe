@@ -5,10 +5,10 @@ class CourseListState extends Equatable {
   @override
   List<Object?> get props => [];
 
-  CourseListState();
+  const CourseListState();
 
   CourseListState copyWith() {
-    return CourseListState();
+    return const CourseListState();
   }
 }
   

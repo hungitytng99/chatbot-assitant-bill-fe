@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/utils/utils.dart';
 import 'package:ihz_bql/utils/validator_utils.dart';
 
 import 'app_label_text_field.dart';

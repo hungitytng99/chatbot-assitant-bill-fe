@@ -11,7 +11,7 @@ class MyAppSearchBar extends StatelessWidget {
   final VoidCallback? onDelete;
   final String? hintText;
 
-  MyAppSearchBar({
+  const MyAppSearchBar({
     this.title,
     this.onBackPressed,
     this.textEditingController,

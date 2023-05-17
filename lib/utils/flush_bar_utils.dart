@@ -1,8 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/app.dart';
-import 'package:ihz_bql/common/app_colors.dart';
-import 'package:ihz_bql/common/app_text_styles.dart';
 
 class FlushBarUtils {
   static void showSuccessDialog({
@@ -47,7 +44,7 @@ class FlushBarUtils {
     //   duration: const Duration(seconds: 3),
     //   flushbarPosition: position ?? FlushbarPosition.BOTTOM,
     //   margin: EdgeInsets.fromLTRB(10, topMargin ?? 0, 10, 15),
-    //   borderRadius: const BorderRadius.all(const Radius.circular(10)),
+    //   borderRadius: const BorderRadius.all(Radius.circular(10)),
     //   backgroundColor: AppColors.lightRed,
     //   borderColor: AppColors.buttonRed,
     //   borderWidth: 1.5,

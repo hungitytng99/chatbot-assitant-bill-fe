@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/common/app_colors.dart';
-import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/common/app_images.dart';
 
 class CourseListPage extends StatefulWidget {
-  CourseListPage({
+  const CourseListPage({
     Key? key,
   }) : super(key: key);
   @override
@@ -29,7 +25,7 @@ class _CourseListPageState extends State<CourseListPage> {
   }
 
   Widget _buildBody() {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,12 +35,12 @@ class _CourseListPageState extends State<CourseListPage> {
               color: Colors.white,
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                physics: ClampingScrollPhysics(),
-                child: Container(
+                physics: const ClampingScrollPhysics(),
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Text('DETAIL'),
                     ],
                   ),

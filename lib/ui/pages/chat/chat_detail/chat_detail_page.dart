@@ -1,21 +1,20 @@
-import 'dart:math';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
-import 'package:ihz_bql/models/entities/chat_content_entity.dart';
 import 'package:ihz_bql/models/entities/chat_content_refactor_entity.dart';
+import 'package:ihz_bql/models/enums/chat_content_type.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_conversation/chat_conversation.dart';
-import 'package:ihz_bql/ui/pages/chat/chat_detai/chat_detail_cubit.dart';
+import 'package:ihz_bql/ui/pages/chat/chat_detail/chat_detail_cubit.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_page.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ChatDetailPage extends StatefulWidget {
-  ChatDetailPage({
+  const ChatDetailPage({
     Key? key,
   }) : super(key: key);
   @override
@@ -117,6 +116,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                       id: -1,
                       chatContent: [_chatController.text],
                       isOwner: true,
+                      type: ChatContentType.text.getType,
                     ),
                     ...?_pagingController.itemList,
                   ];
@@ -181,8 +181,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         ),
         Expanded(
           child: UserAvatarCardHorizontal(
-            userFullName: 'Trần Mạnh Hùng',
+            userFullName: 'Vũ Ngọc Nam',
             description: 'Đang hoạt động',
+            avatarLink: 'https://picsum.photos/200/200',
             avatarSize: 41,
             onPressed: () {},
           ),
@@ -193,7 +194,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               context,
               Routes.home,
               clearStack: true,
-              transition: TransitionType.materialFullScreenDialog,
+              transition: TransitionType.inFromLeft,
               routeSettings: RouteSettings(
                 arguments: HomePageArgument(
                   pageIndex: 2,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/common/app_theme.dart';
 
 class AppLabelText extends StatelessWidget {
   final String labelText;

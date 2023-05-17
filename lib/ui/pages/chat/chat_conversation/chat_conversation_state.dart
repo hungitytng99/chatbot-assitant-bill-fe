@@ -5,10 +5,10 @@ class ChatConversationState extends Equatable {
   @override
   List<Object?> get props => [];
 
-  ChatConversationState();
+  const ChatConversationState();
 
   ChatConversationState copyWith() {
-    return ChatConversationState();
+    return const ChatConversationState();
   }
 }
   

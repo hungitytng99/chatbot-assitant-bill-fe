@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_back_button.dart';
 
@@ -7,7 +6,7 @@ class OTPLayout extends StatelessWidget {
   final Widget body;
   final bool? isShowBack;
   final bool? isAvoidBottomInset;
-  OTPLayout(
+  const OTPLayout(
       {Key? key, required this.body, this.isShowBack, this.isAvoidBottomInset})
       : super(key: key);
 
@@ -41,7 +40,7 @@ class OTPLayout extends StatelessWidget {
           automaticallyImplyLeading: false,
         ),
         backgroundColor: Colors.transparent,
-        body: this.body,
+        body: body,
       ),
     );
   }

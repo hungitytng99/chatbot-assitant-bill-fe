@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:ihz_bql/generated/l10n.dart';
 
 enum VehicleRegisterType { MONTHLY_TICKET, YEAR_TICKET, OTHER }

@@ -18,7 +18,7 @@ import 'package:ihz_bql/routers/routers.dart';
 import 'generated/l10n.dart';
 import 'networks/api_client.dart';
 import 'networks/api_util.dart';
-import 'routers/route_config.dart';
+import 'package:ihz_bql/repositories/expert_repository.dart';
 
 final appNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -71,6 +71,9 @@ class _MyAppState extends State<MyApp> {
         }),
         RepositoryProvider<UserRepository>(create: (context) {
           return UserRepositoryImpl(_apiClient);
+        }),
+        RepositoryProvider<ExpertRepository>(create: (context) {
+          return ExpertRepositoryImpl(_apiClient);
         }),
       ],
       child: MultiBlocProvider(

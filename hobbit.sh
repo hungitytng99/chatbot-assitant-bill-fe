@@ -7,7 +7,7 @@
 # hobbit.sh c home homepage
 
 # Configs
-SCREEN_FOLDER="ui/pages"
+SCREEN_FOLDER="ui"
 ROUTER_FOLDER="routers"
 
 if [ "$4" == "--no-handler" ]
@@ -225,7 +225,7 @@ Handler ${CAMEL_CASE_NAME}Handler = new Handler(handlerFunc: (context, parameter
   mkdir -p "${SCREEN_FOLDER}" && touch "${SCREEN_FOLDER}/$2_cubit.dart" && echo "$CUBIT" > "${SCREEN_FOLDER}/$2_cubit.dart"
   mkdir -p "${SCREEN_FOLDER}" && touch "${SCREEN_FOLDER}/$2_state.dart" && echo "$STATE" > "${SCREEN_FOLDER}/$2_state.dart"
   mkdir -p "${SCREEN_FOLDER}" && touch "${SCREEN_FOLDER}/$2_page.dart" && echo "$PAGE" > "${SCREEN_FOLDER}/$2_page.dart"
-
+echo "Complete write files in ${SCREEN_FOLDER}!";
 if [ "$4" != "--no-handler" ]
 then
   #### Router handler

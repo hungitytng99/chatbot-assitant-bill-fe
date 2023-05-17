@@ -3,7 +3,6 @@ import 'dart:io';
 
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ihz_bql/blocs/app_cubit.dart';
@@ -15,7 +14,6 @@ import 'package:ihz_bql/common/app_vectors.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:ihz_bql/configs/env_configs.dart';
 import 'package:ihz_bql/ui/pages/splash/splash_cubit.dart';
-import 'package:ihz_bql/utils/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info/package_info.dart';
 import 'package:permission_handler/permission_handler.dart';

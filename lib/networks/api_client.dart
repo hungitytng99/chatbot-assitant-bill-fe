@@ -1,4 +1,9 @@
+
 import 'package:dio/dio.dart';
+import 'package:ihz_bql/models/entities/auth_token_entity.dart';
+import 'package:ihz_bql/models/entities/expert_entity.dart';
+import 'package:ihz_bql/models/entities/user_entity.dart';
+import 'package:ihz_bql/models/params/auth/sign_up_body.dart';
 import 'package:retrofit/http.dart';
 
 part 'api_client.g.dart';
@@ -7,15 +12,14 @@ part 'api_client.g.dart';
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
-  ///Remote setting
-  // @GET("/api/remove-setting")
-  // Future<RemoteSettingEntity> getRemoteSetting();
-  //
-  // ///Authenticate - UserInfo
-  // @POST("/msx-sts/api/domain/v1/auth/mobile/bql/login")
-  // Future<TokenEntity> authLogin(@Body() Map<String, dynamic> body);
-  //
-  // @GET("/msx-employee/api/query/v1/employee/getProfile")
-  // Future<UserEntity> getUser();
+  @POST("/signup")
+  Future<UserEntity> signUp(@Body() SignUpBody body);
 
+  @MultiPart()
+  @POST("/login")
+  Future<AuthTokenEntity> signIn(
+      @Part() String username, @Part() String password);
+
+  @GET("/experts")
+  Future<List<ExpertEntity>> getActiveExperts();
 }

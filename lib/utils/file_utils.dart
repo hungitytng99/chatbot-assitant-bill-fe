@@ -44,6 +44,7 @@ class FileUtils {
        /// Show popup download
        await DownloadUtils.showPopupDownloadFile(url);
     }
+    return null;
   }
 
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/common/app_theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class LoadingRowWidget extends StatelessWidget {

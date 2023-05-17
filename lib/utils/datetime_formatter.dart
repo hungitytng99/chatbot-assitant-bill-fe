@@ -50,7 +50,7 @@ class DateTimeFormater {
 
 extension ConcurrencyFormatter on int {
   String get displayConcurrency {
-    if (this == null || this == 0) {
+    if (this == 0) {
       return "0";
     }
     final String str = NumberFormat.simpleCurrency(locale: "vi", name: '', decimalDigits: 0).format(this);
@@ -60,7 +60,7 @@ extension ConcurrencyFormatter on int {
 
 extension ConcurrencyDoubleFormatter on double {
   String get displayConcurrency {
-    if (this == null || this == 0) {
+    if (this == 0) {
       return "0";
     }
     final String str = NumberFormat.simpleCurrency(locale: "vi", name: '', decimalDigits: 0).format(this);
@@ -70,9 +70,9 @@ extension ConcurrencyDoubleFormatter on double {
   String get roundDisplay {
     try {
       final _formatter = NumberFormat("#,###.##");
-      return "${_formatter.format(this)}";
+      return _formatter.format(this);
     } catch (_) {
-      return this.toString();
+      return toString();
     }
   }
 }

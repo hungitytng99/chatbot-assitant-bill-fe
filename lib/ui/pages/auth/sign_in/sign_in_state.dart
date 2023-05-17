@@ -1,22 +1,14 @@
 part of 'sign_in_cubit.dart';
 
 class SignInState extends Equatable {
-  final TokenEntity? token;
   final LoadStatus signInStatus;
-  final String emailOrPhone;
+  final String email;
   final String password;
-  final SharedPreferences? prefs;
-  final LoadStatus? sharedPreferenceStatus;
-  final LoadStatus? fetchBuildingStatus;
 
   const SignInState({
-    this.token,
     this.signInStatus = LoadStatus.initial,
-    this.fetchBuildingStatus = LoadStatus.initial,
-    this.emailOrPhone = "",
+    this.email = "",
     this.password = "",
-    this.prefs,
-    this.sharedPreferenceStatus,
   });
 
   bool get isValid {
@@ -28,42 +20,29 @@ class SignInState extends Equatable {
   }
 
   bool get isValidEmail {
-    return ValidatorUtils.validateEmail(emailOrPhone);
+    return ValidatorUtils.validateEmail(email);
   }
 
   bool get isValidPhone {
-    return ValidatorUtils.validatePhone(emailOrPhone);
+    return ValidatorUtils.validatePhone(email);
   }
 
   SignInState copyWith({
-    TokenEntity? token,
     LoadStatus? signInStatus,
-    String? emailOrPhone,
+    String? email,
     String? password,
-    SharedPreferences? prefs,
-    LoadStatus? sharedPreferenceStatus,
-    LoadStatus? fetchBuildingStatus,
   }) {
     return SignInState(
-      token: token ?? this.token,
       signInStatus: signInStatus ?? this.signInStatus,
-      emailOrPhone: emailOrPhone ?? this.emailOrPhone,
+      email: email ?? this.email,
       password: password ?? this.password,
-      prefs: prefs ?? this.prefs,
-      fetchBuildingStatus: fetchBuildingStatus ?? this.fetchBuildingStatus,
-      sharedPreferenceStatus:
-          sharedPreferenceStatus ?? this.sharedPreferenceStatus,
     );
   }
 
   @override
   List<Object?> get props => [
-        token,
         signInStatus,
-        emailOrPhone,
+        email,
         password,
-        prefs,
-        fetchBuildingStatus,
-        sharedPreferenceStatus
       ];
 }

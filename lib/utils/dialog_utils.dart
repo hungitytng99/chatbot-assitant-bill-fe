@@ -61,6 +61,7 @@ class DialogUtils {
         ),
       );
     }
+    return null;
   }
 
   static Future<File?> pickImageFromLibrary(BuildContext context) async {
@@ -93,5 +94,6 @@ class DialogUtils {
         ),
       );
     }
+    return null;
   }
 }

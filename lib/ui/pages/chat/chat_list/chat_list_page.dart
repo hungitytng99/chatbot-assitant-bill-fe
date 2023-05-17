@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
@@ -8,7 +7,7 @@ import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_vertical.dart';
 
 class ChatListPage extends StatefulWidget {
-  ChatListPage({
+  const ChatListPage({
     Key? key,
   }) : super(key: key);
   @override
@@ -78,7 +77,7 @@ class _ChatListPageState extends State<ChatListPage> {
                                         right: 12,
                                       ),
                                       child: UserAvatarCardVertical(
-                                        userFullName: 'Trần Mạnh Hùng',
+                                        userFullName: 'Vũ Ngọc Nam',
                                         onPressed: () {
                                           Application.router.navigateTo(
                                             context,
@@ -99,7 +98,8 @@ class _ChatListPageState extends State<ChatListPage> {
                         Container(
                           padding: const EdgeInsets.only(top: 8, bottom: 8),
                           child: UserAvatarCardHorizontal(
-                            userFullName: 'Trần Mạnh Hùng',
+                            userFullName: 'Vũ Ngọc Nam',
+                            avatarLink: 'https://picsum.photos/200/200',
                             time: "12:39",
                             onPressed: () {
                               Application.router.navigateTo(

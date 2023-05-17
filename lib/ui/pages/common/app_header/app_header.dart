@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
-import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_shadow.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/ui/widgets/images/app_cache_image.dart';
@@ -96,7 +94,7 @@ class _AppHeaderState extends State<AppHeader> with TickerProviderStateMixin {
   Widget menu(context) {
     return SlideTransition(
       position: _slideAnimation ??
-          Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
+          Tween<Offset>(begin: const Offset(-1, 0), end: const Offset(0, 0))
               .animate(_controller!),
       child: ScaleTransition(
         scale: _menuScaleAnimation ??

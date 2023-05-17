@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/common/app_colors.dart';
 
 import 'app_button.dart';
 
 class AppIconButton extends AppButton {
-  AppIconButton({
+  const AppIconButton({
     String? title,
     Widget? leadingIcon,
     Widget? trailingIcon,

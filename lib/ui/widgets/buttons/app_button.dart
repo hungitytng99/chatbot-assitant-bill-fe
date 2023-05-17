@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_dimens.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 

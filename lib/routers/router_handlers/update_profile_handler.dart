@@ -9,6 +9,6 @@ Handler updateProfileHandler = Handler(handlerFunc: (context, parameters) {
     create: (context) {
       return UpdateProfileCubit();
     },
-    child: UpdateProfilePage(),
+    child: const UpdateProfilePage(),
   );
 });

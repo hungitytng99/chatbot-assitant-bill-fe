@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:ihz_bql/models/entities/index.dart';
-import 'package:ihz_bql/models/entities/user/user_role_entity.dart';
+import 'package:ihz_bql/models/entities/auth_token_entity.dart';
 import 'package:rxdart/rxdart.dart';
 
 class GlobalData {
@@ -8,7 +7,7 @@ class GlobalData {
 
   static final GlobalData instance = GlobalData._();
 
-  TokenEntity? token;
+  AuthTokenEntity? token;
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 

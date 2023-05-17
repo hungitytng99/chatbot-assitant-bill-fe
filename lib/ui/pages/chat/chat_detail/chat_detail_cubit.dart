@@ -1,13 +1,12 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:ihz_bql/models/entities/chat_content_entity.dart';
 import 'package:ihz_bql/models/entities/chat_content_refactor_entity.dart';
+import 'package:ihz_bql/models/enums/chat_content_type.dart';
 part 'chat_detail_state.dart';
 
 class ChatDetailCubit extends Cubit<ChatDetailState> {
-  ChatDetailCubit() : super(ChatDetailState());
+  ChatDetailCubit() : super(const ChatDetailState());
 
   Future<List<ChatContentRefactorEntity>> getChatConversation(
       int pageKey) async {
@@ -49,6 +48,7 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
             "${getRandomString(10)} $i",
           ],
           isOwner: Random().nextInt(1000) % 2 == 1,
+          type: ChatContentType.text.getType,
         )
       ]
     ];

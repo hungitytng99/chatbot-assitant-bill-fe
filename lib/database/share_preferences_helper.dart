@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'package:ihz_bql/utils/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesHelper {
   static const _introKey = 'intro_key';
-  static const _buildingInfoKey = 'building_info_key';
 
   static const _authKey = 'auth_Key';
 

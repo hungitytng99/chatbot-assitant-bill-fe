@@ -22,13 +22,13 @@ extension EnvironmentExt on Environment {
   String get baseUrl {
     switch (this) {
       case Environment.dev:
-        return 'http://194.163.178.42:68/';
+        return 'http://159.89.197.197:8088/';
       case Environment.stg:
-        return 'https://apistaging.realagent.vn/';
+        return 'http://159.89.197.197:8088/';
       case Environment.th:
-        return 'https://th-api.realagent.vn/';
+        return 'http://159.89.197.197:8088/';
       case Environment.prod:
-        return 'https://api.realagent.vn/';
+        return 'http://159.89.197.197:8088/';
     }
   }
 

@@ -5,10 +5,10 @@ class AppHeaderState extends Equatable {
   @override
   List<Object?> get props => [];
 
-  AppHeaderState();
+  const AppHeaderState();
 
   AppHeaderState copyWith() {
-    return AppHeaderState();
+    return const AppHeaderState();
   }
 }
   

@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
@@ -6,7 +5,7 @@ import 'package:ihz_bql/configs/app_configs.dart';
 
 class AppTextStyle {
   ///Black
-  static final black =
+  static const black =
       TextStyle(color: Colors.black, fontFamily: AppConfigs.fontFamily);
 
   //s12
@@ -88,7 +87,7 @@ class AppTextStyle {
 
   ///Gray
   static const grey =
-      TextStyle(color: AppColors.textGray, fontFamily: AppConfigs.fontFamily);
+      TextStyle(color: AppColors.textGrayTitleDocument, fontFamily: AppConfigs.fontFamily);
 
   //s12
   static final greyS12 = grey.copyWith(fontSize: 12);
@@ -117,7 +116,7 @@ class AppTextStyle {
   static final greyS18W800 = greyS18.copyWith(fontWeight: FontWeight.w800);
 
   ///Tint
-  static final tint =
+  static const tint =
       TextStyle(color: Colors.blue, fontFamily: AppConfigs.fontFamily);
 
   //s12

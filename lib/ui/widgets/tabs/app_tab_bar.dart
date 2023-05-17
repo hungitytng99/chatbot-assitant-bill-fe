@@ -1,10 +1,6 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/shims/dart_ui.dart';
 import 'package:ihz_bql/common/app_colors.dart';
-import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/common/app_theme.dart';
 
 /// tabController = TabController(length: 2, vsync: this)
 /// Page with TickerProviderStateMixin

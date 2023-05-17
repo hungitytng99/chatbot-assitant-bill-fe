@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:ihz_bql/common/app_colors.dart';
-import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:ihz_bql/generated/l10n.dart';
 import 'package:ihz_bql/globals/global_data.dart';
 import 'package:ihz_bql/globals/global_event.dart';

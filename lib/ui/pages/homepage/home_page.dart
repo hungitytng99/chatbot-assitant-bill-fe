@@ -5,8 +5,10 @@ import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_shadow.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
+import 'package:ihz_bql/repositories/expert_repository.dart';
 import 'package:ihz_bql/ui/components/app_cache_image.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
+import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_cubit.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_page.dart';
 import 'package:ihz_bql/ui/pages/course/course_list/course_list_page.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_cubit.dart';
@@ -62,6 +64,7 @@ class _HomePageState extends State<HomePage>
   Animation<double>? _menuScaleAnimation;
   Animation<Offset>? _slideAnimation;
   AppCubit? _appCubit;
+  late ContactListCubit _contactListCubit;
   late HomeCubit _homeCubit;
   late PageController pageController;
   late bool? inPageOrderType;
@@ -76,6 +79,9 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
+    ExpertRepository expertRepository =
+        RepositoryProvider.of<ExpertRepository>(context);
+    _contactListCubit = ContactListCubit(expertRepository: expertRepository);
     pages = [
       Navigator(
         key: widget.chatNavigatorKey,
@@ -109,8 +115,11 @@ class _HomePageState extends State<HomePage>
             case "/":
               page = const Text("Contact page");
               page = MultiBlocProvider(
-                providers: [BlocProvider.value(value: _homeCubit)],
-                child: ContactListPage(),
+                providers: [
+                  BlocProvider.value(value: _homeCubit),
+                  BlocProvider.value(value: _contactListCubit),
+                ],
+                child: const ContactListPage(),
               );
 
               break;
@@ -130,7 +139,9 @@ class _HomePageState extends State<HomePage>
           switch (routeSettings.name) {
             case "/":
               page = MultiBlocProvider(
-                providers: [BlocProvider.value(value: _homeCubit)],
+                providers: [
+                  BlocProvider.value(value: _homeCubit),
+                ],
                 child: CourseListPage(),
               );
               break;

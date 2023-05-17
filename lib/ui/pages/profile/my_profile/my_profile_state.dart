@@ -5,10 +5,10 @@ class MyProfileState extends Equatable {
   @override
   List<Object?> get props => [];
 
-  MyProfileState();
+  const MyProfileState();
 
   MyProfileState copyWith() {
-    return MyProfileState();
+    return const MyProfileState();
   }
 }
   

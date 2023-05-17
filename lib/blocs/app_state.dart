@@ -1,7 +1,7 @@
 part of 'app_cubit.dart';
 
 class AppState extends Equatable {
-  final TokenEntity? token;
+  final AuthTokenEntity? token;
   final LoadStatus? signOutStatus;
 
   const AppState({
@@ -10,7 +10,7 @@ class AppState extends Equatable {
   });
 
   AppState copyWith({
-    TokenEntity? token,
+    AuthTokenEntity? token,
     LoadStatus? signOutStatus,
   }) {
     return AppState(

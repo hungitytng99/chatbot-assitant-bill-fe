@@ -37,6 +37,7 @@ class AppSnackbar {
           message ?? '',
           backgroundColor: AppColors.bgErrorSnackBar,
           colorText: AppColors.textRed,
+          duration: const Duration(seconds: 1),
         );
       }else{
         Get.snackbar(

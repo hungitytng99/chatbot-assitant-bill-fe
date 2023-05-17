@@ -261,6 +261,7 @@ class AppDialog {
     } catch (e) {
       logger.d(e);
     }
+    return null;
   }
 
   static Future<int?> _showBottomSheetSelectImage(context) async {
@@ -494,6 +495,7 @@ class AppDialog {
         return await pickMultiMediaFromGallery(context);
       }
     }
+    return null;
   }
 
   static Future<List<File>?> pickMultiFile(BuildContext context) async {

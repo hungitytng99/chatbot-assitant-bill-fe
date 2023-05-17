@@ -3,9 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:ihz_bql/blocs/app_cubit.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
-import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/route_config.dart';
-import 'package:ihz_bql/routers/routers.dart';
 part 'splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
@@ -13,7 +11,7 @@ class SplashCubit extends Cubit<SplashState> {
 
   SplashCubit({
     required this.appCubit,
-  }) : super(SplashState());
+  }) : super(const SplashState());
 
   void checkLogin() async {
     _openSignInPage();

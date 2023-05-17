@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_dimens.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
@@ -53,7 +52,7 @@ class CustomDialog {
   void show() {
     //Auto dismiss after 3 seconds
     if (autoDismiss) {
-      t = Timer(Duration(seconds: 3), () {
+      t = Timer(const Duration(seconds: 3), () {
         dismiss();
       });
     }
@@ -120,7 +119,7 @@ class CustomDialog {
                               visible: showCloseButton,
                               child: GestureDetector(
                                 onTap: dismiss,
-                                child: Container(
+                                child: SizedBox(
                                   height: 40,
                                   width: 40,
                                   child: Center(
@@ -194,7 +193,7 @@ class CustomDialog {
     if (buttons.isEmpty) {
       return Container(height: 14);
     }
-    return Container(
+    return SizedBox(
       // color: Colors.red,
       height: 36,
       // padding: EdgeInsets.only(bottom: 4),

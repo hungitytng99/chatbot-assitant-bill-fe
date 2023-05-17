@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
@@ -13,7 +12,7 @@ class AppCacheImage extends StatelessWidget {
   final BoxFit fit;
   final bool showLoading;
 
-  AppCacheImage({Key? key,
+  const AppCacheImage({Key? key,
     this.url,
     this.width,
     this.height,
@@ -36,9 +35,9 @@ class AppCacheImage extends StatelessWidget {
                       imageUrl: url ?? '',
                       progressIndicatorBuilder:
                           (context, url, downloadProgress) {
-                        if (this.showLoading == true) {
+                        if (showLoading == true) {
                           return Center(
-                            child: Container(
+                            child: SizedBox(
                               width: 24,
                               height: 24,
                               child: CircularProgressIndicator(
@@ -50,8 +49,8 @@ class AppCacheImage extends StatelessWidget {
                             ),
                           );
                         } else {
-                          return Center(
-                            child: Container(
+                          return const Center(
+                            child: SizedBox(
                               width: 24,
                               height: 24,
                             ),
@@ -99,7 +98,7 @@ class AppCircleAvatar extends StatelessWidget {
   final String? url;
   final double? size;
 
-  AppCircleAvatar({this.url, this.size});
+  const AppCircleAvatar({this.url, this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +111,7 @@ class AppCircleAvatar extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: url ?? '',
                 progressIndicatorBuilder: (context, url, downloadProgress) {
-                  return Container(
+                  return SizedBox(
                     width: size,
                     height: size,
                     child: CircularProgressIndicator(
@@ -122,7 +121,7 @@ class AppCircleAvatar extends StatelessWidget {
                   );
                 },
                 errorWidget: (context, url, error) {
-                  return Container(
+                  return SizedBox(
                     width: double.infinity,
                     height: double.infinity,
                     child: Image.asset(
@@ -135,7 +134,7 @@ class AppCircleAvatar extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(size! / 2),
             )
-          : Container(
+          : SizedBox(
               width: double.infinity,
               height: double.infinity,
               child: Image.asset(

@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/models/enums/user_online_status.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_item.dart';
-import 'package:ihz_bql/ui/widgets/images/app_cache_image.dart';
 
 class UserAvatarCardVertical extends StatefulWidget {
   double avatarSize;
@@ -43,6 +39,7 @@ class _UserAvatarCardVerticalState extends State<UserAvatarCardVertical> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           UserAvatarItem(
+            avatarLink: 'https://picsum.photos/200/200',
             size: widget.avatarSize,
             status: widget.status,
           ),

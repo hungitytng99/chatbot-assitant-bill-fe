@@ -1,23 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/models/enums/user_online_status.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_item.dart';
-import 'package:ihz_bql/ui/widgets/images/app_cache_image.dart';
 
 class UserAvatarCardHorizontal extends StatefulWidget {
   double avatarSize;
   UserOnlineStatusEnum status;
   String userFullName;
+  String avatarLink;
   String description;
   VoidCallback onPressed;
   String time;
+  bool disabled;
 
   UserAvatarCardHorizontal({
     required this.userFullName,
+    required this.avatarLink,
     required this.onPressed,
+    this.disabled = false,
     this.avatarSize = 55,
     this.status = UserOnlineStatusEnum.ONLINE,
     this.description = 'Bắt đầu trò chuyện ngay nào',
@@ -50,6 +50,7 @@ class _UserAvatarCardHorizontalState extends State<UserAvatarCardHorizontal> {
           Container(
             padding: const EdgeInsets.only(right: 10, left: 10),
             child: UserAvatarItem(
+              avatarLink: widget.avatarLink,
               size: widget.avatarSize,
               status: widget.status,
             ),
@@ -63,7 +64,9 @@ class _UserAvatarCardHorizontalState extends State<UserAvatarCardHorizontal> {
                 child: Text(
                   widget.userFullName,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyle.blackS14W600,
+                  style: widget.disabled
+                      ? AppTextStyle.greyS14W600
+                      : AppTextStyle.blackS14W600,
                   maxLines: 1,
                 ),
               ),

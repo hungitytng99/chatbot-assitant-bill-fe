@@ -10,7 +10,7 @@ class AppShimmer extends StatelessWidget {
   final Color? baseColor;
   final Color? highlightColor;
 
-  AppShimmer({
+  const AppShimmer({
     this.width = double.infinity,
     this.height = double.infinity,
     this.cornerRadius = 0,

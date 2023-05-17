@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>180791018077-bchmcenc6dtliki9n6e0oochaml5di5h.apps.googleusercontent.com</string>
+	<string>915423918489-9gfeeqsjatmg04mgtp3c3tjr4hkcc13v.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.180791018077-bchmcenc6dtliki9n6e0oochaml5di5h</string>
+	<string>com.googleusercontent.apps.915423918489-9gfeeqsjatmg04mgtp3c3tjr4hkcc13v</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAAedTsGLcpfW31vtzhiWF-LdTQsMaHoVE</string>
+	<string>AIzaSyDo4bD6SV1XdNQ0b8OIvqz8oDfs8oVrj2A</string>
 	<key>GCM_SENDER_ID</key>
-	<string>180791018077</string>
+	<string>915423918489</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>vn.realagent.building.management</string>
+	<string>com.project.chatbot.assitant</string>
 	<key>PROJECT_ID</key>
-	<string>building-management-90a4c</string>
+	<string>project-ad0e8</string>
 	<key>STORAGE_BUCKET</key>
-	<string>building-management-90a4c.appspot.com</string>
+	<string>project-ad0e8.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:180791018077:ios:93b694d62dd5b9efae43b4</string>
+	<string>1:915423918489:ios:047b53933294b9106afb08</string>
+	<key>DATABASE_URL</key>
+	<string>https://project-ad0e8.firebaseio.com</string>
 </dict>
 </plist>

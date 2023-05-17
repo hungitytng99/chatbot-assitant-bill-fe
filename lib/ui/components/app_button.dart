@@ -83,7 +83,7 @@ class AppWhiteButton extends _AppButton {
     this.textStyle = textStyle ?? AppTextStyle.blackS14Bold;
     backgroundColor = Colors.white;
     this.borderRadius = borderRadius;
-    this.buttonBoxDecoration = BoxDecoration(
+    buttonBoxDecoration = BoxDecoration(
         color: isEnable ? backgroundColor : const Color(0xFFCBCBCB),
         borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
         border: Border.all(color: AppColors.gray, width: 1));
@@ -219,7 +219,7 @@ class AppWhiteCustomButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final TextStyle? textStyle;
 
-  AppWhiteCustomButton({
+  const AppWhiteCustomButton({
     required this.title,
     this.isLoading = false,
     this.onPressed,
@@ -255,7 +255,7 @@ class AppWhiteCustomButton extends StatelessWidget {
         color: isEnable ? Colors.white : const Color(0xFFCBCBCB),
         border:
             isEnable ? Border.all(width: 0.4, color: AppColors.lineGray) : null,
-        borderRadius: const BorderRadius.all(const Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
       ),
     );
   }

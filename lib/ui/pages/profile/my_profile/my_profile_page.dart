@@ -14,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/ui/pages/profile/my_profile/my_profile_cubit.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/utils/dialog_utils.dart';
-import 'package:ihz_bql/utils/flush_bar_utils.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage();
@@ -157,7 +156,7 @@ class _MyProfilePageState extends State<MyProfilePage>
             height: 12,
           ),
           Text(
-            "Trần Mạnh Hùng",
+            "Vũ Ngọc Nam",
             style: AppTextStyle.blackS16Bold.copyWith(fontSize: 20),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
@@ -166,7 +165,7 @@ class _MyProfilePageState extends State<MyProfilePage>
             height: 8,
           ),
           Text(
-            "mhungict99@gmail.com",
+            "namvu@gmail.com",
             style: AppTextStyle.greyS14.copyWith(fontSize: 14),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
@@ -188,7 +187,7 @@ class _MyProfilePageState extends State<MyProfilePage>
                   width: 90,
                 ),
               )
-            : AppCacheImage(
+            : const AppCacheImage(
                 width: 90,
                 height: 90,
                 borderRadius: 45,

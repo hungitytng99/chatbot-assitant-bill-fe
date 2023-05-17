@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/models/entities/chat_content_refactor_entity.dart';
+import 'package:ihz_bql/models/enums/chat_content_type.dart';
 import 'package:ihz_bql/models/enums/user_online_status.dart';
+import 'package:ihz_bql/ui/components/chat_item_question.dart';
+import 'package:ihz_bql/ui/components/chat_item_text.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_item.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -66,82 +68,57 @@ class _ChatConversationState extends State<ChatConversation> {
   }
 
   Widget _buildOwnerMessage({required ChatContentRefactorEntity content}) {
-    return Column(
-      children: [
-        for (int i = 0; i < content.chatContent.length; i++) ...[
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 14,
-                vertical: 8,
+    if (content.type == ChatContentType.question.getType) {
+      return ChatItemQuestion(
+        content: content,
+      );
+    }
+    if (content.type == ChatContentType.text.getType) {
+      // return ChatItemText(
+      //   content: content,
+      // );
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          padding: const EdgeInsets.only(
+            bottom: 10,
+          ),
+          margin: const EdgeInsets.only(left: 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              UserAvatarItem(
+                avatarLink: 'https://picsum.photos/200/200',
+                size: 20,
+                status: UserOnlineStatusEnum.OFFLINE,
               ),
-              margin: const EdgeInsets.only(
-                top: 4,
-                right: 10,
-              ),
-              child: Text(content.chatContent[i]),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(14),
-                  bottomLeft: Radius.circular(14),
-                  topRight: Radius.circular(4),
-                  bottomRight: Radius.circular(4),
-                ),
-              ),
-            ),
-          )
-        ]
-      ],
-    );
+              ChatItemText(content: content),
+            ],
+          ),
+        ),
+      );
+    }
+    return Container();
   }
 
   Widget _buildPartnerMessage({required ChatContentRefactorEntity content}) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.only(
-          bottom: 10,
+    if (content.type == ChatContentType.question.getType) {
+      return ChatItemQuestion(
+        content: content,
+      );
+    }
+    if (content.type == ChatContentType.text.getType) {
+      return Align(
+        alignment: Alignment.centerRight,
+        child: Container(
+          padding: const EdgeInsets.only(
+            bottom: 10,
+          ),
+          margin: const EdgeInsets.only(left: 10),
+          child: ChatItemText(content: content),
         ),
-        margin: const EdgeInsets.only(left: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            UserAvatarItem(
-              size: 20,
-              status: UserOnlineStatusEnum.OFFLINE,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (int i = 0; i < content.chatContent.length; i++) ...[
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 8,
-                    ),
-                    decoration: const BoxDecoration(
-                      color: AppColors.grayLighter,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(14),
-                        bottomRight: Radius.circular(14),
-                        topLeft: Radius.circular(4),
-                        bottomLeft: Radius.circular(4),
-                      ),
-                    ),
-                    margin: const EdgeInsets.only(
-                      left: 8,
-                      top: 4,
-                    ),
-                    child: Text(content.chatContent[i]),
-                  ),
-                ],
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    }
+    return Container();
   }
 }

@@ -86,7 +86,7 @@ class AppColors {
   static const Color grayF4 = Color(0xFFF4F4F4);
   static const Color grayLighter = Color(0xFFEBEBEB);
   static const Color gray000000B3 = Color(0xFF4C4C4C);
-  static const Color bgErrorSnackBar = Color(0xFFFFEDED);
+  static const Color bgErrorSnackBar = Color(0xFFEBEBEB);
   static const Color bgWarningSnackBar = Color(0xFFFFE9BE);
 
   // bottom barr

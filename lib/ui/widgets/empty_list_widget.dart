@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/common/app_theme.dart';
 
 class EmptyListWidget extends StatelessWidget {
   final String text;
@@ -17,7 +16,7 @@ class EmptyListWidget extends StatelessWidget {
     return RefreshIndicator(
         child: ListView.builder(
           itemBuilder: (context, index) {
-            return Container(
+            return SizedBox(
               height: 200,
               width: double.infinity,
               child: Center(

@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
-import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/models/enums/user_online_status.dart';
 import 'package:ihz_bql/ui/widgets/images/app_cache_image.dart';
 
 class UserAvatarItem extends StatefulWidget {
   double size;
   UserOnlineStatusEnum status;
+  String avatarLink;
   UserAvatarItem({
+    required this.avatarLink,
     this.size = 55,
     this.status = UserOnlineStatusEnum.ONLINE,
     Key? key,
@@ -33,11 +33,16 @@ class _UserAvatarItemState extends State<UserAvatarItem> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        // ClipRRect(
+        //   borderRadius: BorderRadius.circular(widget.size / 2),
+        //   child:    Image.network(widget.avatarLink, width: widget.size, height: widget.size, ),
+        // ),
+
         AppCacheImage(
           width: widget.size,
           height: widget.size,
           borderRadius: widget.size / 2,
-          url: "https://picsum.photos/200",
+          url: widget.avatarLink,
         ),
         Positioned(
           bottom: 0,
