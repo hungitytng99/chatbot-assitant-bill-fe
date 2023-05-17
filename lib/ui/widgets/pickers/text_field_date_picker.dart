@@ -66,7 +66,6 @@ class TextFieldDatePickerWidget extends StatelessWidget {
               : '';
           return GestureDetector(
             onTap: () {
-              _showDatePicker(context: context);
             },
             child: SizedBox(
                 height: 55,
@@ -105,20 +104,4 @@ class TextFieldDatePickerWidget extends StatelessWidget {
         });
   }
 
-  _showDatePicker({
-    BuildContext? context,
-  }) {
-    if (context == null) {
-      return;
-    }
-    AppDialog.showDatePicker(
-      context,
-      maxTime: null,
-      minTime: null,
-      onConfirm: (dateTime) {
-        controller.date = dateTime;
-      },
-      currentTime: controller.date ?? DateTime.now(),
-    );
-  }
 }

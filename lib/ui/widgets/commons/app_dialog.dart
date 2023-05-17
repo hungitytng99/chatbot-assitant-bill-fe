@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:ihz_bql/common/app_colors.dart';
@@ -112,59 +111,59 @@ class AppDialog {
     ).show();
   }
 
-  static void showDatePicker(
-    BuildContext context, {
-    DateTime? minTime,
-    DateTime? maxTime,
-    DateChangedCallback? onConfirm,
-    LocaleType? localeType,
-    DateTime? currentTime,
-  }) {
-    DatePicker.showDatePicker(
-      context,
-      minTime: minTime,
-      maxTime: maxTime,
-      onConfirm: onConfirm,
-      locale: localeType ?? LocaleType.vi,
-      currentTime: currentTime,
-      theme: const DatePickerTheme(),
-    );
-  }
-
-  static void showDateTimePicker(
-    BuildContext context, {
-    DateTime? minTime,
-    DateTime? maxTime,
-    DateChangedCallback? onConfirm,
-    LocaleType? localeType,
-    DateTime? currentTime,
-  }) {
-    DatePicker.showDateTimePicker(
-      context,
-      minTime: minTime,
-      maxTime: maxTime,
-      onConfirm: onConfirm,
-      locale: LocaleType,
-      currentTime: currentTime,
-      theme: const DatePickerTheme(),
-    );
-  }
-
-  static void showTimePicker(
-    BuildContext context, {
-    DateChangedCallback? onConfirm,
-    LocaleType? localeType,
-    DateTime? currentTime,
-  }) {
-    DatePicker.showTimePicker(
-      context,
-      onConfirm: onConfirm,
-      locale: localeType ?? LocaleType.vi,
-      currentTime: currentTime,
-      showSecondsColumn: false,
-      theme: const DatePickerTheme(),
-    );
-  }
+  // static void showDatePicker(
+  //   BuildContext context, {
+  //   DateTime? minTime,
+  //   DateTime? maxTime,
+  //   DateChangedCallback? onConfirm,
+  //   LocaleType? localeType,
+  //   DateTime? currentTime,
+  // }) {
+  //   DatePicker.showDatePicker(
+  //     context,
+  //     minTime: minTime,
+  //     maxTime: maxTime,
+  //     onConfirm: onConfirm,
+  //     locale: localeType ?? LocaleType.vi,
+  //     currentTime: currentTime,
+  //     theme: const DatePickerTheme(),
+  //   );
+  // }
+  //
+  // static void showDateTimePicker(
+  //   BuildContext context, {
+  //   DateTime? minTime,
+  //   DateTime? maxTime,
+  //   DateChangedCallback? onConfirm,
+  //   LocaleType? localeType,
+  //   DateTime? currentTime,
+  // }) {
+  //   DatePicker.showDateTimePicker(
+  //     context,
+  //     minTime: minTime,
+  //     maxTime: maxTime,
+  //     onConfirm: onConfirm,
+  //     locale: LocaleType,
+  //     currentTime: currentTime,
+  //     theme: const DatePickerTheme(),
+  //   );
+  // }
+  //
+  // static void showTimePicker(
+  //   BuildContext context, {
+  //   DateChangedCallback? onConfirm,
+  //   LocaleType? localeType,
+  //   DateTime? currentTime,
+  // }) {
+  //   DatePicker.showTimePicker(
+  //     context,
+  //     onConfirm: onConfirm,
+  //     locale: localeType ?? LocaleType.vi,
+  //     currentTime: currentTime,
+  //     showSecondsColumn: false,
+  //     theme: const DatePickerTheme(),
+  //   );
+  // }
 
   static Future<int?> showBottomSheetMenus({
     required List<String> menus,

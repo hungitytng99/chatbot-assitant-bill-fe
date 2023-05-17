@@ -112,7 +112,6 @@ class _TextFieldTimeRangePickerWidgetState
               '${timeStart.isEmpty ? 'Chọn bắt đầu' : timeStart} - ${timeEnd.isEmpty ? 'chọn kết thúc' : timeEnd}';
           return GestureDetector(
             onTap: () {
-              _showTimePicker(context: context);
             },
             child: SizedBox(
                 height: 55,
@@ -145,24 +144,5 @@ class _TextFieldTimeRangePickerWidgetState
                 )),
           );
         });
-  }
-
-  _showTimePicker({
-    BuildContext? context,
-  }) {
-    if (context == null) {
-      return;
-    }
-    AppDialog.showTimePicker(
-      context,
-      onConfirm: (dateTime) {
-        isShouldPick = true;
-        widget.controller.date = dateTime;
-        if (widget.controller.date == dateTime) {
-          widget.controller.notifyListeners();
-        }
-      },
-      currentTime: widget.controller.date ?? DateTime.now(),
-    );
   }
 }

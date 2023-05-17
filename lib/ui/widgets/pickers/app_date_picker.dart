@@ -78,7 +78,6 @@ class AppDatePicker extends StatelessWidget {
             }
             return GestureDetector(
               onTap:readOnly ? null : () {
-                _showDatePicker(context: context);
               },
               child: TextField(
                 enabled: false,
@@ -113,24 +112,4 @@ class AppDatePicker extends StatelessWidget {
     );
   }
 
-  _showDatePicker({
-    BuildContext? context,
-  }) {
-    if (!enabled) {
-      return;
-    }
-    if (context == null) {
-      return;
-    }
-    AppDialog.showDatePicker(
-      context,
-      maxTime: maxTime,
-      minTime: minTime,
-      onConfirm: (dateTime) {
-        onChanged?.call(dateTime);
-        controller.date = dateTime;
-      },
-      currentTime: controller.date ?? DateTime.now(),
-    );
-  }
 }
