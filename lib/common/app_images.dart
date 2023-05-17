@@ -32,6 +32,7 @@ class AppImages {
   static const icPushUp = 'assets/images/ic_push_up.png';
   static const icDoExercise = 'assets/images/ic_do_exercise.png';
   static const icSend = 'assets/images/ic_send.png';
+  static const icDiary = 'assets/images/diary.png';
 
 
 }

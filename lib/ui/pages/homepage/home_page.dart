@@ -71,9 +71,11 @@ class _HomePageState extends State<HomePage>
   late final pages;
 
   List<Tabs> listTabs = [
-    Tabs(index: 0, title: 'Khóa học', iconUrl: AppImages.icDoExercise),
+    Tabs(index: 0, title: 'Khám phá', iconUrl: AppImages.icDoExercise),
     Tabs(index: 1, title: 'Danh bạ', iconUrl: AppImages.icContactBook),
     Tabs(index: 2, title: 'Đoạn chat', iconUrl: AppImages.icChatBubble),
+    Tabs(index: 3, title: 'Nhật ký', iconUrl: AppImages.icDiary),
+
   ];
 
   @override
