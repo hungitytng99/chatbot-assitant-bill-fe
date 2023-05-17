@@ -11,13 +11,11 @@ class UserAvatarCardHorizontal extends StatefulWidget {
   String description;
   VoidCallback onPressed;
   String time;
-  bool disabled;
 
   UserAvatarCardHorizontal({
     required this.userFullName,
     required this.avatarLink,
     required this.onPressed,
-    this.disabled = false,
     this.avatarSize = 55,
     this.status = UserOnlineStatusEnum.ONLINE,
     this.description = 'Bắt đầu trò chuyện ngay nào',
@@ -64,9 +62,7 @@ class _UserAvatarCardHorizontalState extends State<UserAvatarCardHorizontal> {
                 child: Text(
                   widget.userFullName,
                   overflow: TextOverflow.ellipsis,
-                  style: widget.disabled
-                      ? AppTextStyle.greyS14W600
-                      : AppTextStyle.blackS14W600,
+                  style: AppTextStyle.blackS14W600,
                   maxLines: 1,
                 ),
               ),

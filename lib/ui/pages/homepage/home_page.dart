@@ -71,9 +71,9 @@ class _HomePageState extends State<HomePage>
   late final pages;
 
   List<Tabs> listTabs = [
-    Tabs(index: 0, title: 'Đoạn chat', iconUrl: AppImages.icChatBubble),
+    Tabs(index: 0, title: 'Khóa học', iconUrl: AppImages.icDoExercise),
     Tabs(index: 1, title: 'Danh bạ', iconUrl: AppImages.icContactBook),
-    Tabs(index: 2, title: 'Khóa học', iconUrl: AppImages.icDoExercise),
+    Tabs(index: 2, title: 'Đoạn chat', iconUrl: AppImages.icChatBubble),
   ];
 
   @override
@@ -84,18 +84,16 @@ class _HomePageState extends State<HomePage>
     _contactListCubit = ContactListCubit(expertRepository: expertRepository);
     pages = [
       Navigator(
-        key: widget.chatNavigatorKey,
+        key: widget.courseNavigatorKey,
         onGenerateRoute: (routeSettings) {
           late Widget page;
           switch (routeSettings.name) {
             case "/":
               page = MultiBlocProvider(
                 providers: [
-                  BlocProvider.value(
-                    value: _homeCubit,
-                  ),
+                  BlocProvider.value(value: _homeCubit),
                 ],
-                child: ChatListPage(),
+                child: CourseListPage(),
               );
               break;
           }
@@ -133,16 +131,18 @@ class _HomePageState extends State<HomePage>
         },
       ),
       Navigator(
-        key: widget.courseNavigatorKey,
+        key: widget.chatNavigatorKey,
         onGenerateRoute: (routeSettings) {
           late Widget page;
           switch (routeSettings.name) {
             case "/":
               page = MultiBlocProvider(
                 providers: [
-                  BlocProvider.value(value: _homeCubit),
+                  BlocProvider.value(
+                    value: _homeCubit,
+                  ),
                 ],
-                child: CourseListPage(),
+                child: ChatListPage(),
               );
               break;
           }

@@ -9,6 +9,8 @@ class ExpertEntity {
   final String id;
   @JsonKey()
   final String alias;
+  @JsonKey()
+  final String name;
   @JsonKey(name: 'avatar_link')
   final String avatarLink;
   @JsonKey()
@@ -22,6 +24,7 @@ class ExpertEntity {
     required this.avatarLink,
     required this.alias,
     required this.objectives,
+    required this.name,
   });
 
   ExpertEntity copyWith({
@@ -29,11 +32,13 @@ class ExpertEntity {
     String? desc,
     String? avatarLink,
     String? alias,
+    String? name,
     List<ObjectiveEntity>? objectives,
   }) {
     return ExpertEntity(
       id: id ?? this.id,
       desc: desc ?? this.desc,
+      name: name ?? this.name,
       avatarLink: avatarLink ?? this.avatarLink,
       alias: alias ?? this.alias,
       objectives: objectives ?? this.objectives,

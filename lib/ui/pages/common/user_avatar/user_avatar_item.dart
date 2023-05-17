@@ -33,11 +33,6 @@ class _UserAvatarItemState extends State<UserAvatarItem> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // ClipRRect(
-        //   borderRadius: BorderRadius.circular(widget.size / 2),
-        //   child:    Image.network(widget.avatarLink, width: widget.size, height: widget.size, ),
-        // ),
-
         AppCacheImage(
           width: widget.size,
           height: widget.size,

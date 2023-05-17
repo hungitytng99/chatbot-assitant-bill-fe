@@ -89,7 +89,8 @@ class _ContactListPageState extends State<ContactListPage> {
                         Container(
                           padding: const EdgeInsets.only(top: 8, bottom: 8),
                           child: UserAvatarCardHorizontal(
-                            userFullName: 'Vũ Ngọc Nam',
+                            userFullName:
+                                _contactListCubit.state.activeExperts[i].name,
                             avatarLink: _contactListCubit
                                 .state.activeExperts[i].avatarLink,
                             onPressed: () {
@@ -112,19 +113,21 @@ class _ContactListPageState extends State<ContactListPage> {
                         ),
                       ),
                       for (int i = 0; i < 2; i++) ...{
-                        Container(
-                          padding: const EdgeInsets.only(top: 8, bottom: 8),
-                          child: UserAvatarCardHorizontal(
-                            userFullName: 'Vũ Ngọc Nam',
-                            avatarLink: 'https://picsum.photos/200/200',
-                            description: 'Chuyên gia hiện không khả dụng',
-                            disabled: true,
-                            onPressed: () {
-                              AppSnackbar.showError(
-                                title: 'Không khả dụng',
-                                message: 'Chuyên gia này hiện không khả dụng',
-                              );
-                            },
+                        Opacity(
+                          opacity: 0.5,
+                          child: Container(
+                            padding: const EdgeInsets.only(top: 8, bottom: 8),
+                            child: UserAvatarCardHorizontal(
+                              userFullName: 'Vũ Ngọc Nam',
+                              avatarLink: 'https://picsum.photos/200/200',
+                              description: 'Chuyên gia hiện không khả dụng',
+                              onPressed: () {
+                                AppSnackbar.showError(
+                                  title: 'Không khả dụng',
+                                  message: 'Chuyên gia này hiện không khả dụng',
+                                );
+                              },
+                            ),
                           ),
                         ),
                       }
