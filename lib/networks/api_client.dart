@@ -1,6 +1,6 @@
-
 import 'package:dio/dio.dart';
 import 'package:ihz_bql/models/entities/auth_token_entity.dart';
+import 'package:ihz_bql/models/entities/exercise_entity.dart';
 import 'package:ihz_bql/models/entities/expert_entity.dart';
 import 'package:ihz_bql/models/entities/user_entity.dart';
 import 'package:ihz_bql/models/params/auth/sign_up_body.dart';
@@ -22,4 +22,7 @@ abstract class ApiClient {
 
   @GET("/experts")
   Future<List<ExpertEntity>> getActiveExperts();
+
+  @GET("/exercises")
+  Future<List<ExerciseEntity>> getExercises();
 }

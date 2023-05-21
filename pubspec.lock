@@ -1293,6 +1293,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.8"
+  timeago:
+    dependency: "direct main"
+    description:
+      name: timeago
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.3.0"
   timing:
     dependency: transitive
     description:
@@ -1419,6 +1426,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.13"
+  video_thumbnail:
+    dependency: "direct main"
+    description:
+      name: video_thumbnail
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.3"
   visibility_detector:
     dependency: transitive
     description:

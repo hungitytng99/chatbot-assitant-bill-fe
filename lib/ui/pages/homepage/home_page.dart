@@ -5,17 +5,18 @@ import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_shadow.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
+import 'package:ihz_bql/repositories/exercise_repository.dart';
 import 'package:ihz_bql/repositories/expert_repository.dart';
 import 'package:ihz_bql/ui/components/app_cache_image.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_cubit.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_page.dart';
+import 'package:ihz_bql/ui/pages/course/course_list/course_list_cubit.dart';
 import 'package:ihz_bql/ui/pages/course/course_list/course_list_page.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_cubit.dart';
 import 'package:ihz_bql/ui/pages/profile/my_profile/my_profile_cubit.dart';
 import 'package:ihz_bql/ui/pages/profile/my_profile/my_profile_page.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
-import 'package:ihz_bql/utils/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 
@@ -65,6 +66,7 @@ class _HomePageState extends State<HomePage>
   Animation<Offset>? _slideAnimation;
   AppCubit? _appCubit;
   late ContactListCubit _contactListCubit;
+  late CourseListCubit _courseListCubit;
   late HomeCubit _homeCubit;
   late PageController pageController;
   late bool? inPageOrderType;
@@ -75,7 +77,6 @@ class _HomePageState extends State<HomePage>
     Tabs(index: 1, title: 'Danh bạ', iconUrl: AppImages.icContactBook),
     Tabs(index: 2, title: 'Đoạn chat', iconUrl: AppImages.icChatBubble),
     Tabs(index: 3, title: 'Nhật ký', iconUrl: AppImages.icDiary),
-
   ];
 
   @override
@@ -84,6 +85,11 @@ class _HomePageState extends State<HomePage>
     ExpertRepository expertRepository =
         RepositoryProvider.of<ExpertRepository>(context);
     _contactListCubit = ContactListCubit(expertRepository: expertRepository);
+
+    ExerciseRepository exerciseRepository =
+        RepositoryProvider.of<ExerciseRepository>(context);
+    _courseListCubit = CourseListCubit(exerciseRepository: exerciseRepository);
+
     pages = [
       Navigator(
         key: widget.courseNavigatorKey,
@@ -94,8 +100,9 @@ class _HomePageState extends State<HomePage>
               page = MultiBlocProvider(
                 providers: [
                   BlocProvider.value(value: _homeCubit),
+                  BlocProvider.value(value: _courseListCubit),
                 ],
-                child: CourseListPage(),
+                child: const CourseListPage(),
               );
               break;
           }
@@ -111,6 +118,8 @@ class _HomePageState extends State<HomePage>
         key: widget.contactNavigatorKey,
         onGenerateRoute: (routeSettings) {
           late Widget page;
+          final keyboardSize = MediaQuery.of(context).viewInsets.bottom;
+          print(keyboardSize);
           switch (routeSettings.name) {
             case "/":
               page = const Text("Contact page");
@@ -186,6 +195,7 @@ class _HomePageState extends State<HomePage>
     screenWidth = size.width;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: WillPopScope(
         onWillPop: () async {
           return false;

@@ -1,14 +1,27 @@
-
 part of 'course_list_cubit.dart';
 
 class CourseListState extends Equatable {
+  final LoadStatus getExercisesStatus;
+  List<ExerciseEntity> exercises;
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        getExercisesStatus,
+        exercises,
+      ];
 
-  const CourseListState();
+  CourseListState({
+    this.getExercisesStatus = LoadStatus.initial,
+    this.exercises = const [],
+  });
 
-  CourseListState copyWith() {
-    return const CourseListState();
+  CourseListState copyWith({
+    LoadStatus? getExercisesStatus,
+    List<ExerciseEntity>? exercises,
+  }) {
+    return CourseListState(
+      getExercisesStatus: getExercisesStatus ?? this.getExercisesStatus,
+      exercises: exercises ?? this.exercises,
+    );
   }
 }
-  

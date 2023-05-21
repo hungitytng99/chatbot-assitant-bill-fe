@@ -1,9 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
+part 'user_entity.g.dart';
 
 @JsonSerializable()
 class UserEntity {
-  final int id;
+  @JsonKey()
+  final String id;
+
+  @JsonKey()
   final String email;
+
+  @JsonKey()
   final String role;
 
   UserEntity({
@@ -12,16 +18,20 @@ class UserEntity {
     required this.role,
   });
 
-  factory UserEntity.fromJson(Map<String, dynamic> json) =>
-      UserEntity(
-        id: json['id'],
-        email: json['email'],
-        role: json['role'],
-      );
+  UserEntity copyWith({
+    String? id,
+    String? email,
+    String? role,
+  }) {
+    return UserEntity(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      role: role ?? this.role,
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "email": email,
-        "role": role,
-      };
+  factory UserEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserEntityFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserEntityToJson(this);
 }

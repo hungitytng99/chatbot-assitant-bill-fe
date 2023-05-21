@@ -54,6 +54,7 @@ class AppColors {
 
   ///Text
   static Color textTint = main;
+  static const Color black = Color(0xFF000000);
   static const Color textBlack = Color(0xFF333333);
   static const Color textWhite = Color(0xFFFFFFFF);
   static const Color textGray = Color(0xFF58595B);

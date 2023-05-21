@@ -66,7 +66,7 @@ class SearchTextField extends StatelessWidget {
         controller: textEditingController,
         style: textStyle ?? AppTextStyle.blackS12,
         maxLines: 1,
-        autofocus: true,
+        autofocus: false,
         decoration: InputDecoration(
           enabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent),

@@ -11,6 +11,7 @@ import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:ihz_bql/repositories/auth_repository.dart';
+import 'package:ihz_bql/repositories/exercise_repository.dart';
 import 'package:ihz_bql/repositories/user_repository.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/navigation_observer.dart';
@@ -19,6 +20,8 @@ import 'generated/l10n.dart';
 import 'networks/api_client.dart';
 import 'networks/api_util.dart';
 import 'package:ihz_bql/repositories/expert_repository.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
 
 final appNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -53,6 +56,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     _apiClient = ApiUtil.getApiClient();
     _navigationCubit = NavigationCubit();
+    timeago.setLocaleMessages('vi', timeago.ViMessages());
     super.initState();
   }
 
@@ -74,6 +78,9 @@ class _MyAppState extends State<MyApp> {
         }),
         RepositoryProvider<ExpertRepository>(create: (context) {
           return ExpertRepositoryImpl(_apiClient);
+        }),
+        RepositoryProvider<ExerciseRepository>(create: (context) {
+          return ExerciseRepositoryImpl(_apiClient);
         }),
       ],
       child: MultiBlocProvider(
