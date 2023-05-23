@@ -13,6 +13,8 @@ import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/common/app_vectors.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:ihz_bql/configs/env_configs.dart';
+import 'package:ihz_bql/repositories/auth_repository.dart';
+import 'package:ihz_bql/repositories/user_repository.dart';
 import 'package:ihz_bql/ui/pages/splash/splash_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info/package_info.dart';
@@ -51,11 +53,12 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     final appCubit = BlocProvider.of<AppCubit>(context);
+    final userRepository = RepositoryProvider.of<UserRepository>(context);
     _cubit = SplashCubit(
       appCubit: appCubit,
+      userRepository: userRepository,
     );
     _settingCubit = BlocProvider.of<AppSettingCubit>(context);
-    _cubit.onInit();
     super.initState();
     _initPackageInfo();
     _setup();

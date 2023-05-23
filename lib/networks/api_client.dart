@@ -25,4 +25,7 @@ abstract class ApiClient {
 
   @GET("/exercises")
   Future<List<ExerciseEntity>> getExercises();
+
+  @GET("/me")
+  Future<UserEntity> getMyProfile();
 }

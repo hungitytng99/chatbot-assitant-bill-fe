@@ -30,8 +30,7 @@ class SignInCubit extends Cubit<SignInState> {
     emit(state.copyWith(signInStatus: LoadStatus.loading));
     try {
       final AuthTokenEntity result = await authRepository.signIn(body);
-      SharedPreferencesHelper.setApiTokenKey(
-          "${result.tokenType} ${result.accessToken}");
+      SharedPreferencesHelper.setApiTokenKey(result.accessToken);
       GlobalData.instance.token = result;
       emit(state.copyWith(
         signInStatus: LoadStatus.success,

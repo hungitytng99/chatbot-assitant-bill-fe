@@ -21,6 +21,7 @@ class SplashState extends Equatable {
       loadUserStatus: loadUserStatus ?? this.loadUserStatus,
       loadServerConfigStatus:
           loadServerConfigStatus ?? this.loadServerConfigStatus,
+
     );
   }
 

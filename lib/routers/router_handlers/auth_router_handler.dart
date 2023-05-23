@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/blocs/app_cubit.dart';
 import 'package:ihz_bql/repositories/auth_repository.dart';
+import 'package:ihz_bql/repositories/user_repository.dart';
 import 'package:ihz_bql/ui/pages/auth/sign_in/sign_in_cubit.dart';
 import 'package:ihz_bql/ui/pages/auth/sign_in/sign_in_page.dart';
 import 'package:ihz_bql/ui/pages/auth/sign_up/sign_up_cubit.dart';
@@ -15,7 +16,12 @@ Handler splashHandler = Handler(
   return BlocProvider(
     create: (BuildContext context) {
       final _appCubit = BlocProvider.of<AppCubit>(context);
-      return SplashCubit(appCubit: _appCubit);
+      UserRepository userRepository =
+          RepositoryProvider.of<UserRepository>(context);
+      return SplashCubit(
+        appCubit: _appCubit,
+        userRepository: userRepository,
+      );
     },
     child: const SplashPage(),
   );

@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ihz_bql/globals/global_data.dart';
 import 'package:ihz_bql/models/entities/auth_token_entity.dart';
+import 'package:ihz_bql/models/entities/user_entity.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/repositories/auth_repository.dart';
@@ -19,6 +20,10 @@ class AppCubit extends Cubit<AppState> {
 
   void removeUserSection() {
     GlobalData.instance.token = null;
+  }
+
+  void updateMyProfile({required UserEntity userEntity}) {
+    emit(state.copyWith(userEntity: userEntity));
   }
 
   ///Sign Out
