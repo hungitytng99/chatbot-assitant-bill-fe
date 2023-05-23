@@ -14,6 +14,7 @@ import 'package:ihz_bql/ui/widgets/images/app_cache_image.dart';
 import 'package:ihz_bql/utils/date_utils.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:readmore/readmore.dart';
 
 /// Homepage
 class AppYoutubePlayer extends StatefulWidget {
@@ -186,15 +187,29 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              height: 3,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 24,
-                              child: ExpandableText(
-                                widget.exerciseEntity.desc,
-                                trimLines: 6,
-                                textStyle: AppTextStyle.greyS14,
+                            Visibility(
+                              visible: widget.exerciseEntity.desc.isNotEmpty,
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 3,
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width - 24,
+                                    child: ReadMoreText(
+                                      widget.exerciseEntity.desc,
+                                      trimLines: 6,
+                                      colorClickableText: Colors.pink,
+                                      trimMode: TrimMode.Line,
+                                      trimCollapsedText: ' Hiện thêm',
+                                      trimExpandedText: ' Ẩn bớt',
+                                      moreStyle: AppTextStyle.primaryS14Bold,
+                                      style: AppTextStyle.greyS14,
+                                      lessStyle: AppTextStyle.primaryS14Bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],

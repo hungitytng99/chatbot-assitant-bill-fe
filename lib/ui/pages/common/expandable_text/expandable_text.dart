@@ -24,8 +24,10 @@ class ExpandableTextState extends State<ExpandableText> {
     setState(() => _readMore = !_readMore);
   }
 
+
   @override
   Widget build(BuildContext context) {
+    print(widget.text);
     const colorClickableText = Colors.blue;
     const widgetColor = Colors.black;
     TextSpan link = TextSpan(

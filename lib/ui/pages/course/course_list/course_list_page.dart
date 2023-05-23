@@ -23,6 +23,7 @@ class _CourseListPageState extends State<CourseListPage> {
   bool isShowDeleteIcon = false;
   late CourseListCubit _courseListCubit;
   int activeHashTagIndex = 0;
+  bool isFilterByExpert = true;
 
   @override
   void initState() {
@@ -78,6 +79,36 @@ class _CourseListPageState extends State<CourseListPage> {
                   children: <Widget>[
                     _buildSearchBar(),
                     _buildListTags(),
+                    Visibility(
+                      visible: isFilterByExpert,
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 15, top: 4),
+                        child: Row(
+                          children: [
+                            const Text("Tìm kiếm theo các khóa học của "),
+                            Text(
+                              'Vũ Ngọc Nam',
+                              style: AppTextStyle.blackS14Bold,
+                            ),
+                            const SizedBox(
+                              width: 2,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isFilterByExpert = false;
+                                });
+                              },
+                              child: const Icon(
+                                Icons.highlight_off,
+                                color: AppColors.textBlack,
+                                size: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     _buildListCourses(),
                   ],
                 ),
@@ -186,7 +217,7 @@ class _CourseListPageState extends State<CourseListPage> {
             prev.getExercisesStatus != current.getExercisesStatus,
         builder: (context, state) {
           return Container(
-            height: MediaQuery.of(context).size.height - 238,
+            height: MediaQuery.of(context).size.height - 260,
             width: double.infinity,
             margin: const EdgeInsets.only(
               left: 14,
