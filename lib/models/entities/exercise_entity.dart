@@ -6,24 +6,40 @@ part 'exercise_entity.g.dart';
 class ExerciseEntity {
   @JsonKey()
   final String id;
+
   @JsonKey(name: 'audio_link')
   final String audioLink;
+
   @JsonKey()
   final String desc;
+
   @JsonKey(name: 'expert_id')
   final String expertId;
+
+  @JsonKey(name: 'expert_name')
+  final String expertName;
+
   @JsonKey(name: 'expert_avatar')
   final String? expertAvatar;
+
   @JsonKey(name: 'video_link')
   final String videoLink;
-  @JsonKey()
-  final String thumbnail;
+
+  @JsonKey(name: 'video_duration')
+  final String videoDuration;
+
+  @JsonKey(name: 'video_thumbnail')
+  final String videoThumbnail;
+
   @JsonKey()
   final String title;
+
   @JsonKey(name: 'hash_tag')
   final List<String> hashTag;
+
   @JsonKey(name: 'created_at')
   final DateTime? createdAt;
+
   @JsonKey(name: 'updated_at')
   final DateTime? updatedAt;
 
@@ -34,9 +50,11 @@ class ExerciseEntity {
     required this.audioLink,
     required this.expertId,
     required this.expertAvatar,
+    required this.expertName,
+    required this.videoDuration,
     required this.hashTag,
     required this.videoLink,
-    required this.thumbnail,
+    required this.videoThumbnail,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -48,8 +66,10 @@ class ExerciseEntity {
     String? audioLink,
     String? expertId,
     String? expertAvatar,
+    String? expertName,
+    String? videoDuration,
     String? videoLink,
-    String? thumbnail,
+    String? videoThumbnail,
     List<String>? hashTag,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -60,10 +80,12 @@ class ExerciseEntity {
       desc: desc ?? this.desc,
       audioLink: audioLink ?? this.audioLink,
       expertId: expertId ?? this.expertId,
-      videoLink: videoLink ?? this.videoLink,
       expertAvatar: expertAvatar ?? this.expertAvatar,
+      expertName: expertName ?? this.expertName,
+      videoDuration: videoDuration ?? this.videoDuration,
+      videoLink: videoLink ?? this.videoLink,
       hashTag: hashTag ?? this.hashTag,
-      thumbnail: thumbnail ?? this.thumbnail,
+      videoThumbnail: videoThumbnail ?? this.videoThumbnail,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

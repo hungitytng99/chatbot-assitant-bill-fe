@@ -41,12 +41,36 @@ class _CourseItemState extends State<CourseItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            color: AppColors.black,
-            width: double.infinity,
-            height: 220,
-            margin: const EdgeInsets.only(bottom: 8),
-            child: AppCacheImage(url: widget.exerciseEntity.thumbnail),
+          Stack(
+            children: [
+              Container(
+                color: AppColors.black,
+                width: double.infinity,
+                height: 220,
+                margin: const EdgeInsets.only(bottom: 8),
+                child: AppCacheImage(url: widget.exerciseEntity.videoThumbnail),
+              ),
+              Positioned(
+                right: 6,
+                bottom: 12,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.black.withOpacity(0.2),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(6),
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
+                  child: Text(
+                    widget.exerciseEntity.videoDuration,
+                    style: AppTextStyle.whiteS14Regular,
+                  ),
+                ),
+              ),
+            ],
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,7 +103,7 @@ class _CourseItemState extends State<CourseItem> {
                       left: 8,
                     ),
                     child: Text(
-                      "${widget.exerciseEntity.title} ${timeAgo.isNotEmpty ? " • $timeAgo" : ""}",
+                      "${widget.exerciseEntity.expertName} ${timeAgo.isNotEmpty ? " • $timeAgo" : ""}",
                       style: AppTextStyle.greyS14,
                       overflow: TextOverflow.ellipsis,
                     ),

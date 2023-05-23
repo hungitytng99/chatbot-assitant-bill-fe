@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
@@ -34,6 +33,7 @@ class AppTextStyle {
   static final blackS16Bold = blackS16.copyWith(fontWeight: FontWeight.bold);
   static final blackS16W800 = blackS16.copyWith(fontWeight: FontWeight.w800);
   static final blackS16W500 = blackS16.copyWith(fontWeight: FontWeight.w500);
+  static final blackS16W600 = blackS16.copyWith(fontWeight: FontWeight.w600);
   static final blackS16Regular = blackS16.copyWith(fontWeight: FontWeight.w400);
 
   //s18
@@ -86,19 +86,22 @@ class AppTextStyle {
   static final white36W800 = white36.copyWith(fontWeight: FontWeight.w800);
 
   ///Gray
-  static const grey =
-      TextStyle(color: AppColors.textGrayTitleDocument, fontFamily: AppConfigs.fontFamily);
+  static const grey = TextStyle(
+      color: AppColors.textGrayTitleDocument,
+      fontFamily: AppConfigs.fontFamily);
 
   //s12
   static final greyS12 = grey.copyWith(fontSize: 12);
   static final greyS12Bold = greyS12.copyWith(fontWeight: FontWeight.bold);
   static final greyS12W800 = greyS12.copyWith(fontWeight: FontWeight.w800);
   static final greyS12W400 = greyS12.copyWith(fontWeight: FontWeight.w400);
+  static final greyS12W500 = greyS12.copyWith(fontWeight: FontWeight.w500);
   static final greyS12W300 = greyS12.copyWith(fontWeight: FontWeight.w300);
 
   //s14
   static final greyS14 = grey.copyWith(fontSize: 14);
   static final greyS14Bold = greyS14.copyWith(fontWeight: FontWeight.bold);
+  static final greyS14W500 = greyS14.copyWith(fontWeight: FontWeight.w500);
   static final greyS14W600 = greyS14.copyWith(fontWeight: FontWeight.w600);
   static final greyS14W800 = greyS14.copyWith(fontWeight: FontWeight.w800);
   static final greyS14W300 = greyS14.copyWith(fontWeight: FontWeight.w300);

@@ -99,7 +99,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^19.3.57
   fl_chart: ^0.40.6
   charts_flutter: ^0.12.0
-  video_player: ^2.2.10
+  video_player: ^2.2.3
   custom_navigation_bar: ^0.8.2
   fluro: ^2.0.5
   photo_manager: ^2.6.0
@@ -107,6 +107,8 @@ dependencies:
   infinite_scroll_pagination: 3.1.0
   video_thumbnail: ^0.5.3
   timeago: ^3.3.0
+  youtube_player_flutter: ^8.0.0
+  chewie: ^1.5.0
 
 dev_dependencies:
   flutter_test:

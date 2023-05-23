@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
+import 'package:ihz_bql/models/entities/exercise_entity.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
+import 'package:ihz_bql/routers/application.dart';
+import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/components/search_text_field.dart';
 import 'package:ihz_bql/ui/pages/course/course_item/course_item.dart';
 import 'package:ihz_bql/ui/pages/course/course_list/course_list_cubit.dart';
@@ -196,8 +199,22 @@ class _CourseListPageState extends State<CourseListPage> {
               child: Column(
                 children: <Widget>[
                   for (int i = 0; i < state.exercises.length; i++) ...{
-                    CourseItem(
-                      exerciseEntity: state.exercises[i],
+                    InkWell(
+                      onTap: () {
+                        Application.router.navigateTo(
+                          context,
+                          Routes.courseDetail,
+                          rootNavigator: true,
+                          routeSettings: RouteSettings(
+                            arguments: CourseDetailArgument(
+                              exerciseEntity: state.exercises[i],
+                            ),
+                          ),
+                        );
+                      },
+                      child: CourseItem(
+                        exerciseEntity: state.exercises[i],
+                      ),
                     ),
                   }
                 ],
@@ -206,4 +223,11 @@ class _CourseListPageState extends State<CourseListPage> {
           );
         });
   }
+}
+
+class CourseDetailArgument {
+  ExerciseEntity exerciseEntity;
+  CourseDetailArgument({
+    required this.exerciseEntity,
+  });
 }
