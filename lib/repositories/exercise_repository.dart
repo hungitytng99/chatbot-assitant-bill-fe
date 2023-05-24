@@ -1,8 +1,16 @@
 import 'package:ihz_bql/models/entities/exercise_entity.dart';
+import 'package:ihz_bql/models/entities/exercise_filter_entity.dart';
 import 'package:ihz_bql/networks/api_client.dart';
 
 abstract class ExerciseRepository {
   Future<List<ExerciseEntity>> getExercises();
+  Future<ExerciseFilterEntity> getFilterExercises({
+    String? expertId,
+    String? query,
+    String? hashtag,
+    int page = 1,
+    int limit = 10,
+  });
 }
 
 class ExerciseRepositoryImpl extends ExerciseRepository {
@@ -15,5 +23,22 @@ class ExerciseRepositoryImpl extends ExerciseRepository {
   @override
   Future<List<ExerciseEntity>> getExercises() {
     return _apiClient.getExercises();
+  }
+
+  @override
+  Future<ExerciseFilterEntity> getFilterExercises({
+    String? expertId,
+    String? query,
+    String? hashtag,
+    int page = 1,
+    int limit = 10,
+  }) {
+    return _apiClient.getFilteredExercises(
+      expertId,
+      query,
+      hashtag,
+      page,
+      limit,
+    );
   }
 }

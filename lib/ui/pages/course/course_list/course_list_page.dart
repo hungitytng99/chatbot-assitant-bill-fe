@@ -1,35 +1,70 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/exercise_entity.dart';
+import 'package:ihz_bql/models/entities/expert_entity.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/components/search_text_field.dart';
 import 'package:ihz_bql/ui/pages/course/course_item/course_item.dart';
 import 'package:ihz_bql/ui/pages/course/course_list/course_list_cubit.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CourseListPage extends StatefulWidget {
+  final ExpertEntity? expertEntity;
   const CourseListPage({
     Key? key,
+    this.expertEntity,
   }) : super(key: key);
   @override
   _CourseListPageState createState() => _CourseListPageState();
 }
 
 class _CourseListPageState extends State<CourseListPage> {
-  TextEditingController textEditingController = TextEditingController();
+  TextEditingController searchExerciseController = TextEditingController();
   bool isShowDeleteIcon = false;
   late CourseListCubit _courseListCubit;
   int activeHashTagIndex = 0;
   bool isFilterByExpert = true;
+  Timer? _searchExerciseDebounce;
+  final PagingController<int, ExerciseEntity> _pagingController =
+      PagingController(firstPageKey: 0);
 
   @override
   void initState() {
     _courseListCubit = BlocProvider.of<CourseListCubit>(context);
-    _courseListCubit.getExercises();
+    _courseListCubit.getHashTags();
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
     super.initState();
+  }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final List<ExerciseEntity> chatConversation =
+          await _courseListCubit.getExercisesByFilter(
+        page: pageKey + 1,
+        hashtag: _courseListCubit.state.hashtags.isEmpty
+            ? null
+            : _courseListCubit.state.hashtags[activeHashTagIndex],
+        query: searchExerciseController.text,
+        expertId: widget.expertEntity?.id,
+      );
+      final bool isLastPage = pageKey > 3;
+      if (isLastPage) {
+        _pagingController.appendLastPage(chatConversation);
+      } else {
+        final int nextPageKey = pageKey + 1;
+        _pagingController.appendPage(chatConversation, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
   }
 
   @override
@@ -39,27 +74,14 @@ class _CourseListPageState extends State<CourseListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CourseListCubit, CourseListState>(
-      buildWhen: (prev, current) =>
-          prev.getExercisesStatus != current.getExercisesStatus,
-      builder: (context, state) {
-        if (state.getExercisesStatus == LoadStatus.loading ||
-            state.getExercisesStatus == LoadStatus.initial) {
-          return const Center(
-            child: SizedBox(
-              width: 40,
-              height: 40,
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else if (state.getExercisesStatus == LoadStatus.success) {
-          return _buildBody();
-        } else {
-          return const Center(
-            child: Text("Một lỗi đã xảy ra"),
-          );
-        }
+    return BlocListener<CourseListCubit, CourseListState>(
+      listener: (context, state) {
+        if (state.getHashtagStatus == LoadStatus.success) {}
       },
+      listenWhen: (prev, current) {
+        return prev.getHashtagStatus != current.getHashtagStatus;
+      },
+      child: _buildBody(),
     );
   }
 
@@ -80,7 +102,7 @@ class _CourseListPageState extends State<CourseListPage> {
                     _buildSearchBar(),
                     _buildListTags(),
                     Visibility(
-                      visible: isFilterByExpert,
+                      visible: isFilterByExpert && widget.expertEntity != null,
                       child: Container(
                         margin: const EdgeInsets.only(left: 15, top: 4),
                         child: Row(
@@ -142,7 +164,7 @@ class _CourseListPageState extends State<CourseListPage> {
         hintStyle: AppTextStyle.greyS14.copyWith(
           fontSize: 13,
         ),
-        textEditingController: textEditingController,
+        textEditingController: searchExerciseController,
         onChanged: (text) {
           // cubit!.onSearch(text);
           setState(() {
@@ -152,10 +174,17 @@ class _CourseListPageState extends State<CourseListPage> {
               isShowDeleteIcon = true;
             }
           });
+          if (_searchExerciseDebounce?.isActive ?? false) {
+            _searchExerciseDebounce?.cancel();
+          }
+          _searchExerciseDebounce =
+              Timer(const Duration(milliseconds: 400), () {
+            _pagingController.refresh();
+          });
         },
         onSubmitted: (text) {},
         onDelete: () {
-          textEditingController.text = "";
+          searchExerciseController.text = "";
         },
         isShowDeleteIcon: isShowDeleteIcon,
       ),
@@ -163,96 +192,114 @@ class _CourseListPageState extends State<CourseListPage> {
   }
 
   Widget _buildListTags() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 14),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        physics: const ClampingScrollPhysics(),
-        child: Row(
-          children: <Widget>[
-            for (int i = 0; i < 10; i++) ...{
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    activeHashTagIndex = i;
-                  });
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(
-                    top: 6,
-                    left: 12,
-                    bottom: 6,
-                    right: 12,
-                  ),
-                  margin: const EdgeInsets.only(
-                    right: 6,
-                  ),
-                  decoration: activeHashTagIndex == i
-                      ? BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: AppColors.black,
-                        )
-                      : BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: AppColors.backgroundGray,
-                        ),
-                  child: Text(
-                    'Hash tag',
-                    style: activeHashTagIndex == i
-                        ? AppTextStyle.whiteS14Regular
-                        : AppTextStyle.blackS14Regular,
-                  ),
-                ),
-              )
-            }
-          ],
-        ),
-      ),
+    return BlocBuilder<CourseListCubit, CourseListState>(
+      buildWhen: (prev, current) =>
+          prev.getHashtagStatus != current.getHashtagStatus,
+      builder: (context, state) {
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 14),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const ClampingScrollPhysics(),
+            child: Row(
+              children: <Widget>[
+                for (int i = 0; i < state.hashtags.length; i++) ...{
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        activeHashTagIndex = i;
+                      });
+                      _pagingController.refresh();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        top: 6,
+                        left: 12,
+                        bottom: 6,
+                        right: 12,
+                      ),
+                      margin: const EdgeInsets.only(
+                        right: 6,
+                      ),
+                      decoration: activeHashTagIndex == i
+                          ? BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: AppColors.black,
+                            )
+                          : BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: AppColors.backgroundGray,
+                            ),
+                      child: Text(
+                        state.hashtags[i],
+                        style: activeHashTagIndex == i
+                            ? AppTextStyle.whiteS14Regular
+                            : AppTextStyle.blackS14Regular,
+                      ),
+                    ),
+                  )
+                }
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
   Widget _buildListCourses() {
-    return BlocBuilder<CourseListCubit, CourseListState>(
-        buildWhen: (prev, current) =>
-            prev.getExercisesStatus != current.getExercisesStatus,
-        builder: (context, state) {
-          return Container(
-            height: MediaQuery.of(context).size.height - 260,
-            width: double.infinity,
-            margin: const EdgeInsets.only(
-              left: 14,
-              right: 14,
-              top: 12,
-            ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              physics: const ClampingScrollPhysics(),
-              child: Column(
-                children: <Widget>[
-                  for (int i = 0; i < state.exercises.length; i++) ...{
-                    InkWell(
-                      onTap: () {
-                        Application.router.navigateTo(
-                          context,
-                          Routes.courseDetail,
-                          rootNavigator: true,
-                          routeSettings: RouteSettings(
-                            arguments: CourseDetailArgument(
-                              exerciseEntity: state.exercises[i],
-                            ),
-                          ),
-                        );
-                      },
-                      child: CourseItem(
-                        exerciseEntity: state.exercises[i],
-                      ),
-                    ),
-                  }
-                ],
+    return Container(
+      height: MediaQuery.of(context).size.height - 260,
+      width: double.infinity,
+      margin: const EdgeInsets.only(
+        left: 14,
+        right: 14,
+        top: 12,
+      ),
+      child: PagedListView<int, ExerciseEntity>(
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<ExerciseEntity>(
+          newPageProgressIndicatorBuilder: (context) => Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: const CircularProgressIndicator(
+                  strokeWidth: 2,
+                ),
+                margin: const EdgeInsets.only(top: 10, bottom: 6),
+                height: 14.0,
+                width: 14.0,
               ),
-            ),
-          );
-        });
+            ],
+          ),
+          firstPageErrorIndicatorBuilder: (context) => const Center(
+            child: Text("Một lỗi đã xảy ra"),
+          ),
+          noItemsFoundIndicatorBuilder: (context) => const Center(
+            child: Text("Không tìm thấy bài tập"),
+          ),
+          itemBuilder: (context, exercise, index) {
+            return InkWell(
+              onTap: () {
+                Application.router.navigateTo(
+                  context,
+                  Routes.courseDetail,
+                  rootNavigator: true,
+                  routeSettings: RouteSettings(
+                    arguments: CourseDetailArgument(
+                      exerciseEntity: exercise,
+                    ),
+                  ),
+                );
+              },
+              child: CourseItem(
+                exerciseEntity: exercise,
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
 

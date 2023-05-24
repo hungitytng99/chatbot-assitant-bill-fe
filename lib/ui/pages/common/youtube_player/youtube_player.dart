@@ -42,7 +42,8 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
     super.initState();
     _youtubeController = YoutubePlayerController(
       initialVideoId:
-          YoutubePlayer.convertUrlToId(widget.exerciseEntity.videoLink) ?? "",
+          YoutubePlayer.convertUrlToId(widget.exerciseEntity.videoLink ?? "") ??
+              "",
       flags: const YoutubePlayerFlags(
         mute: false,
         autoPlay: true,
@@ -169,7 +170,7 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.exerciseEntity.title.toUpperCase(),
+                              (widget.exerciseEntity.title ?? "").toUpperCase(),
                               style: AppTextStyle.blackS16Bold,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -178,8 +179,9 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
                               height: 3,
                             ),
                             Visibility(
-                              visible: widget
-                                  .exerciseEntity.videoDuration.isNotEmpty,
+                              visible:
+                                  (widget.exerciseEntity.videoDuration ?? "")
+                                      .isNotEmpty,
                               child: Text(
                                 "Thời lượng: ${widget.exerciseEntity.videoDuration} ${timeAgo.isNotEmpty ? " • $timeAgo" : ""}",
                                 style: AppTextStyle.greyS14.copyWith(
@@ -188,7 +190,8 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
                               ),
                             ),
                             Visibility(
-                              visible: widget.exerciseEntity.desc.isNotEmpty,
+                              visible:
+                                  (widget.exerciseEntity.desc ?? "").isNotEmpty,
                               child: Column(
                                 children: [
                                   const SizedBox(
@@ -198,7 +201,7 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
                                     width:
                                         MediaQuery.of(context).size.width - 24,
                                     child: ReadMoreText(
-                                      widget.exerciseEntity.desc,
+                                      widget.exerciseEntity.desc ?? "",
                                       trimLines: 6,
                                       colorClickableText: Colors.pink,
                                       trimMode: TrimMode.Line,
@@ -234,7 +237,7 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
                         Container(
                           margin: const EdgeInsets.only(top: 6),
                           child: Text(
-                            widget.exerciseEntity.expertName,
+                            widget.exerciseEntity.expertName ?? "",
                             style: AppTextStyle.greyS14Bold.copyWith(
                               color: AppColors.gray000000B3,
                             ),

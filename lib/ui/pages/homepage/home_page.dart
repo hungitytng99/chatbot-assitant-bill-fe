@@ -7,6 +7,7 @@ import 'package:ihz_bql/common/app_shadow.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:ihz_bql/repositories/exercise_repository.dart';
 import 'package:ihz_bql/repositories/expert_repository.dart';
+import 'package:ihz_bql/repositories/hashtag_repository.dart';
 import 'package:ihz_bql/ui/components/app_cache_image.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_cubit.dart';
@@ -88,7 +89,12 @@ class _HomePageState extends State<HomePage>
 
     ExerciseRepository exerciseRepository =
         RepositoryProvider.of<ExerciseRepository>(context);
-    _courseListCubit = CourseListCubit(exerciseRepository: exerciseRepository);
+    HashTagsRepository hashTagsRepository =
+        RepositoryProvider.of<HashTagsRepository>(context);
+    _courseListCubit = CourseListCubit(
+      exerciseRepository: exerciseRepository,
+      hashTagsRepository: hashTagsRepository,
+    );
 
     pages = [
       Navigator(

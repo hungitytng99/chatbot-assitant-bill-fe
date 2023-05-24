@@ -146,7 +146,7 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.exerciseEntity.title,
+                          widget.exerciseEntity.title ?? "",
                           style: AppTextStyle.blackS16Bold,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -167,7 +167,7 @@ class _AppVideoPlayerState extends State<AppVideoPlayer> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width - 74,
                           child: ExpandableText(
-                            widget.exerciseEntity.desc,
+                            widget.exerciseEntity.desc ?? "",
                             trimLines: 3,
                             textStyle: AppTextStyle.greyS14,
                           ),

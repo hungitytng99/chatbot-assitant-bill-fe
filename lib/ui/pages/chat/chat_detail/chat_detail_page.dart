@@ -120,16 +120,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                     ),
                     ...?_pagingController.itemList,
                   ];
-                  // _pagingController.appendPage(
-                  //   [
-                  //     ChatContentRefactorEntity(
-                  //       id: -1,
-                  //       chatContent: _chatController.text,
-                  //       isOwner: true,
-                  //     ),
-                  //   ],
-                  //   0,
-                  // );
                   _chatController.text = '';
                 }
               },

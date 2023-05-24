@@ -48,7 +48,7 @@ class _CourseItemState extends State<CourseItem> {
                 width: double.infinity,
                 height: 220,
                 margin: const EdgeInsets.only(bottom: 8),
-                child: AppCacheImage(url: widget.exerciseEntity.videoThumbnail),
+                child: AppCacheImage(url: widget.exerciseEntity.videoThumbnail ?? ""),
               ),
               Positioned(
                 right: 6,
@@ -65,7 +65,7 @@ class _CourseItemState extends State<CourseItem> {
                     vertical: 2,
                   ),
                   child: Text(
-                    widget.exerciseEntity.videoDuration,
+                    widget.exerciseEntity.videoDuration ?? "",
                     style: AppTextStyle.whiteS14Regular,
                   ),
                 ),
@@ -91,7 +91,7 @@ class _CourseItemState extends State<CourseItem> {
                       left: 8,
                     ),
                     child: Text(
-                      widget.exerciseEntity.title,
+                      widget.exerciseEntity.title ?? "",
                       style: AppTextStyle.blackS14,
                       overflow: TextOverflow.ellipsis,
                     ),

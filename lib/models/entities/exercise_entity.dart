@@ -5,37 +5,40 @@ part 'exercise_entity.g.dart';
 @JsonSerializable()
 class ExerciseEntity {
   @JsonKey()
-  final String id;
+  final String? id;
 
   @JsonKey(name: 'audio_link')
-  final String audioLink;
+  final String? audioLink;
 
   @JsonKey()
-  final String desc;
+  final String? desc;
 
   @JsonKey(name: 'expert_id')
-  final String expertId;
+  final String? expertId;
 
   @JsonKey(name: 'expert_name')
-  final String expertName;
+  final String? expertName;
 
   @JsonKey(name: 'expert_avatar')
   final String? expertAvatar;
 
   @JsonKey(name: 'video_link')
-  final String videoLink;
+  final String? videoLink;
+
+  @JsonKey(name: 'video_type')
+  final String? videoType;
 
   @JsonKey(name: 'video_duration')
-  final String videoDuration;
+  final String? videoDuration;
 
   @JsonKey(name: 'video_thumbnail')
-  final String videoThumbnail;
+  final String? videoThumbnail;
 
   @JsonKey()
-  final String title;
+  final String? title;
 
-  @JsonKey(name: 'hash_tag')
-  final List<String> hashTag;
+  @JsonKey(name: 'hashtags')
+  final List<String?> hashTags;
 
   @JsonKey(name: 'created_at')
   final DateTime? createdAt;
@@ -52,11 +55,12 @@ class ExerciseEntity {
     required this.expertAvatar,
     required this.expertName,
     required this.videoDuration,
-    required this.hashTag,
+    required this.hashTags,
     required this.videoLink,
     required this.videoThumbnail,
     required this.createdAt,
     required this.updatedAt,
+    required this.videoType,
   });
 
   ExerciseEntity copyWith({
@@ -70,7 +74,8 @@ class ExerciseEntity {
     String? videoDuration,
     String? videoLink,
     String? videoThumbnail,
-    List<String>? hashTag,
+    String? videoType,
+    List<String>? hashTags,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -84,7 +89,8 @@ class ExerciseEntity {
       expertName: expertName ?? this.expertName,
       videoDuration: videoDuration ?? this.videoDuration,
       videoLink: videoLink ?? this.videoLink,
-      hashTag: hashTag ?? this.hashTag,
+      videoType: videoType ?? this.videoType,
+      hashTags: hashTags ?? this.hashTags,
       videoThumbnail: videoThumbnail ?? this.videoThumbnail,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,

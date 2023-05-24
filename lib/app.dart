@@ -12,6 +12,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:ihz_bql/repositories/auth_repository.dart';
 import 'package:ihz_bql/repositories/exercise_repository.dart';
+import 'package:ihz_bql/repositories/hashtag_repository.dart';
 import 'package:ihz_bql/repositories/user_repository.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/navigation_observer.dart';
@@ -82,6 +83,11 @@ class _MyAppState extends State<MyApp> {
         RepositoryProvider<ExerciseRepository>(create: (context) {
           return ExerciseRepositoryImpl(_apiClient);
         }),
+
+        RepositoryProvider<HashTagsRepository>(create: (context) {
+          return HashTagsRepositoryImpl(_apiClient);
+        }),
+
       ],
       child: MultiBlocProvider(
         providers: [
