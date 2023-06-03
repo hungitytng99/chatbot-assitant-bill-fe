@@ -110,6 +110,7 @@ dependencies:
   youtube_player_flutter: ^8.0.0
   chewie: ^1.5.0
   readmore: ^2.2.0
+  material_dialogs: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -199,6 +200,7 @@ flutter:
     - assets/images/ic_do_exercise.png
     - assets/images/ic_send.png
     - assets/images/diary.png
+    - assets/vectors/success.json
   fonts:
     - family: Quicksand
       fonts:

@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:ihz_bql/models/entities/auth_token_entity.dart';
+import 'package:ihz_bql/models/entities/end_practice_response_entity.dart';
 import 'package:ihz_bql/models/entities/exercise_entity.dart';
 import 'package:ihz_bql/models/entities/exercise_filter_entity.dart';
 import 'package:ihz_bql/models/entities/expert_entity.dart';
 import 'package:ihz_bql/models/entities/user_entity.dart';
 import 'package:ihz_bql/models/params/auth/sign_up_body.dart';
+import 'package:ihz_bql/models/params/end_exercise_body.dart';
 import 'package:retrofit/http.dart';
 
 part 'api_client.g.dart';
@@ -41,4 +43,10 @@ abstract class ApiClient {
 
   @GET("/hashtags")
   Future<List<String>> getHashtags();
+
+  @POST("/user/practice/end")
+  Future<EndPracticeResponseEntity> endPractice(@Body() EndExerciseBody endExerciseBody);
+
+  @POST("/user/practice/feedback")
+  Future<String> reviewPractice();
 }

@@ -6,12 +6,18 @@ import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/exercise_entity.dart';
+import 'package:ihz_bql/models/params/end_exercise_body.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/pages/common/expandable_text/expandable_text.dart';
 import 'package:ihz_bql/ui/pages/course/exercise_review/exercise_review_page.dart';
+import 'package:ihz_bql/ui/widgets/commons/app_dialog.dart';
+import 'package:ihz_bql/ui/widgets/commons/custom_dialog.dart';
 import 'package:ihz_bql/ui/widgets/images/app_cache_image.dart';
 import 'package:ihz_bql/utils/date_utils.dart';
+import 'package:ihz_bql/utils/dialog_utils.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:readmore/readmore.dart';
@@ -19,8 +25,11 @@ import 'package:readmore/readmore.dart';
 /// Homepage
 class AppYoutubePlayer extends StatefulWidget {
   ExerciseEntity exerciseEntity;
+  void Function(EndExerciseBody endExerciseBody) onEndPractice;
+
   AppYoutubePlayer({
     Key? key,
+    required this.onEndPractice,
     required this.exerciseEntity,
   }) : super(key: key);
 
@@ -33,6 +42,7 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
   late TextEditingController _idController;
   late TextEditingController _seekToController;
   late ValueNotifier<PlayerState> _playerState;
+  late DateTime staredAt;
 
   bool _isPlayerReady = false;
   int practiceTime = 0;
@@ -40,6 +50,7 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
   @override
   void initState() {
     super.initState();
+    staredAt = DateTime.now();
     _youtubeController = YoutubePlayerController(
       initialVideoId:
           YoutubePlayer.convertUrlToId(widget.exerciseEntity.videoLink ?? "") ??
@@ -348,9 +359,50 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
                                 ),
                                 onPressed: practiceTime > 0
                                     ? () async {
-                                        Application.router.navigateTo(
-                                          context,
-                                          Routes.exerciseReview,
+                                        _youtubeController.pause();
+                                        Dialogs.bottomMaterialDialog(
+                                          msg:
+                                              'Bạn có chắc chắn muốn kết thúc luyện tập?',
+                                          title: 'Hoàn thành',
+                                          color: Colors.white,
+                                          lottieBuilder: Lottie.asset(
+                                            'assets/vectors/success.json',
+                                            fit: BoxFit.contain,
+                                          ),
+                                          context: context,
+                                          actions: [
+                                            IconsButton(
+                                              onPressed: () {
+                                                widget.onEndPractice(
+                                                  EndExerciseBody(
+                                                    exerciseId: widget
+                                                            .exerciseEntity
+                                                            .id ??
+                                                        "",
+                                                    exerciseName: widget
+                                                            .exerciseEntity
+                                                            .expertName ??
+                                                        "",
+                                                    practiceDuration:
+                                                        practiceTime.toString(),
+                                                    startedAt: staredAt,
+                                                    endedAt: DateTime.now(),
+                                                  ),
+                                                );
+                                                Application.router.navigateTo(
+                                                  context,
+                                                  Routes.exerciseReview,
+                                                );
+                                              },
+                                              text: 'Đồng ý',
+                                              iconData: Icons.done,
+                                              color: AppColors.main,
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                              iconColor: Colors.white,
+                                            ),
+                                          ],
                                         );
                                       }
                                     : null,

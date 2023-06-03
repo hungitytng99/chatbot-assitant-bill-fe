@@ -22,13 +22,13 @@ extension EnvironmentExt on Environment {
   String get baseUrl {
     switch (this) {
       case Environment.dev:
-        return 'http://159.89.197.197:8088/';
+        return 'http://35.185.176.26:8088/';
       case Environment.stg:
-        return 'http://159.89.197.197:8088/';
+        return 'http://35.185.176.26:8088/';
       case Environment.th:
-        return 'http://159.89.197.197:8088/';
+        return 'http://35.185.176.26:8088/';
       case Environment.prod:
-        return 'http://159.89.197.197:8088/';
+        return 'http://35.185.176.26:8088/';
     }
   }
 
