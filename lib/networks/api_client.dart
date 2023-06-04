@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ihz_bql/models/entities/auth_token_entity.dart';
+import 'package:ihz_bql/models/entities/daily_history_entity.dart';
 import 'package:ihz_bql/models/entities/end_practice_response_entity.dart';
 import 'package:ihz_bql/models/entities/exercise_entity.dart';
 import 'package:ihz_bql/models/entities/exercise_filter_entity.dart';
@@ -68,5 +69,10 @@ abstract class ApiClient {
   Future<MonthlyPracticeEntity> getMonthlyHistoryPractices(
     @Query('start_date') String startDate,
     @Query('end_date') String endDate,
+  );
+
+  @GET("/user/practice/daily-history")
+  Future<DailyHistoryEntity> getDailyHistoryPractices(
+    @Query('date') String date,
   );
 }

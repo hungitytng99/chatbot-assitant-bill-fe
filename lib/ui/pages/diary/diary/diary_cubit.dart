@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:ihz_bql/models/entities/daily_history_entity.dart';
 import 'package:ihz_bql/models/entities/monthly_practice_entity.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/repositories/diary_repository.dart';
@@ -32,6 +33,25 @@ class DiaryCubit extends Cubit<DiaryState> {
     } catch (e) {
       emit(
           state.copyWith(getMonthlyHistoryPracticesStatus: LoadStatus.failure));
+    }
+  }
+
+  Future<void> getDailyHistoryPractices({
+    required String date,
+  }) async {
+    emit(state.copyWith(getDailyHistoryPracticesStatus: LoadStatus.loading));
+    try {
+      final DailyHistoryEntity history =
+          await diaryRepository.getDailyHistoryPractices(
+        date: date,
+      );
+
+      emit(state.copyWith(
+        getDailyHistoryPracticesStatus: LoadStatus.success,
+        dailyHistoryEntity: history,
+      ));
+    } catch (e) {
+      emit(state.copyWith(getDailyHistoryPracticesStatus: LoadStatus.failure));
     }
   }
 }

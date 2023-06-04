@@ -19,7 +19,7 @@ class DiaryPage extends StatefulWidget {
 
 class _DiaryPageState extends State<DiaryPage> {
   DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay = DateTime.now();
+  DateTime _selectedDay = DateTime.now();
   CalendarStyle calendarStyle = CalendarStyle(
     selectedDecoration: BoxDecoration(
       color: AppColors.main,
@@ -42,6 +42,8 @@ class _DiaryPageState extends State<DiaryPage> {
       startDate: getStringFromDateTime(dateTime: firstDayOfMonth),
       endDate: getStringFromDateTime(dateTime: lastDayOfMonth),
     );
+    _diaryCubit.getDailyHistoryPractices(
+        date: getStringFromDateTime(dateTime: _selectedDay));
     super.initState();
   }
 
@@ -61,6 +63,8 @@ class _DiaryPageState extends State<DiaryPage> {
               },
               onDaySelected: (selectedDay, focusedDay) {
                 if (!isSameDay(_selectedDay, selectedDay)) {
+                  _diaryCubit.getDailyHistoryPractices(
+                      date: getStringFromDateTime(dateTime: selectedDay));
                   setState(() {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
@@ -79,7 +83,6 @@ class _DiaryPageState extends State<DiaryPage> {
               },
               calendarBuilders:
                   CalendarBuilders(markerBuilder: (context, day, events) {
-                print(getStringFromDateTime(dateTime: day));
                 return BlocBuilder<DiaryCubit, DiaryState>(
                   bloc: _diaryCubit,
                   buildWhen: (prev, current) {
@@ -106,12 +109,23 @@ class _DiaryPageState extends State<DiaryPage> {
         ),
         Expanded(
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                for (int i = 0; i < 100; i++) ...{
-                  const Text('Tooi la ai'),
-                },
-              ],
+            child: BlocBuilder<DiaryCubit, DiaryState>(
+              bloc: _diaryCubit,
+              buildWhen: (prev, current) {
+                return (prev.getDailyHistoryPracticesStatus !=
+                    current.getDailyHistoryPracticesStatus);
+              },
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    for (int i = 0;
+                        i < (state.dailyHistoryEntity?.actions ?? []).length;
+                        i++) ...{
+                      const Text('Tooi la ai'),
+                    },
+                  ],
+                );
+              },
             ),
           ),
         ),
