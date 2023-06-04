@@ -6,17 +6,17 @@ part 'expert_entity.g.dart';
 @JsonSerializable()
 class ExpertEntity {
   @JsonKey()
-  final String id;
+  final String? id;
   @JsonKey()
-  final String alias;
+  final String? alias;
   @JsonKey()
   final String name;
   @JsonKey(name: 'avatar_link')
   final String avatarLink;
   @JsonKey()
-  final String desc;
+  final String? desc;
   @JsonKey()
-  final List<ObjectiveEntity> objectives;
+  final List<ObjectiveEntity>? objectives;
 
   ExpertEntity({
     required this.id,

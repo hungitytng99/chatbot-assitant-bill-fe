@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
+import 'package:ihz_bql/models/enums/user_online_status.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
@@ -23,6 +24,7 @@ class _ContactListPageState extends State<ContactListPage> {
   void initState() {
     _contactListCubit = BlocProvider.of<ContactListCubit>(context);
     _contactListCubit.getActiveExpert();
+    _contactListCubit.getInActiveExpert();
     super.initState();
   }
 
@@ -35,10 +37,13 @@ class _ContactListPageState extends State<ContactListPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<ContactListCubit, ContactListState>(
       buildWhen: (prev, current) =>
-          prev.getActiveExpertsStatus != current.getActiveExpertsStatus,
+          prev.getActiveExpertsStatus != current.getActiveExpertsStatus ||
+          prev.getInActiveExpertsStatus != current.getInActiveExpertsStatus,
       builder: (context, state) {
         if (state.getActiveExpertsStatus == LoadStatus.loading ||
-            state.getActiveExpertsStatus == LoadStatus.initial) {
+            state.getActiveExpertsStatus == LoadStatus.initial ||
+            state.getInActiveExpertsStatus == LoadStatus.loading ||
+            state.getInActiveExpertsStatus == LoadStatus.initial) {
           return const Center(
             child: SizedBox(
               width: 40,
@@ -112,14 +117,31 @@ class _ContactListPageState extends State<ContactListPage> {
                           style: AppTextStyle.greyS14W600,
                         ),
                       ),
-                      for (int i = 0; i < 2; i++) ...{
+                      for (int i = 0;
+                          i <
+                              (_contactListCubit.state.inActiveExperts
+                                          ?.upCommingExperts ??
+                                      [])
+                                  .length;
+                          i++) ...{
                         Opacity(
                           opacity: 0.5,
                           child: Container(
                             padding: const EdgeInsets.only(top: 8, bottom: 8),
                             child: UserAvatarCardHorizontal(
-                              userFullName: 'Vũ Ngọc Nam',
-                              avatarLink: 'https://picsum.photos/200/200',
+                              userFullName: _contactListCubit
+                                      .state
+                                      .inActiveExperts
+                                      ?.upCommingExperts[i]
+                                      .name ??
+                                  "",
+                              status: UserOnlineStatusEnum.OFFLINE,
+                              avatarLink: _contactListCubit
+                                      .state
+                                      .inActiveExperts
+                                      ?.upCommingExperts[i]
+                                      .avatarLink ??
+                                  "",
                               description: 'Chuyên gia hiện không khả dụng',
                               onPressed: () {
                                 AppSnackbar.showError(
@@ -130,7 +152,7 @@ class _ContactListPageState extends State<ContactListPage> {
                             ),
                           ),
                         ),
-                      }
+                      },
                     ],
                   ),
                 ),

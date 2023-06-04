@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ihz_bql/models/entities/expert_entity.dart';
+import 'package:ihz_bql/models/entities/upcomming_expert_entity.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/repositories/expert_repository.dart';
 part 'contact_list_state.dart';
@@ -23,6 +24,21 @@ class ContactListCubit extends Cubit<ContactListState> {
       ));
     } catch (e) {
       emit(state.copyWith(getActiveExpertsStatus: LoadStatus.failure));
+    }
+  }
+
+  Future<void> getInActiveExpert() async {
+    emit(state.copyWith(getInActiveExpertsStatus: LoadStatus.loading));
+    try {
+      final UpCommingExpertEntity result =
+          await expertRepository.getUpcomingExperts();
+
+      emit(state.copyWith(
+        getInActiveExpertsStatus: LoadStatus.success,
+        inActiveExperts: result,
+      ));
+    } catch (e) {
+      emit(state.copyWith(getInActiveExpertsStatus: LoadStatus.failure));
     }
   }
 }
