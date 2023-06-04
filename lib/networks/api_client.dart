@@ -4,6 +4,7 @@ import 'package:ihz_bql/models/entities/end_practice_response_entity.dart';
 import 'package:ihz_bql/models/entities/exercise_entity.dart';
 import 'package:ihz_bql/models/entities/exercise_filter_entity.dart';
 import 'package:ihz_bql/models/entities/expert_entity.dart';
+import 'package:ihz_bql/models/entities/monthly_practice_entity.dart';
 import 'package:ihz_bql/models/entities/review_keywords_entity.dart';
 import 'package:ihz_bql/models/entities/upcomming_expert_entity.dart';
 import 'package:ihz_bql/models/entities/user_entity.dart';
@@ -62,4 +63,10 @@ abstract class ApiClient {
 
   @POST("/user/practice/feedback")
   Future<String> feedBackExercisePractice(@Body() FeedbackExerciseBody body);
+
+  @GET("/user/practice/monthly-history")
+  Future<MonthlyPracticeEntity> getMonthlyHistoryPractices(
+    @Query('start_date') String startDate,
+    @Query('end_date') String endDate,
+  );
 }

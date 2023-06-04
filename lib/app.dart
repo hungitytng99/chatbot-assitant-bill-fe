@@ -11,6 +11,7 @@ import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:ihz_bql/repositories/auth_repository.dart';
+import 'package:ihz_bql/repositories/diary_repository.dart';
 import 'package:ihz_bql/repositories/exercise_repository.dart';
 import 'package:ihz_bql/repositories/hashtag_repository.dart';
 import 'package:ihz_bql/repositories/user_repository.dart';
@@ -22,7 +23,6 @@ import 'networks/api_client.dart';
 import 'networks/api_util.dart';
 import 'package:ihz_bql/repositories/expert_repository.dart';
 import 'package:timeago/timeago.dart' as timeago;
-
 
 final appNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -83,11 +83,12 @@ class _MyAppState extends State<MyApp> {
         RepositoryProvider<ExerciseRepository>(create: (context) {
           return ExerciseRepositoryImpl(_apiClient);
         }),
-
         RepositoryProvider<HashTagsRepository>(create: (context) {
           return HashTagsRepositoryImpl(_apiClient);
         }),
-
+        RepositoryProvider<DiaryRepository>(create: (context) {
+          return DiaryRepositoryImpl(_apiClient);
+        }),
       ],
       child: MultiBlocProvider(
         providers: [

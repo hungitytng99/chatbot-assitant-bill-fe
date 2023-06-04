@@ -50,20 +50,6 @@ class _SignUpPageState extends State<SignUpPage> {
           child: SingleChildScrollView(
             child: BlocBuilder<SignUpCubit, SignUpState>(
                 bloc: _cubit,
-                // listenWhen: (previous, current) =>
-                //     previous.signUpStatus != current.signUpStatus,
-                // listener: (context, state) {
-                //   if (state.signUpStatus == LoadStatus.success) {
-                //     AppDialog.showSuccessDialog(
-                //       context,
-                //       title: 'Đăng ký tài khoản thành công',
-                //       icon: SvgPicture.asset(AppVectors.icSignUpSuccessAlert),
-                //       okText: "Đăng nhập ngay!",
-                //
-                //       onOkPressed: () => Get.offAndToNamed(RouteConfig.signIn),
-                //     );
-                //   }
-                // },
                 builder: (context, state) {
                   return Column(
                     children: [

@@ -5,6 +5,8 @@ import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_shadow.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
+import 'package:ihz_bql/repositories/diary_repository.dart';
+import 'package:ihz_bql/repositories/diary_repository.dart';
 import 'package:ihz_bql/repositories/exercise_repository.dart';
 import 'package:ihz_bql/repositories/expert_repository.dart';
 import 'package:ihz_bql/repositories/hashtag_repository.dart';
@@ -14,6 +16,8 @@ import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_cubit.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_page.dart';
 import 'package:ihz_bql/ui/pages/course/course_list/course_list_cubit.dart';
 import 'package:ihz_bql/ui/pages/course/course_list/course_list_page.dart';
+import 'package:ihz_bql/ui/pages/diary/diary/diary_cubit.dart';
+import 'package:ihz_bql/ui/pages/diary/diary/diary_page.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_cubit.dart';
 import 'package:ihz_bql/ui/pages/profile/my_profile/my_profile_cubit.dart';
 import 'package:ihz_bql/ui/pages/profile/my_profile/my_profile_page.dart';
@@ -43,7 +47,7 @@ class HomePage extends StatefulWidget {
       GlobalKey<NavigatorState>();
   final GlobalKey<NavigatorState> courseNavigatorKey =
       GlobalKey<NavigatorState>();
-  final GlobalKey<NavigatorState> profileNavigatorKey =
+  final GlobalKey<NavigatorState> diaryNavigatorKey =
       GlobalKey<NavigatorState>();
 
   int pageIndex;
@@ -68,6 +72,7 @@ class _HomePageState extends State<HomePage>
   AppCubit? _appCubit;
   late ContactListCubit _contactListCubit;
   late CourseListCubit _courseListCubit;
+  late DiaryCubit _diaryCubit;
   late HomeCubit _homeCubit;
   late PageController pageController;
   late bool? inPageOrderType;
@@ -95,6 +100,10 @@ class _HomePageState extends State<HomePage>
       exerciseRepository: exerciseRepository,
       hashTagsRepository: hashTagsRepository,
     );
+
+    DiaryRepository diaryRepository =
+        RepositoryProvider.of<DiaryRepository>(context);
+    _diaryCubit = DiaryCubit(diaryRepository: diaryRepository);
 
     pages = [
       Navigator(
@@ -160,6 +169,30 @@ class _HomePageState extends State<HomePage>
                   ),
                 ],
                 child: ChatListPage(),
+              );
+              break;
+          }
+          return MaterialPageRoute<dynamic>(
+            builder: (context) {
+              return page;
+            },
+            settings: routeSettings,
+          );
+        },
+      ),
+      Navigator(
+        key: widget.diaryNavigatorKey,
+        onGenerateRoute: (routeSettings) {
+          late Widget page;
+          switch (routeSettings.name) {
+            case "/":
+              page = MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: _diaryCubit,
+                  ),
+                ],
+                child: DiaryPage(),
               );
               break;
           }
