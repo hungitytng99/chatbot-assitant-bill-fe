@@ -1,0 +1,4 @@
+enum ReviewStarType {
+  reviewMind,
+  reviewBody,
+}

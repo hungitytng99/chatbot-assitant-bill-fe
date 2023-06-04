@@ -2,15 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/exercise_entity.dart';
+import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/models/params/end_exercise_body.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/pages/common/expandable_text/expandable_text.dart';
 import 'package:ihz_bql/ui/pages/course/exercise_review/exercise_review_page.dart';
+import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/ui/widgets/commons/app_dialog.dart';
 import 'package:ihz_bql/ui/widgets/commons/custom_dialog.dart';
 import 'package:ihz_bql/ui/widgets/images/app_cache_image.dart';
@@ -24,13 +27,15 @@ import 'package:readmore/readmore.dart';
 
 /// Homepage
 class AppYoutubePlayer extends StatefulWidget {
-  ExerciseEntity exerciseEntity;
+  final ExerciseEntity exerciseEntity;
   void Function(EndExerciseBody endExerciseBody) onEndPractice;
+  final LoadStatus isRequestEndPractice;
 
   AppYoutubePlayer({
     Key? key,
     required this.onEndPractice,
     required this.exerciseEntity,
+    required this.isRequestEndPractice,
   }) : super(key: key);
 
   @override
@@ -371,7 +376,23 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
                                           ),
                                           context: context,
                                           actions: [
-                                            IconsButton(
+                                            AppButton(
+                                              title: "Đồng ý",
+                                              textStyle: AppTextStyle
+                                                  .whiteS14Bold
+                                                  .copyWith(
+                                                fontSize: 16,
+                                              ),
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 45,
+                                              isLoading:
+                                                  widget.isRequestEndPractice ==
+                                                      LoadStatus.loading,
+                                              isEnable:
+                                                  widget.isRequestEndPractice !=
+                                                      LoadStatus.loading,
                                               onPressed: () {
                                                 widget.onEndPractice(
                                                   EndExerciseBody(
@@ -389,18 +410,9 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
                                                     endedAt: DateTime.now(),
                                                   ),
                                                 );
-                                                Application.router.navigateTo(
-                                                  context,
-                                                  Routes.exerciseReview,
-                                                );
                                               },
-                                              text: 'Đồng ý',
-                                              iconData: Icons.done,
-                                              color: AppColors.main,
-                                              textStyle: const TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                              iconColor: Colors.white,
+                                              disableBackgroundColor:
+                                                  AppColors.textGray,
                                             ),
                                           ],
                                         );
@@ -458,6 +470,4 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
         return AppColors.main;
     }
   }
-
-  Widget get _space => const SizedBox(height: 10);
 }
