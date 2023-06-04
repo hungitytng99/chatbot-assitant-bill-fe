@@ -185,6 +185,7 @@ class _CourseListPageState extends State<CourseListPage> {
         onSubmitted: (text) {},
         onDelete: () {
           searchExerciseController.text = "";
+          _pagingController.refresh();
         },
         isShowDeleteIcon: isShowDeleteIcon,
       ),
