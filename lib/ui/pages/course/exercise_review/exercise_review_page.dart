@@ -157,10 +157,8 @@ class _ExerciseReviewPageState extends State<ExerciseReviewPage> {
                           );
                           AppSnackbar.showInfo(
                             title: 'Thành công',
-                            message:
-                            'Cảm ơn bạn đã để lại đánh giá',
+                            message: 'Cảm ơn bạn đã để lại đánh giá',
                           );
-                          return;
                           return;
                         }
 
@@ -200,6 +198,7 @@ class _ExerciseReviewPageState extends State<ExerciseReviewPage> {
                                 bodyRate: reviewBodyStar.toString(),
                                 exerciseRate: selectExerciseReview.title,
                                 keywordDesc: selectedKeywords,
+                                note: shareMoreController.text,
                               ),
                             );
                           },

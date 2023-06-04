@@ -25,6 +25,9 @@ class FeedbackExerciseBody {
   @JsonKey(name: 'keyword_desc')
   List<String> keywordDesc;
 
+  @JsonKey()
+  String note;
+
   FeedbackExerciseBody({
     required this.practiceId,
     required this.exerciseName,
@@ -33,6 +36,7 @@ class FeedbackExerciseBody {
     required this.bodyRate,
     required this.exerciseRate,
     required this.keywordDesc,
+    required this.note,
   });
 
   factory FeedbackExerciseBody.fromJson(Map<String, dynamic> json) =>
