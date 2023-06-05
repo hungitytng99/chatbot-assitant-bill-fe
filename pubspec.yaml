@@ -201,6 +201,7 @@ flutter:
     - assets/images/ic_do_exercise.png
     - assets/images/ic_send.png
     - assets/images/diary.png
+    - assets/images/clock.png
     - assets/vectors/success.json
   fonts:
     - family: Quicksand

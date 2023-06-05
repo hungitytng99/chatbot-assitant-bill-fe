@@ -31,6 +31,7 @@ class AppConfigs {
   static const dateTimeAPIFormat =
       "MM/dd/yyyy'T'hh:mm:ss.SSSZ"; //Use DateTime.parse(date) instead of ...
   static const dateTimeDisplayFormat = 'dd/MM/yyyy HH:mm';
+  static const timeFormat = 'HH:mm';
 
   static const dateTimeAPIFormatParam =
       "yyyy-MM-ddTHH:mm:ss.mmm";
@@ -44,9 +45,6 @@ class AppConfigs {
   static final identityMaxDate = DateTime.now();
   static final birthMinDate = DateTime(1900, 1, 1);
   static final birthMaxDate = DateTime.now();
-
-  ///TimeFormat
-  static const timeFormat = 'HH:mm';
 
   ///Font
   // static const fontFamily = 'Roboto';

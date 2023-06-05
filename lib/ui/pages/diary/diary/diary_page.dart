@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
+import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/ui/pages/diary/diary/diary_cubit.dart';
+import 'package:ihz_bql/ui/pages/diary/diary_practice_item/diary_practice_item.dart';
+import 'package:ihz_bql/utils/date_utils.dart';
 import 'package:ihz_bql/utils/datetime_formatter.dart';
 import 'package:table_calendar/table_calendar.dart';
 import './diary_calendar_utils.dart';
@@ -79,6 +82,14 @@ class _DiaryPageState extends State<DiaryPage> {
               ),
               onPageChanged: (focusedDay) {
                 // No need to call `setState()` here
+                _diaryCubit.getMonthlyHistoryPractices(
+                  startDate: getStringFromDateTime(
+                    dateTime: AppDateUtils.firstDayOfMonth(focusedDay),
+                  ),
+                  endDate: getStringFromDateTime(
+                    dateTime: AppDateUtils.lastDayOfMonth(focusedDay),
+                  ),
+                );
                 _focusedDay = focusedDay;
               },
               calendarBuilders:
@@ -116,14 +127,48 @@ class _DiaryPageState extends State<DiaryPage> {
                     current.getDailyHistoryPracticesStatus);
               },
               builder: (context, state) {
-                return Column(
-                  children: [
-                    for (int i = 0;
-                        i < (state.dailyHistoryEntity?.actions ?? []).length;
-                        i++) ...{
-                      const Text('Tooi la ai'),
-                    },
-                  ],
+                if (state.getDailyHistoryPracticesStatus ==
+                    LoadStatus.failure) {
+                  return Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: const Center(
+                      child:
+                          Text("Một lỗi đã xảy ra khi tải nhật ký luyện tập"),
+                    ),
+                  );
+                }
+
+                if (state.getDailyHistoryPracticesStatus ==
+                    LoadStatus.success) {
+                  return Column(
+                    children: [
+                      Visibility(
+                        visible:
+                            (state.dailyHistoryEntity?.actions ?? []).isEmpty,
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          child: const Center(
+                            child: Text(
+                                "Opps! Bạn không luyện tập vào ngày này :("),
+                          ),
+                        ),
+                      ),
+                      for (int i = 0;
+                          i < (state.dailyHistoryEntity?.actions ?? []).length;
+                          i++) ...{
+                        DiaryPracticeItem(
+                          dailyAction: state.dailyHistoryEntity?.actions![i],
+                        ),
+                      },
+                      const SizedBox(
+                        height: 15,
+                      )
+                    ],
+                  );
+                }
+                return Container(
+                  margin: const EdgeInsets.only(top: 15),
+                  child: const CircularProgressIndicator(),
                 );
               },
             ),
