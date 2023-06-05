@@ -5,11 +5,15 @@ import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_shadow.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
+import 'package:ihz_bql/database/share_preferences_helper.dart';
+import 'package:ihz_bql/globals/global_data.dart';
 import 'package:ihz_bql/repositories/diary_repository.dart';
 import 'package:ihz_bql/repositories/diary_repository.dart';
 import 'package:ihz_bql/repositories/exercise_repository.dart';
 import 'package:ihz_bql/repositories/expert_repository.dart';
 import 'package:ihz_bql/repositories/hashtag_repository.dart';
+import 'package:ihz_bql/routers/application.dart';
+import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/components/app_cache_image.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_cubit.dart';
@@ -370,14 +374,14 @@ class _HomePageState extends State<HomePage>
           height: 6,
         ),
         Text(
-          "Mạnh Hùng",
+          _appCubit?.state.userEntity?.fullName ?? "",
           style: AppTextStyle.blackS18Bold.copyWith(fontSize: 20),
         ),
         const SizedBox(
           height: 6,
         ),
         Text(
-          "mhungict99@gmail.com",
+          _appCubit?.state.userEntity?.username ?? "",
           style: AppTextStyle.greyS14
               .copyWith(color: AppColors.textBlack, fontSize: 14),
         ),
@@ -434,7 +438,12 @@ class _HomePageState extends State<HomePage>
           backgroundColor: AppColors.signInPrimary,
           disableBackgroundColor: Colors.black,
           onPressed: () {
-            /// TODO: Xử lý đăng xuất
+            SharedPreferencesHelper.setApiTokenKey("");
+            GlobalData.instance.token = null;
+            Application.router.navigateTo(
+              context,
+              Routes.signIn,
+            );
           },
           isLoading: false,
         ),

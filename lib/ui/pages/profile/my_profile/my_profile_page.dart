@@ -6,6 +6,8 @@ import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/common/otp_layout.dart';
+import 'package:ihz_bql/database/share_preferences_helper.dart';
+import 'package:ihz_bql/globals/global_data.dart';
 import 'package:ihz_bql/models/enums/file_source_type.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
@@ -130,7 +132,12 @@ class _MyProfilePageState extends State<MyProfilePage>
                     height: 45,
                     isLoading: false,
                     onPressed: () {
-                      // _appCubit.logout();
+                      SharedPreferencesHelper.setApiTokenKey("");
+                      GlobalData.instance.token = null;
+                      Application.router.navigateTo(
+                        context,
+                        Routes.signIn,
+                      );
                     },
                   );
                 },
@@ -156,7 +163,7 @@ class _MyProfilePageState extends State<MyProfilePage>
             height: 12,
           ),
           Text(
-            "Vũ Ngọc Nam",
+            _appCubit.state.userEntity?.fullName ?? "",
             style: AppTextStyle.blackS16Bold.copyWith(fontSize: 20),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
@@ -165,7 +172,7 @@ class _MyProfilePageState extends State<MyProfilePage>
             height: 8,
           ),
           Text(
-            "namvu@gmail.com",
+            _appCubit.state.userEntity?.username ?? "",
             style: AppTextStyle.greyS14.copyWith(fontSize: 14),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,

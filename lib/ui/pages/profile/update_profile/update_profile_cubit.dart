@@ -24,13 +24,6 @@ class UpdateProfileCubit extends Cubit<UpdateProfileState> {
     emit(state.copyWith(email: email));
   }
 
-  void changePassword(String password) {
-    emit(state.copyWith(password: password));
-  }
-
-  void changeBornDate(DateTime datetime) {
-    emit(state.copyWith(bornDate: datetime));
-  }
 
   @override
   Future<void> close() {

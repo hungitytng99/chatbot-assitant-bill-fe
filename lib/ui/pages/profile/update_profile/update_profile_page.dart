@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ihz_bql/blocs/app_cubit.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_dimens.dart';
 import 'package:ihz_bql/common/app_images.dart';
@@ -26,12 +27,17 @@ class UpdateProfilePage extends StatefulWidget {
 }
 
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
-  final _fullNameController = TextEditingController(text: 'Vũ Ngọc Nam');
-  final _emailController = TextEditingController(text: 'namvu@gmail.com');
+  final _fullNameController = TextEditingController();
+  final _emailController = TextEditingController();
   late UpdateProfileCubit _cubit;
+  late AppCubit _appCubit;
   @override
   void initState() {
     _cubit = UpdateProfileCubit();
+    _appCubit = BlocProvider.of<AppCubit>(context);
+    _fullNameController.text = _appCubit.state.userEntity?.fullName ?? "";
+    _emailController.text = _appCubit.state.userEntity?.username ?? "";
+
     super.initState();
   }
 
@@ -102,7 +108,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                               },
                             ),
                             const SizedBox(height: 35),
-                            _buildSignupButton(),
+                            _buildUpdateButton(),
                           ],
                         ),
                       ),
@@ -157,7 +163,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     );
   }
 
-  Widget _buildSignupButton() {
+  Widget _buildUpdateButton() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

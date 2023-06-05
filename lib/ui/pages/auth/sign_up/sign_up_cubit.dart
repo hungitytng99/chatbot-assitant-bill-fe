@@ -11,17 +11,7 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   SignUpCubit({required this.authRepository}) : super(const SignUpState());
 
-  Future<void> checkUser(String phone) async {
 
-  }
-
-  // Future<void> signUp(VerifyAccountResult acc) async {
-  //
-  // }
-
-  Future checkDuplicateUser() async {
-
-  }
 
   void changeName(String name) {
     emit(state.copyWith(name: name));

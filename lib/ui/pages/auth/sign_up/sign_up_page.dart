@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -127,7 +126,7 @@ class _SignUpPageState extends State<SignUpPage> {
           },
           listener: (context, state) {
             if (state.checkUserStatus == LoadStatus.success) {
-              _openSignUpOtp();
+
             }
           },
           buildWhen: (previous, current) => true,
@@ -139,9 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
               cornerRadius: 25,
               backgroundColor: AppColors.signInPrimary,
               disableBackgroundColor: Colors.black,
-              onPressed: () {
-                _cubit.checkDuplicateUser();
-              },
+              onPressed: () {},
               isLoading: false,
             );
           },
@@ -163,22 +160,4 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _openSignUpOtp() async {
-    // VerifyAccountResult result = await Get.to(
-    //         () => BlocProvider.value(
-    //       value: _cubit,
-    //       child: SignUpOTPPage(
-    //         token: _cubit.state.token,
-    //         phoneNumber: _cubit.state.phone,
-    //       ),
-    //     ),
-    //     popGesture: true);
-    // if (result != null) {
-    //   // _cubit.signUp(result);
-    // }
-  }
-
-  void _checkDup() {
-    _cubit.checkDuplicateUser();
-  }
 }
