@@ -52,6 +52,9 @@ class DailyActionEntity {
   @JsonKey(name: 'keyword_desc')
   final List<String>? keywordDesc;
 
+  @JsonKey()
+  final String? note;
+
   DailyActionEntity({
     required this.id,
     required this.username,
@@ -69,6 +72,7 @@ class DailyActionEntity {
     required this.keywordDesc,
     required this.exerciseRate,
     required this.mindRate,
+    required this.note,
   });
 
   DailyActionEntity copyWith({
@@ -88,9 +92,11 @@ class DailyActionEntity {
     List<String>? keywordDesc,
     String? exerciseRate,
     String? mindRate,
+    String? note,
   }) {
     return DailyActionEntity(
       id: id ?? this.id,
+      note: note ?? this.note,
       actionType: actionType ?? this.actionType,
       endedAt: endedAt ?? this.endedAt,
       updatedAt: updatedAt ?? this.updatedAt,

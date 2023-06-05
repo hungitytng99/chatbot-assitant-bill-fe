@@ -436,7 +436,16 @@ class _ExerciseReviewPageState extends State<ExerciseReviewPage> {
                       ),
                       margin: const EdgeInsets.only(right: 10, bottom: 8),
                       decoration: BoxDecoration(
-                        border: Border.all(width: 1.0, color: AppColors.grey),
+                        border: Border.all(
+                            width: 1.0,
+                            color: selectedKeywords.firstWhere(
+                                        (element) =>
+                                            element ==
+                                            state.reviewKeywords?.keywords[i],
+                                        orElse: () => "1") !=
+                                    "1"
+                                ? AppColors.main
+                                : AppColors.grey),
                         borderRadius: const BorderRadius.all(
                           Radius.circular(10),
                         ),

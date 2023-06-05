@@ -8,6 +8,17 @@ enum ExerciseReviewEnum {
 }
 
 extension ExerciseReviewExtension on ExerciseReviewEnum {
+  static ExerciseReviewEnum getFromString(String? review) {
+    switch (review) {
+      case 'Tốt':
+        return ExerciseReviewEnum.good;
+      case 'Tệ':
+        return ExerciseReviewEnum.bad;
+      default:
+        return ExerciseReviewEnum.good;
+    }
+  }
+
   String get title {
     switch (this) {
       case ExerciseReviewEnum.good:

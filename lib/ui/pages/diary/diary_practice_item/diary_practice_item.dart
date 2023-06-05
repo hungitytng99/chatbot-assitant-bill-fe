@@ -4,6 +4,7 @@ import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/daily_actions_entity.dart';
+import 'package:ihz_bql/ui/pages/diary/exercise_review_detail/exercise_review_detail.dart';
 import 'package:ihz_bql/utils/date_utils.dart';
 
 class DiaryPracticeItem extends StatefulWidget {
@@ -39,7 +40,17 @@ class _DiaryPracticeItemState extends State<DiaryPracticeItem> {
     }
     return InkWell(
       onTap: () {
-        print('tap');
+        showModalBottomSheet(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            ),
+            builder: (BuildContext context) {
+              return ExerciseReviewDetail(
+                dailyAction: widget.dailyAction,
+              );
+            },
+            context: context);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(

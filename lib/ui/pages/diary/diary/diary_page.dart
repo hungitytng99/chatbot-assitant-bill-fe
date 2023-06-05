@@ -86,9 +86,7 @@ class _DiaryPageState extends State<DiaryPage> {
                   startDate: getStringFromDateTime(
                     dateTime: AppDateUtils.firstDayOfMonth(focusedDay),
                   ),
-                  endDate: getStringFromDateTime(
-                    dateTime: AppDateUtils.lastDayOfMonth(focusedDay),
-                  ),
+                  endDate: getStringFromDateTime(  dateTime: AppDateUtils.lastDayOfMonth(focusedDay),),
                 );
                 _focusedDay = focusedDay;
               },
