@@ -5,6 +5,7 @@ import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/daily_actions_entity.dart';
 import 'package:ihz_bql/ui/pages/diary/exercise_review_detail/exercise_review_detail.dart';
+import 'package:ihz_bql/ui/widgets/commons/app_snackbar.dart';
 import 'package:ihz_bql/utils/date_utils.dart';
 
 class DiaryPracticeItem extends StatefulWidget {
@@ -40,17 +41,25 @@ class _DiaryPracticeItemState extends State<DiaryPracticeItem> {
     }
     return InkWell(
       onTap: () {
-        showModalBottomSheet(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-            ),
-            builder: (BuildContext context) {
-              return ExerciseReviewDetail(
-                dailyAction: widget.dailyAction,
-              );
-            },
-            context: context);
+        if (widget.dailyAction?.isFeedback ?? false) {
+          showModalBottomSheet(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+              ),
+              builder: (BuildContext context) {
+                return ExerciseReviewDetail(
+                  dailyAction: widget.dailyAction,
+                );
+              },
+              context: context);
+        } else {
+          AppSnackbar.showWarning(
+            title: 'Xin lỗi',
+            message: 'Bạn không để lại đánh giá vào lần tập luyện này',
+          );
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(
@@ -65,10 +74,15 @@ class _DiaryPracticeItemState extends State<DiaryPracticeItem> {
         ),
         width: double.infinity,
         decoration: BoxDecoration(
-          border: Border.all(color: AppColors.primary),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(4),
+          border: Border(
+            top: BorderSide(width: 2.0, color: AppColors.primary),
+            bottom: BorderSide(width: 2.0, color: AppColors.primary),
+            left: BorderSide(width: (widget.dailyAction?.isFeedback ?? false) ? 4.0 : 2.0, color: AppColors.primary),
+            right: BorderSide(width: 2.0, color: AppColors.primary),
           ),
+          // borderRadius: const BorderRadius.all(
+          //   Radius.circular(4),
+          // ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

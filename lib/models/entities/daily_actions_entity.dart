@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:ihz_bql/models/entities/end_practice_response_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'daily_actions_entity.g.dart';
@@ -52,6 +54,9 @@ class DailyActionEntity {
   @JsonKey(name: 'keyword_desc')
   final List<String>? keywordDesc;
 
+  @JsonKey(name: 'is_feedbacked')
+  final bool? isFeedback;
+
   @JsonKey()
   final String? note;
 
@@ -73,6 +78,7 @@ class DailyActionEntity {
     required this.exerciseRate,
     required this.mindRate,
     required this.note,
+    this.isFeedback = false,
   });
 
   DailyActionEntity copyWith({
@@ -93,6 +99,7 @@ class DailyActionEntity {
     String? exerciseRate,
     String? mindRate,
     String? note,
+    bool? isFeedback,
   }) {
     return DailyActionEntity(
       id: id ?? this.id,
@@ -112,6 +119,7 @@ class DailyActionEntity {
       keywordDesc: keywordDesc ?? this.keywordDesc,
       exerciseRate: exerciseRate ?? this.exerciseRate,
       mindRate: mindRate ?? this.mindRate,
+      isFeedback: isFeedback ?? this.isFeedback,
     );
   }
 
