@@ -112,6 +112,7 @@ dependencies:
   readmore: ^2.2.0
   material_dialogs: ^1.1.1
   table_calendar: ^3.0.8
+  web_socket_channel: ^2.4.0
 
 dev_dependencies:
   flutter_test:

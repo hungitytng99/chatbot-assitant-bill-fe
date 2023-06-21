@@ -46,7 +46,7 @@ fastlane add_plugin firebase_app_distribution
 ```
 cd android
 fastlane dxg_th_firebase
-fastlane dxg_staging_firebase
+fastlane dxg_staging_firebase--flavor
 ```
 ## Build iOS
 ```

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:ihz_bql/models/entities/auth_token_entity.dart';
+import 'package:ihz_bql/models/entities/conversation_history_entity.dart';
+import 'package:ihz_bql/models/entities/conversation_response_entity.dart';
 import 'package:ihz_bql/models/entities/daily_history_entity.dart';
 import 'package:ihz_bql/models/entities/end_practice_response_entity.dart';
 import 'package:ihz_bql/models/entities/exercise_entity.dart';
@@ -74,5 +76,18 @@ abstract class ApiClient {
   @GET("/user/practice/daily-history")
   Future<DailyHistoryEntity> getDailyHistoryPractices(
     @Query('date') String date,
+  );
+
+  @GET("/conversations")
+  Future<ConversationHistoryEntity> getConversationHistories(
+    @Query('page') int? page,
+    @Query('limit') int? limit,
+  );
+
+  @GET("/conversations/{id}")
+  Future<ConversationResponseEntity> getMessagesOfConversation(
+    @Path('id') String id,
+    @Query('page') int? page,
+    @Query('limit') int? limit,
   );
 }

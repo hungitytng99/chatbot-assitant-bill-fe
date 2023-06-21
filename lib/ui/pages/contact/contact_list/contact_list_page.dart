@@ -98,6 +98,7 @@ class _ContactListPageState extends State<ContactListPage> {
                                 _contactListCubit.state.activeExperts[i].name,
                             avatarLink: _contactListCubit
                                 .state.activeExperts[i].avatarLink,
+                            width: MediaQuery.of(context).size.width - 71,
                             onPressed: () {
                               Application.router.navigateTo(
                                 context,
@@ -136,6 +137,7 @@ class _ContactListPageState extends State<ContactListPage> {
                                       .name ??
                                   "",
                               status: UserOnlineStatusEnum.OFFLINE,
+                              width: MediaQuery.of(context).size.width - 85,
                               avatarLink: _contactListCubit
                                       .state
                                       .inActiveExperts

@@ -7,6 +7,7 @@ import 'package:ihz_bql/common/app_shadow.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:ihz_bql/database/share_preferences_helper.dart';
 import 'package:ihz_bql/globals/global_data.dart';
+import 'package:ihz_bql/repositories/conversation_repository.dart';
 import 'package:ihz_bql/repositories/diary_repository.dart';
 import 'package:ihz_bql/repositories/diary_repository.dart';
 import 'package:ihz_bql/repositories/exercise_repository.dart';
@@ -15,6 +16,7 @@ import 'package:ihz_bql/repositories/hashtag_repository.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/components/app_cache_image.dart';
+import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_cubit.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_cubit.dart';
 import 'package:ihz_bql/ui/pages/contact/contact_list/contact_list_page.dart';
@@ -76,6 +78,7 @@ class _HomePageState extends State<HomePage>
   AppCubit? _appCubit;
   late ContactListCubit _contactListCubit;
   late CourseListCubit _courseListCubit;
+  late ChatListCubit _chatListCubit;
   late DiaryCubit _diaryCubit;
   late HomeCubit _homeCubit;
   late PageController pageController;
@@ -94,7 +97,12 @@ class _HomePageState extends State<HomePage>
     super.initState();
     ExpertRepository expertRepository =
         RepositoryProvider.of<ExpertRepository>(context);
+    ConversationsRepository conversationsRepository =
+        RepositoryProvider.of<ConversationsRepository>(context);
     _contactListCubit = ContactListCubit(expertRepository: expertRepository);
+    _chatListCubit = ChatListCubit(
+        expertRepository: expertRepository,
+        conversationsRepository: conversationsRepository);
 
     ExerciseRepository exerciseRepository =
         RepositoryProvider.of<ExerciseRepository>(context);
@@ -171,8 +179,11 @@ class _HomePageState extends State<HomePage>
                   BlocProvider.value(
                     value: _homeCubit,
                   ),
+                  BlocProvider.value(
+                    value: _chatListCubit,
+                  ),
                 ],
-                child: ChatListPage(),
+                child: const ChatListPage(),
               );
               break;
           }

@@ -11,11 +11,13 @@ class UserAvatarCardHorizontal extends StatefulWidget {
   String description;
   VoidCallback onPressed;
   String time;
+  double width;
 
   UserAvatarCardHorizontal({
     required this.userFullName,
     required this.avatarLink,
     required this.onPressed,
+    required this.width,
     this.avatarSize = 55,
     this.status = UserOnlineStatusEnum.ONLINE,
     this.description = 'Bắt đầu trò chuyện ngay nào',
@@ -58,9 +60,9 @@ class _UserAvatarCardHorizontalState extends State<UserAvatarCardHorizontal> {
             children: [
               Container(
                 padding: const EdgeInsets.only(top: 6, bottom: 6),
-                // width: MediaQuery.of(context).size.width - widget.avatarSize - 30,
+                width: widget.width,
                 child: Text(
-                  widget.userFullName,
+                  widget.userFullName.trim(),
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyle.blackS14W600,
                   maxLines: 1,
@@ -68,9 +70,12 @@ class _UserAvatarCardHorizontalState extends State<UserAvatarCardHorizontal> {
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(
-                    // width: MediaQuery.of(context).size.width - widget.avatarSize - 70,
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth: widget.width,
+                    ),
                     child: Text(
                       widget.description,
                       overflow: TextOverflow.ellipsis,

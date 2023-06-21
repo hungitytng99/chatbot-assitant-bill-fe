@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/models/entities/chat_content_refactor_entity.dart';
+import 'package:ihz_bql/models/entities/conversation_message_entity.dart';
 
 class ChatItemQuestion extends StatefulWidget {
-  ChatContentRefactorEntity content;
+  ConversationMessageEntity content;
   ChatItemQuestion({
     Key? key,
     required this.content,

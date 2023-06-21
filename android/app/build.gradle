@@ -59,6 +59,25 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+//    flavorDimensions "app"
+//    productFlavors {
+//        dxg {
+//            dimension "app"
+//            applicationId "vn.realagent.building.management"
+//            versionCode flutterVersionCode.toInteger()
+//            versionName flutterVersionName
+//            resValue "string", "app_name", "Wellness Assitant"
+//            resValue "string", "dynamic_link_prefix", "wellness.app.link"
+//        }
+//    }
+//
+//    lintOptions {
+//        disable 'InvalidPackage'
+//        disable "Instantiatable"
+//        checkReleaseBuilds false
+//        abortOnError false
+//    }
 }
 
 flutter {

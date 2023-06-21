@@ -11,6 +11,7 @@ import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:ihz_bql/repositories/auth_repository.dart';
+import 'package:ihz_bql/repositories/conversation_repository.dart';
 import 'package:ihz_bql/repositories/diary_repository.dart';
 import 'package:ihz_bql/repositories/exercise_repository.dart';
 import 'package:ihz_bql/repositories/hashtag_repository.dart';
@@ -88,6 +89,9 @@ class _MyAppState extends State<MyApp> {
         }),
         RepositoryProvider<DiaryRepository>(create: (context) {
           return DiaryRepositoryImpl(_apiClient);
+        }),
+        RepositoryProvider<ConversationsRepository>(create: (context) {
+          return ConversationsRepositoryImpl(_apiClient);
         }),
       ],
       child: MultiBlocProvider(

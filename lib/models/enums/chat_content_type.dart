@@ -1,15 +1,18 @@
-enum ChatContentType {
-  text,
-  question,
+enum ChatActorType {
+  user,
+  bot,
+  system,
 }
 
-extension ChatContentTypeExtension on ChatContentType {
-  String get getType {
+extension ChatActorTypeExtension on ChatActorType {
+  String get getActor {
     switch (this) {
-      case ChatContentType.text:
-        return 'text';
-      case ChatContentType.question:
-        return 'question';
+      case ChatActorType.user:
+        return 'user';
+      case ChatActorType.bot:
+        return 'bot';
+      case ChatActorType.system:
+        return 'system';
     }
   }
 }

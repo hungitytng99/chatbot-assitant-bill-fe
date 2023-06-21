@@ -7,11 +7,13 @@ class UserAvatarCardVertical extends StatefulWidget {
   double avatarSize;
   UserOnlineStatusEnum status;
   String userFullName;
+  String avatarLink;
   VoidCallback onPressed;
 
   UserAvatarCardVertical({
     required this.userFullName,
     required this.onPressed,
+    required this.avatarLink,
     this.avatarSize = 55,
     this.status = UserOnlineStatusEnum.ONLINE,
     Key? key,
@@ -39,7 +41,7 @@ class _UserAvatarCardVerticalState extends State<UserAvatarCardVertical> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           UserAvatarItem(
-            avatarLink: 'https://picsum.photos/200/200',
+            avatarLink: widget.avatarLink,
             size: widget.avatarSize,
             status: widget.status,
           ),

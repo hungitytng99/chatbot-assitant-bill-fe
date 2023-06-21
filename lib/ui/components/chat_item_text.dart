@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/common/app_colors.dart';
-import 'package:ihz_bql/models/entities/chat_content_refactor_entity.dart';
+import 'package:ihz_bql/models/entities/conversation_message_entity.dart';
 
 class ChatItemText extends StatefulWidget {
-  ChatContentRefactorEntity content;
+  ConversationMessageEntity conversationMessage;
   ChatItemText({
-    required this.content,
+    required this.conversationMessage,
     Key? key,
   }) : super(key: key);
   @override
@@ -29,30 +29,27 @@ class _ChatItemTextState extends State<ChatItemText> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (int i = 0; i < widget.content.chatContent.length; i++) ...[
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 8,
-            ),
-            decoration: const BoxDecoration(
-              color: AppColors.grayLighter,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(14),
-                // ? Radius.circular(14)
-                // : Radius.circular(4),
-                bottomRight: Radius.circular(14),
-                topLeft: Radius.circular(4),
-                bottomLeft: Radius.circular(4),
-              ),
-            ),
-            margin: const EdgeInsets.only(
-              left: 8,
-              top: 4,
-            ),
-            child: Text(widget.content.chatContent[i]),
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 8,
           ),
-        ],
+          width: MediaQuery.of(context).size.width * 2 / 3,
+          decoration: const BoxDecoration(
+            color: AppColors.grayLighter,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(14),
+              bottomRight: Radius.circular(14),
+              topLeft: Radius.circular(4),
+              bottomLeft: Radius.circular(4),
+            ),
+          ),
+          margin: const EdgeInsets.only(
+            left: 8,
+            top: 4,
+          ),
+          child: Text(widget.conversationMessage.content ?? ""),
+        ),
       ],
     );
   }
