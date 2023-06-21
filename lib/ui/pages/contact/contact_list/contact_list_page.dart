@@ -98,7 +98,7 @@ class _ContactListPageState extends State<ContactListPage> {
                                 _contactListCubit.state.activeExperts[i].name,
                             avatarLink: _contactListCubit
                                 .state.activeExperts[i].avatarLink,
-                            width: MediaQuery.of(context).size.width - 71,
+                            width: MediaQuery.of(context).size.width - 75,
                             onPressed: () {
                               Application.router.navigateTo(
                                 context,

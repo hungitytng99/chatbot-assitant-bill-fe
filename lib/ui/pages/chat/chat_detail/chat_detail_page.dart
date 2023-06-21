@@ -6,9 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/models/entities/conversation_history_item_entity.dart';
 import 'package:ihz_bql/models/entities/conversation_message_entity.dart';
-import 'package:ihz_bql/models/enums/chat_content_type.dart';
+import 'package:ihz_bql/models/enums/conversation_status.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_conversation/chat_conversation.dart';
@@ -23,7 +22,7 @@ class ChatDetailPage extends StatefulWidget {
   final ConversationHistoryItemArgument? conversationHistoryItemArg;
   const ChatDetailPage({
     Key? key,
-    required this.conversationHistoryItemArg,
+    this.conversationHistoryItemArg,
   }) : super(key: key);
   @override
   _ChatDetailPageState createState() => _ChatDetailPageState();
@@ -35,7 +34,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   late final ChatDetailCubit _chatDetailCubit;
   final PagingController<int, ConversationMessageEntity> _pagingController =
       PagingController(firstPageKey: 0);
-
+  late ConversationStatus conversationStatus = ConversationStatus.initial;
   late IOWebSocketChannel channel;
   String message = "";
 
@@ -56,6 +55,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     channel.stream.listen((event) {
       handleSocketResponseEvent(jsonDecode(event));
     });
+    conversationStatus = ConversationStatus.initial;
     _chatDetailCubit = BlocProvider.of<ChatDetailCubit>(context);
   }
 
@@ -88,7 +88,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final List<ConversationMessageEntity> chatConversation =
-          await _chatDetailCubit.getChatConversation(pageKey);
+          await _chatDetailCubit.getChatConversation(
+              pageKey, widget.conversationHistoryItemArg?.conversationId ?? "");
       final bool isLastPage = chatConversation.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(chatConversation);
@@ -139,7 +140,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             ),
           ),
           Visibility(
-            visible: widget.conversationHistoryItemArg?.isDisabledChat ?? false,
+            visible: conversationStatus == ConversationStatus.ended,
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10,
@@ -152,8 +153,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             ),
           ),
           Visibility(
-            visible:
-                !(widget.conversationHistoryItemArg?.isDisabledChat ?? false),
+            visible: !(conversationStatus == ConversationStatus.ended),
             child: _buildChatType(),
           ),
         ],
@@ -175,10 +175,13 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     return Container(
       margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 8),
       child: TextField(
+        enabled: conversationStatus == ConversationStatus.ready,
         controller: _chatController,
         decoration: InputDecoration(
             border: const OutlineInputBorder(),
-            hintText: 'Bạn muốn hỏi gì nào...',
+            hintText: conversationStatus == ConversationStatus.ready
+                ? 'Bạn muốn hỏi gì nào...'
+                : 'Vui lòng đợi kết nối...',
             suffixIcon: InkWell(
               onTap: () {
                 channel.sink.add(jsonEncode({"message": '123'}));
@@ -199,7 +202,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 padding: const EdgeInsetsDirectional.only(end: 20.0),
                 child: Image.asset(
                   AppImages.icSend,
-                  color: AppColors.primary,
+                  color: conversationStatus == ConversationStatus.ready
+                      ? AppColors.primary
+                      : AppColors.grey,
                   fit: BoxFit.contain,
                   width: 6,
                   height: 6,
@@ -210,6 +215,12 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               borderSide: BorderSide(
                 width: 1,
                 color: AppColors.primary,
+              ), //<-- SEE HERE
+            ),
+            disabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 1,
+                color: AppColors.grey,
               ), //<-- SEE HERE
             ),
             contentPadding: const EdgeInsets.symmetric(
@@ -244,13 +255,13 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         Expanded(
           child: UserAvatarCardHorizontal(
             userFullName:
-                widget.conversationHistoryItemArg?.conversationHistory?.title ??
-                    "",
+                widget.conversationHistoryItemArg?.conversationTitle ??
+                    "Đoạn hội thoại mới",
             description:
-                '${widget.conversationHistoryItemArg?.conversationHistory?.expert?.name ?? ""} • Đang hoạt động',
-            avatarLink: widget.conversationHistoryItemArg?.conversationHistory
-                    ?.expert?.avatarLink ??
-                "",
+                '${widget.conversationHistoryItemArg?.expertEntity?.name ?? ""} • Đang hoạt động',
+            avatarLink:
+                widget.conversationHistoryItemArg?.expertEntity?.avatarLink ??
+                    "",
             avatarSize: 41,
             onPressed: () {},
             width: MediaQuery.of(context).size.width - 145,

@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/conversation_history_item_entity.dart';
+import 'package:ihz_bql/models/entities/expert_entity.dart';
+import 'package:ihz_bql/models/enums/conversation_status.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
@@ -110,6 +112,19 @@ class _ChatListPageState extends State<ChatListPage> {
                                                 context,
                                                 Routes.chatDetail,
                                                 rootNavigator: true,
+                                                routeSettings: RouteSettings(
+                                                  arguments:
+                                                      ConversationHistoryItemArgument(
+                                                    expertEntity: _chatListCubit
+                                                        .state.activeExperts[i],
+                                                    conversationId: "",
+                                                    conversationTitle:
+                                                        "Đoạn hội thoại mới",
+                                                    conversationStatus:
+                                                        ConversationStatus
+                                                            .initial,
+                                                  ),
+                                                ),
                                               );
                                             },
                                           ),
@@ -194,10 +209,20 @@ class _ChatListPageState extends State<ChatListPage> {
                                         routeSettings: RouteSettings(
                                           arguments:
                                               ConversationHistoryItemArgument(
-                                            conversationHistory: state
+                                            expertEntity: state
                                                 .conversationHistoryEntity
-                                                ?.conversations[i],
-                                            isDisabledChat: true,
+                                                ?.conversations[i]
+                                                .expert,
+                                            conversationId: state
+                                                .conversationHistoryEntity
+                                                ?.conversations[i]
+                                                .id,
+                                            conversationTitle: state
+                                                .conversationHistoryEntity
+                                                ?.conversations[i]
+                                                .title,
+                                            conversationStatus:
+                                                ConversationStatus.ended,
                                           ),
                                         ),
                                       );
@@ -222,10 +247,14 @@ class _ChatListPageState extends State<ChatListPage> {
 }
 
 class ConversationHistoryItemArgument {
-  ConversationHistoryItemEntity? conversationHistory;
-  bool isDisabledChat;
+  ExpertEntity? expertEntity;
+  String? conversationId;
+  String? conversationTitle;
+  ConversationStatus conversationStatus;
   ConversationHistoryItemArgument({
-    required this.conversationHistory,
-    this.isDisabledChat = false,
+    required this.expertEntity,
+    required this.conversationId,
+    required this.conversationTitle,
+    this.conversationStatus = ConversationStatus.ended,
   });
 }

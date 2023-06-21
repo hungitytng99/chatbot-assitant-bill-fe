@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ihz_bql/models/entities/conversation_history_item_entity.dart';
 import 'package:ihz_bql/models/entities/conversation_message_entity.dart';
 import 'package:ihz_bql/models/enums/chat_content_type.dart';
 import 'package:ihz_bql/models/enums/user_online_status.dart';
@@ -15,7 +14,7 @@ class ChatConversation extends StatefulWidget {
   ChatConversation({
     Key? key,
     required this.pagingController,
-    required this.conversationHistoryItemArg,
+    this.conversationHistoryItemArg,
   }) : super(key: key);
   @override
   _ChatConversationState createState() => _ChatConversationState();
@@ -73,6 +72,18 @@ class _ChatConversationState extends State<ChatConversation> {
           }
           return Container();
         },
+        noItemsFoundIndicatorBuilder: (_) => Column(
+          children: const [
+            SizedBox(
+              height: 22,
+            ),
+            CircularProgressIndicator(),
+            SizedBox(
+              height: 14,
+            ),
+            Text('Đang khởi tạo kết nối...')
+          ],
+        ),
       ),
     );
   }
@@ -90,9 +101,9 @@ class _ChatConversationState extends State<ChatConversation> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             UserAvatarItem(
-              avatarLink: widget.conversationHistoryItemArg?.conversationHistory
-                      ?.expert?.avatarLink ??
-                  "",
+              avatarLink:
+                  widget.conversationHistoryItemArg?.expertEntity?.avatarLink ??
+                      "",
               size: 20,
               status: UserOnlineStatusEnum.OFFLINE,
             ),

@@ -14,11 +14,12 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
 
   Future<List<ConversationMessageEntity>> getChatConversation(
     int pageKey,
+    String conversationId,
   ) async {
     try {
       final ConversationResponseEntity result =
           await conversationsRepository.getMessagesOfConversation(
-        id: "775f66a6-9efa-4667-8a4a-fa78f963f3f2",
+        id: conversationId,
       );
       return result.conversation.messages ?? [];
     } catch (e) {
