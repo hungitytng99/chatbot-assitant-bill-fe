@@ -1,17 +1,27 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ihz_bql/common/app_colors.dart';
+import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/conversation_message_entity.dart';
-import 'package:ihz_bql/models/enums/chat_content_type.dart';
+import 'package:ihz_bql/models/entities/socket/user_send_message_entity.dart';
+import 'package:ihz_bql/models/enums/chat_actor_type.dart';
+import 'package:ihz_bql/models/enums/chat_event_name.dart';
+import 'package:ihz_bql/models/enums/chat_event_type.dart';
+import 'package:ihz_bql/models/enums/conversation_status.dart';
 import 'package:ihz_bql/models/enums/user_online_status.dart';
 import 'package:ihz_bql/ui/components/chat_item_text.dart';
+import 'package:ihz_bql/ui/pages/chat/chat_detail/chat_detail_cubit.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_item.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:web_socket_channel/io.dart';
 
 class ChatConversation extends StatefulWidget {
-  PagingController<int, ConversationMessageEntity> pagingController;
+  final PagingController<int, ConversationMessageEntity> pagingController;
   final ConversationHistoryItemArgument? conversationHistoryItemArg;
-
-  ChatConversation({
+  const ChatConversation({
     Key? key,
     required this.pagingController,
     this.conversationHistoryItemArg,
@@ -21,9 +31,11 @@ class ChatConversation extends StatefulWidget {
 }
 
 class _ChatConversationState extends State<ChatConversation> {
+  late ChatDetailCubit _chatDetailCubit;
   @override
   void initState() {
     super.initState();
+    _chatDetailCubit = BlocProvider.of<ChatDetailCubit>(context);
   }
 
   @override
@@ -58,32 +70,89 @@ class _ChatConversationState extends State<ChatConversation> {
               conversationMessage: chatContent,
             );
           }
-          if (chatContent.actor == ChatActorType.bot.getActor &&
-              chatContent.content!.isNotEmpty) {
+          if (chatContent.actor == ChatActorType.bot.getActor) {
             return _buildPartnerMessage(
               conversationMessage: chatContent,
             );
           }
-          if (chatContent.actor == ChatActorType.system.getActor &&
-              chatContent.content!.isNotEmpty) {
+          if (chatContent.actor == ChatActorType.system.getActor) {
             return _buildPartnerMessage(
               conversationMessage: chatContent,
             );
           }
           return Container();
         },
-        noItemsFoundIndicatorBuilder: (_) => Column(
-          children: const [
-            SizedBox(
-              height: 22,
+        noItemsFoundIndicatorBuilder: (_) =>
+            _chatDetailCubit.state.conversationStatus ==
+                    ConversationStatus.initial
+                ? Column(
+                    children: const [
+                      SizedBox(
+                        height: 22,
+                      ),
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 14,
+                      ),
+                      Text('Đang khởi tạo kết nối...')
+                    ],
+                  )
+                : const Center(
+                    child: Text(
+                    'Đã kết nối thành công. Vui lòng đặt câu hỏi',
+                  )),
+      ),
+    );
+  }
+
+  Widget _buildSelectMessage({
+    String? question = "",
+    List<String>? answers = const [],
+    void Function(String?)? onSelectAnswer,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 6,
+      ),
+      constraints: BoxConstraints(
+        minWidth: 0,
+        maxWidth: MediaQuery.of(context).size.width * 2 / 3,
+      ),
+      decoration: const BoxDecoration(
+        color: AppColors.backgroundGray,
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            question ?? "",
+          ),
+          for (int i = 0; i < (answers ?? []).length; i++) ...[
+            InkWell(
+              onTap: () => onSelectAnswer!(answers![i]),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  border: Border.all(color: AppColors.primaryLighter),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                child: Text(
+                  answers?[i] ?? "",
+                  style: AppTextStyle.primaryS14Regular,
+                ),
+              ),
             ),
-            CircularProgressIndicator(),
-            SizedBox(
-              height: 14,
+            const SizedBox(
+              height: 6,
             ),
-            Text('Đang khởi tạo kết nối...')
           ],
-        ),
+        ],
       ),
     );
   }
@@ -107,7 +176,38 @@ class _ChatConversationState extends State<ChatConversation> {
               size: 20,
               status: UserOnlineStatusEnum.OFFLINE,
             ),
-            ChatItemText(conversationMessage: conversationMessage),
+            const SizedBox(
+              width: 10,
+            ),
+            if (conversationMessage.type == ChatEventType.select.getString) ...[
+              _buildSelectMessage(
+                question: conversationMessage.question,
+                answers: conversationMessage.answers,
+                onSelectAnswer: (answer) {
+                  // Cập nhật giao diện
+                  // if (_chatDetailCubit.state.conversationStatus !=
+                  //     ConversationStatus.request) {
+                  widget.pagingController.itemList = [
+                    ConversationMessageEntity(
+                      id: answer ?? "",
+                      type: ChatEventType.text.getString,
+                      actor: ChatActorType.user.getActor,
+                      content: answer,
+                    ),
+                    ...?widget.pagingController.itemList,
+                  ];
+                  _chatDetailCubit.addConversationObjectives(
+                    objective: answer ?? "",
+                  );
+                  // Emit sự kiện
+                  _chatDetailCubit.sendClientMessage();
+                  // }
+                },
+              )
+            ],
+            if (conversationMessage.type == ChatEventType.text.getString) ...[
+              ChatItemText(conversationMessage: conversationMessage),
+            ],
           ],
         ),
       ),

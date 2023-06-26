@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +6,15 @@ import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/conversation_message_entity.dart';
+import 'package:ihz_bql/models/entities/socket/base_socket_response_entity.dart';
+import 'package:ihz_bql/models/entities/socket/socket_select_entity.dart';
+import 'package:ihz_bql/models/entities/socket/socket_text_entity.dart';
+import 'package:ihz_bql/models/enums/chat_actor_type.dart';
+import 'package:ihz_bql/models/enums/chat_event_name.dart';
+import 'package:ihz_bql/models/enums/chat_event_type.dart';
 import 'package:ihz_bql/models/enums/conversation_status.dart';
+import 'package:ihz_bql/models/enums/load_status.dart';
+import 'package:ihz_bql/models/params/create_conversation_body.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_conversation/chat_conversation.dart';
@@ -17,6 +24,7 @@ import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.
 import 'package:ihz_bql/ui/pages/homepage/home_page.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:uuid/uuid.dart';
 
 class ChatDetailPage extends StatefulWidget {
   final ConversationHistoryItemArgument? conversationHistoryItemArg;
@@ -34,13 +42,12 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   late final ChatDetailCubit _chatDetailCubit;
   final PagingController<int, ConversationMessageEntity> _pagingController =
       PagingController(firstPageKey: 0);
-  late ConversationStatus conversationStatus = ConversationStatus.initial;
-  late IOWebSocketChannel channel;
+  IOWebSocketChannel? channel;
   String message = "";
 
   @override
   void dispose() {
-    channel.sink.close();
+    channel?.sink.close();
     super.dispose();
   }
 
@@ -50,37 +57,58 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    channel = IOWebSocketChannel.connect(
-        'ws://35.185.176.26:8088/conversations/1048d413-3172-4c57-879f-f0d9c22600e2/interact/d9cd424f-c64c-45f2-9589-abc6ebfb76bf');
-    channel.stream.listen((event) {
-      handleSocketResponseEvent(jsonDecode(event));
-    });
-    conversationStatus = ConversationStatus.initial;
     _chatDetailCubit = BlocProvider.of<ChatDetailCubit>(context);
+    _chatDetailCubit.createNewConversations(
+      body: CreateConversationBody(
+          expertId: widget.conversationHistoryItemArg?.expertEntity?.id ?? ""),
+    );
   }
 
   String currentReply = "";
   void handleSocketResponseEvent(event) {
-    if (event['event'] == 'message_streaming') {
-      // if (currentReply.isEmpty) {
-      currentReply = currentReply += event['token'] ?? "";
-      _pagingController.itemList
-          ?.removeWhere((element) => element.id == event['message_id']);
-      // _pagingController.itemList = [
-      //   ConversationMessageEntity(
-      //     id: event['message_id'],
-      //     chatContent: [currentReply],
-      //     isOwner: true,
-      //     type: ChatActorType.text.getType,
-      //   ),
-      //   ...?_pagingController.itemList,
-      // ];
-      // } else {
-      //   _pagingController.itemList.;
-      // }
+    print("✅ [SOCKET] Event: ${event}");
+    final BaseSocketResponseEntity socketEvent =
+        BaseSocketResponseEntity.fromJson(event);
+    if (socketEvent.event == ChatEventsName.topicInit.getString &&
+        socketEvent.type == ChatEventType.select.getString) {
+      final SocketSelectEntity socketContent =
+          SocketSelectEntity.fromJson(event);
+      _pagingController.itemList = [
+        ConversationMessageEntity(
+          id: socketEvent.messageId ?? "",
+          type: socketEvent.type ?? "",
+          actor: ChatActorType.bot.getActor,
+          question: socketContent.question,
+          answers: socketContent.answers,
+        ),
+        ...?_pagingController.itemList,
+      ];
     }
 
-    if (event['event'] == 'message_stream_end') {
+    if (socketEvent.event == ChatEventsName.messageStreaming.getString) {
+      _chatDetailCubit.changeConversationStatusState(
+        conversationStatus: ConversationStatus.ready,
+      );
+      final SocketTextEntity socketContent = SocketTextEntity.fromJson(event);
+      currentReply += socketContent.message;
+      _pagingController.itemList?.removeWhere(
+        (element) => element.id == socketEvent.messageId,
+      );
+      _pagingController.itemList = [
+        ConversationMessageEntity(
+          id: socketEvent.messageId ?? "",
+          actor: ChatActorType.bot.getActor,
+          content: currentReply,
+          type: socketEvent.type ?? "",
+        ),
+        ...?_pagingController.itemList,
+      ];
+    }
+
+    if (socketEvent.event == ChatEventsName.messageStreamEnd.getString) {
+      _chatDetailCubit.changeConversationStatusState(
+        conversationStatus: ConversationStatus.ready,
+      );
       currentReply = "";
     }
   }
@@ -134,13 +162,52 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: ChatConversation(
-              pagingController: _pagingController,
-              conversationHistoryItemArg: widget.conversationHistoryItemArg,
+            child: BlocListener<ChatDetailCubit, ChatDetailState>(
+              listener: (context, state) {
+                if (state.createConversationStatus == LoadStatus.success) {
+                  print(
+                      '✅ [SOCKET] Connect to ${state.createConversationEntity?.socketPath ?? ""}');
+                  channel = IOWebSocketChannel.connect(
+                    state.createConversationEntity?.socketPath ?? "",
+                  );
+                  _chatDetailCubit.changeSocketChannel(socketChannel: channel);
+                  channel?.stream.listen(
+                    (event) {
+                      try {
+                        handleSocketResponseEvent(
+                          jsonDecode(event.replaceAll("'", '"')),
+                        );
+                      } catch (e) {
+                        print("✅ [SOCKET] Event: ${event}");
+                        print("[SOCKET_ERROR]: $e");
+                      }
+                    },
+                    onError: (event) {
+                      _chatDetailCubit.changeConversationStatusState(
+                        conversationStatus: ConversationStatus.error,
+                      );
+                    },
+                  );
+                  setState(() {
+                    _chatDetailCubit.changeConversationStatusState(
+                      conversationStatus: ConversationStatus.ready,
+                    );
+                  });
+                }
+              },
+              listenWhen: (prev, current) {
+                return prev.createConversationStatus !=
+                    current.createConversationStatus;
+              },
+              child: ChatConversation(
+                pagingController: _pagingController,
+                conversationHistoryItemArg: widget.conversationHistoryItemArg,
+              ),
             ),
           ),
           Visibility(
-            visible: conversationStatus == ConversationStatus.ended,
+            visible: _chatDetailCubit.state.conversationStatus ==
+                ConversationStatus.ended,
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10,
@@ -153,7 +220,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             ),
           ),
           Visibility(
-            visible: !(conversationStatus == ConversationStatus.ended),
+            visible: !(_chatDetailCubit.state.conversationStatus ==
+                ConversationStatus.ended),
             child: _buildChatType(),
           ),
         ],
@@ -161,73 +229,93 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     );
   }
 
+  String getHintTextChat(ConversationStatus? conversationStatus) {
+    switch (conversationStatus) {
+      case ConversationStatus.initial:
+        return "Đang khởi tạo kết nối...";
+      case ConversationStatus.request:
+        return "Đang nghĩ...";
+      case ConversationStatus.ready:
+        return "Bạn muốn hỏi gì nào...";
+      case ConversationStatus.ended:
+        return "Cuộc hội thoại đã kết thúc";
+      case ConversationStatus.error:
+        return "Một lỗi đã xáy ra!";
+      default:
+        return "Bạn muốn hỏi gì nào...";
+    }
+  }
+
   Widget _buildChatType() {
-    // return Column(
-    //   children: [
-    //     StreamBuilder(
-    //       stream: channel.stream,
-    //       builder: (context, snapshot) {
-    //         return Text(snapshot.hasData ? '${snapshot.data}' : '');
-    //       },
-    //     ),
-    //   ],
-    // );
-    return Container(
-      margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 8),
-      child: TextField(
-        enabled: conversationStatus == ConversationStatus.ready,
-        controller: _chatController,
-        decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            hintText: conversationStatus == ConversationStatus.ready
-                ? 'Bạn muốn hỏi gì nào...'
-                : 'Vui lòng đợi kết nối...',
-            suffixIcon: InkWell(
-              onTap: () {
-                channel.sink.add(jsonEncode({"message": '123'}));
-                if (_chatController.text.isNotEmpty) {
-                  // _pagingController.itemList = [
-                  //   ConversationMessageEntity(
-                  //     id: "-1",
-                  //     chatContent: [_chatController.text],
-                  //     isOwner: false,
-                  //     type: ChatActorType.text.getType,
-                  //   ),
-                  //   ...?_pagingController.itemList,
-                  // ];
-                  _chatController.text = '';
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsetsDirectional.only(end: 20.0),
-                child: Image.asset(
-                  AppImages.icSend,
-                  color: conversationStatus == ConversationStatus.ready
-                      ? AppColors.primary
-                      : AppColors.grey,
-                  fit: BoxFit.contain,
-                  width: 6,
-                  height: 6,
+    return BlocBuilder<ChatDetailCubit, ChatDetailState>(
+      buildWhen: (prev, current) =>
+          prev.conversationStatus != current.conversationStatus,
+      builder: (context, state) {
+        return Container(
+          margin:
+              const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 8),
+          child: TextField(
+            enabled: _chatDetailCubit.state.conversationStatus ==
+                    ConversationStatus.ready &&
+                _chatDetailCubit.state.conversationStatus !=
+                    ConversationStatus.request,
+            controller: _chatController,
+            decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText:
+                    getHintTextChat(_chatDetailCubit.state.conversationStatus),
+                suffixIcon: InkWell(
+                  onTap: () {
+                    if (_chatController.text.isNotEmpty) {
+                      _chatDetailCubit.sendClientMessage(
+                        message: _chatController.text,
+                      );
+                      const uuid = Uuid();
+                      _pagingController.itemList = [
+                        ConversationMessageEntity(
+                          id: uuid.v4(),
+                          actor: ChatActorType.user.getActor,
+                          content: _chatController.text,
+                          type: ChatEventType.text.getString,
+                        ),
+                        ...?_pagingController.itemList,
+                      ];
+                      _chatController.text = '';
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 20.0),
+                    child: Image.asset(
+                      AppImages.icSend,
+                      color: _chatDetailCubit.state.conversationStatus ==
+                              ConversationStatus.ready
+                          ? AppColors.primary
+                          : AppColors.grey,
+                      fit: BoxFit.contain,
+                      width: 6,
+                      height: 6,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                width: 1,
-                color: AppColors.primary,
-              ), //<-- SEE HERE
-            ),
-            disabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                width: 1,
-                color: AppColors.grey,
-              ), //<-- SEE HERE
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 8,
-            )),
-      ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: AppColors.primary,
+                  ), //<-- SEE HERE
+                ),
+                disabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: AppColors.grey,
+                  ), //<-- SEE HERE
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 8,
+                )),
+          ),
+        );
+      },
     );
   }
 

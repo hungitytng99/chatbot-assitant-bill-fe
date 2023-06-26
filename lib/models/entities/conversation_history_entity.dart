@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 
 import 'package:ihz_bql/models/entities/conversation_history_item_entity.dart';
 import 'package:json_annotation/json_annotation.dart';

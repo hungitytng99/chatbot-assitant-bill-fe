@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:ihz_bql/models/entities/end_practice_response_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'conversation_message_entity.g.dart';
@@ -11,6 +9,12 @@ class ConversationMessageEntity {
   @JsonKey()
   final String? content;
   @JsonKey()
+  final String type;
+  @JsonKey()
+  final String? question;
+  @JsonKey()
+  final List<String>? answers;
+  @JsonKey()
   final String? actor;
 
   @JsonKey(name: 'updated_at')
@@ -21,22 +25,32 @@ class ConversationMessageEntity {
 
   ConversationMessageEntity({
     required this.id,
-    required this.content,
     required this.actor,
-    required this.updatedAt,
-    required this.createdAt,
+    required this.type,
+    this.content,
+    this.updatedAt,
+    this.createdAt,
+    this.question,
+    this.answers,
   });
 
-  ConversationMessageEntity copyWith(
-      {String? id,
-      String? content,
-      String? actor,
-      DateTime? updatedAt,
-      DateTime? createdAt}) {
+  ConversationMessageEntity copyWith({
+    String? id,
+    String? content,
+    String? type,
+    String? actor,
+    String? question,
+    List<String>? answers,
+    DateTime? updatedAt,
+    DateTime? createdAt,
+  }) {
     return ConversationMessageEntity(
       id: id ?? this.id,
       content: content ?? this.content,
+      type: type ?? this.type,
       actor: actor ?? this.actor,
+      question: question ?? this.question,
+      answers: answers ?? this.answers,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

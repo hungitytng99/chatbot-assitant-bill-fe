@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 
 import 'package:ihz_bql/models/entities/conversation_detail_entity.dart';
 import 'package:ihz_bql/models/entities/conversation_detail_entity.dart';

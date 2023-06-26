@@ -34,9 +34,12 @@ class _ChatItemTextState extends State<ChatItemText> {
             horizontal: 14,
             vertical: 8,
           ),
-          width: MediaQuery.of(context).size.width * 2 / 3,
+          constraints: BoxConstraints(
+            minWidth: 0,
+            maxWidth: MediaQuery.of(context).size.width * 2 / 3,
+          ),
           decoration: const BoxDecoration(
-            color: AppColors.grayLighter,
+            color: AppColors.backgroundGray,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(14),
               bottomRight: Radius.circular(14),
@@ -45,8 +48,8 @@ class _ChatItemTextState extends State<ChatItemText> {
             ),
           ),
           margin: const EdgeInsets.only(
-            left: 8,
             top: 4,
+            right: 15,
           ),
           child: Text(widget.conversationMessage.content ?? ""),
         ),

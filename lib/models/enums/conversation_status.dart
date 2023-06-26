@@ -1,2 +1,1 @@
-
-enum ConversationStatus { initial, ready, ended }
+enum ConversationStatus { initial, ready, request, error, ended }

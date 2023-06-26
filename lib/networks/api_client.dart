@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:ihz_bql/models/entities/auth_token_entity.dart';
 import 'package:ihz_bql/models/entities/conversation_history_entity.dart';
 import 'package:ihz_bql/models/entities/conversation_response_entity.dart';
+import 'package:ihz_bql/models/entities/create_conversation_entity.dart';
 import 'package:ihz_bql/models/entities/daily_history_entity.dart';
 import 'package:ihz_bql/models/entities/end_practice_response_entity.dart';
 import 'package:ihz_bql/models/entities/exercise_entity.dart';
@@ -12,6 +13,7 @@ import 'package:ihz_bql/models/entities/review_keywords_entity.dart';
 import 'package:ihz_bql/models/entities/upcomming_expert_entity.dart';
 import 'package:ihz_bql/models/entities/user_entity.dart';
 import 'package:ihz_bql/models/params/auth/sign_up_body.dart';
+import 'package:ihz_bql/models/params/create_conversation_body.dart';
 import 'package:ihz_bql/models/params/end_exercise_body.dart';
 import 'package:ihz_bql/models/params/feedback_exercise_body.dart';
 import 'package:retrofit/http.dart';
@@ -89,5 +91,9 @@ abstract class ApiClient {
     @Path('id') String id,
     @Query('page') int? page,
     @Query('limit') int? limit,
+  );
+  @POST("/conversations")
+  Future<CreateConversationEntity> createNewConversations(
+    @Body() CreateConversationBody? body,
   );
 }

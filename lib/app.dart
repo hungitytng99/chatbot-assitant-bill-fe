@@ -19,6 +19,7 @@ import 'package:ihz_bql/repositories/user_repository.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/navigation_observer.dart';
 import 'package:ihz_bql/routers/routers.dart';
+import 'package:ihz_bql/ui/pages/chat/chat_detail/chat_detail_cubit.dart';
 import 'generated/l10n.dart';
 import 'networks/api_client.dart';
 import 'networks/api_util.dart';
@@ -104,6 +105,13 @@ class _MyAppState extends State<MyApp> {
             return AppCubit(
               userRepository: _userRepository,
               authRepository: _authRepository,
+            );
+          }),
+          BlocProvider<ChatDetailCubit>(create: (context) {
+            ConversationsRepository conversationsRepository =
+                RepositoryProvider.of<ConversationsRepository>(context);
+            return ChatDetailCubit(
+              conversationsRepository: conversationsRepository,
             );
           }),
           BlocProvider<AppSettingCubit>(create: (context) {

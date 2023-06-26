@@ -113,6 +113,7 @@ dependencies:
   material_dialogs: ^1.1.1
   table_calendar: ^3.0.8
   web_socket_channel: ^2.4.0
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
