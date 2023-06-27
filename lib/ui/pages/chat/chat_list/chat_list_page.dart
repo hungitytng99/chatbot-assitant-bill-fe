@@ -123,6 +123,8 @@ class _ChatListPageState extends State<ChatListPage> {
                                                     conversationStatus:
                                                         ConversationStatus
                                                             .initial,
+                                                    isCreateNewConversation:
+                                                        true,
                                                   ),
                                                 ),
                                               );
@@ -223,6 +225,7 @@ class _ChatListPageState extends State<ChatListPage> {
                                                 .title,
                                             conversationStatus:
                                                 ConversationStatus.ended,
+                                            isCreateNewConversation: false,
                                           ),
                                         ),
                                       );
@@ -251,10 +254,12 @@ class ConversationHistoryItemArgument {
   String? conversationId;
   String? conversationTitle;
   ConversationStatus conversationStatus;
+  bool isCreateNewConversation;
   ConversationHistoryItemArgument({
     required this.expertEntity,
     required this.conversationId,
     required this.conversationTitle,
+    this.isCreateNewConversation = false,
     this.conversationStatus = ConversationStatus.ended,
   });
 }

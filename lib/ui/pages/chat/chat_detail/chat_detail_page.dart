@@ -7,6 +7,7 @@ import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/conversation_message_entity.dart';
 import 'package:ihz_bql/models/entities/socket/base_socket_response_entity.dart';
+import 'package:ihz_bql/models/entities/socket/socket_recommend_entity.dart';
 import 'package:ihz_bql/models/entities/socket/socket_select_entity.dart';
 import 'package:ihz_bql/models/entities/socket/socket_text_entity.dart';
 import 'package:ihz_bql/models/enums/chat_actor_type.dart';
@@ -22,9 +23,11 @@ import 'package:ihz_bql/ui/pages/chat/chat_detail/chat_detail_cubit.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_page.dart';
+import 'package:ihz_bql/utils/logger.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:uuid/uuid.dart';
+import 'package:collection/collection.dart';
 
 class ChatDetailPage extends StatefulWidget {
   final ConversationHistoryItemArgument? conversationHistoryItemArg;
@@ -62,15 +65,17 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       _fetchPage(pageKey);
     });
     _chatDetailCubit = BlocProvider.of<ChatDetailCubit>(context);
-    _chatDetailCubit.createNewConversations(
-      body: CreateConversationBody(
-          expertId: widget.conversationHistoryItemArg?.expertEntity?.id ?? ""),
-    );
+    if (widget.conversationHistoryItemArg?.isCreateNewConversation ?? false) {
+      _chatDetailCubit.createNewConversations(
+        body: CreateConversationBody(
+            expertId:
+                widget.conversationHistoryItemArg?.expertEntity?.id ?? ""),
+      );
+    }
   }
 
   String currentReply = "";
   void handleSocketResponseEvent(event) {
-    print("✅ [SOCKET] Event: ${event}");
     final BaseSocketResponseEntity socketEvent =
         BaseSocketResponseEntity.fromJson(event);
     if (socketEvent.event == ChatEventsName.topicInit.getString &&
@@ -127,6 +132,16 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       currentReply = "";
       return;
     }
+
+    if (socketEvent.event == ChatEventsName.topicRecommendation.getString &&
+        socketEvent.type == ChatEventType.recommend.getString) {
+      final SocketRecommendEntity socketContent =
+          SocketRecommendEntity.fromJson(event);
+      _chatDetailCubit.updateSuggestConversationObjectives(
+        suggestObjectives: socketContent.objectives,
+      );
+      return;
+    }
   }
 
   Future<void> _fetchPage(int pageKey) async {
@@ -181,21 +196,21 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             child: BlocListener<ChatDetailCubit, ChatDetailState>(
               listener: (context, state) {
                 if (state.createConversationStatus == LoadStatus.success) {
-                  print(
-                      '✅ [SOCKET] Connect to ${state.createConversationEntity?.socketPath ?? ""}');
+                  logger.d(
+                      '[SOCKET] Connect to ${state.createConversationEntity?.socketPath ?? ""}');
                   channel = IOWebSocketChannel.connect(
                     state.createConversationEntity?.socketPath ?? "",
                   );
                   _chatDetailCubit.changeSocketChannel(socketChannel: channel);
                   channel?.stream.listen(
                     (event) {
+                      logger.d("✅ [SOCKET] Event: $event");
                       try {
                         handleSocketResponseEvent(
                           jsonDecode(event.replaceAll("'", '"')),
                         );
                       } catch (e) {
-                        print("✅ [SOCKET] Event: ${event}");
-                        print("[SOCKET_ERROR]: $e");
+                        logger.d("[SOCKET_ERROR]: $e");
                       }
                     },
                     onError: (event) {
@@ -238,10 +253,134 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           Visibility(
             visible: !(_chatDetailCubit.state.conversationStatus ==
                 ConversationStatus.ended),
-            child: _buildChatType(),
+            child: Column(
+              children: [
+                _buildSuggestTopics(),
+                _buildChatType(),
+              ],
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSuggestTopics() {
+    return Row(
+      children: [
+        BlocBuilder<ChatDetailCubit, ChatDetailState>(
+          buildWhen: (prev, current) {
+            return prev.currentObjectives != current.currentObjectives;
+          },
+          builder: (context, state) {
+            return Row(
+              children: [
+                for (int i = 0;
+                    i < (state.currentObjectives ?? []).length;
+                    i++) ...[
+                  Stack(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(
+                          left: 8,
+                          right: 8,
+                          bottom: 4,
+                          top: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: AppColors.primary),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(4)),
+                        ),
+                        margin: EdgeInsets.only(
+                          left: i == 0 ? 15 : 8,
+                          top: 6,
+                        ),
+                        child: Text(
+                          state.currentObjectives?[i] ?? "",
+                          style: AppTextStyle.primary,
+                        ),
+                      ),
+                      Positioned(
+                        child: InkWell(
+                          onTap: () {
+                            _chatDetailCubit
+                                .removeCurrentConversationObjectives(
+                                    objective:
+                                        state.currentObjectives?[i] ?? "");
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.primary,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                              color: AppColors.white,
+                            ),
+                            child: Icon(
+                              Icons.close,
+                              size: 12,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                        right: 0,
+                        top: 1,
+                      )
+                    ],
+                  ),
+                ],
+              ],
+            );
+          },
+        ),
+        BlocBuilder<ChatDetailCubit, ChatDetailState>(
+          buildWhen: (prev, current) =>
+              prev.suggestObjectives != current.suggestObjectives,
+          builder: (context, state) {
+            return Row(
+              children: [
+                for (int i = 0;
+                    i < (state.suggestObjectives ?? []).length;
+                    i++) ...[
+                  InkWell(
+                    onTap: () {
+                      _chatDetailCubit.addConversationObjectives(
+                        objective: state.suggestObjectives?[i] ?? "",
+                      );
+                      _chatDetailCubit.removeSuggestConversationObjectives(
+                        objective: state.suggestObjectives?[i] ?? "",
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                        bottom: 4,
+                        top: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: AppColors.grayLighter),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                      ),
+                      margin: EdgeInsets.only(left: i == 0 ? 15 : 8),
+                      child: Text(
+                        state.suggestObjectives?[i] ?? "",
+                        style: AppTextStyle.grey,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 

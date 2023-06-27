@@ -75,7 +75,7 @@ class _ExerciseReviewDetailState extends State<ExerciseReviewDetail> {
               ),
               _buildStarReview(
                 title: "Đánh giá về tâm trí",
-                description: 'Mô tả gì đó',
+                description: 'Bạn cảm thấy tâm trí sáng suốt như nào?',
                 type: ReviewStarType.reviewMind,
                 initialRating:
                     double.parse(widget.dailyAction?.mindRate ?? "5.0"),
@@ -85,7 +85,7 @@ class _ExerciseReviewDetailState extends State<ExerciseReviewDetail> {
               ),
               _buildStarReview(
                 title: "Đánh giá về cơ thể",
-                description: 'Mô tả gì đó',
+                description: 'Bạn cảm thấy cơ thể linh hoạt như nào?',
                 type: ReviewStarType.reviewBody,
                 initialRating:
                     double.parse(widget.dailyAction?.bodyRate ?? "5.0"),
@@ -95,21 +95,22 @@ class _ExerciseReviewDetailState extends State<ExerciseReviewDetail> {
               ),
               _buildYesNoReview(
                 title: "Đánh giá bài tập",
-                description: 'Mô tả gì đó',
+                description: 'Bạn cảm thấy thích bài tập này không?',
               ),
               const SizedBox(
                 height: 15,
               ),
               _buildPracticeReview(
                 title: "Đánh giá sự luyện tập",
-                description: 'Mô tả gì đó',
+                description: 'Diễn tả cảm nhận tự luyện tập hôm nay',
               ),
               const SizedBox(
                 height: 15,
               ),
               _buildShareMoreReview(
                 title: "Chia sẻ nhiều hơn",
-                description: 'Mô tả gì đó',
+                description:
+                    'Nhật ký luyện tập giúp bạn nhìn thấy tình hình luyện tập qua mỗi ngày',
               ),
               const SizedBox(
                 height: 8,

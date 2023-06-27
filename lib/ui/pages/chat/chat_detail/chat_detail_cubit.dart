@@ -11,6 +11,7 @@ import 'package:ihz_bql/models/enums/conversation_status.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/models/params/create_conversation_body.dart';
 import 'package:ihz_bql/repositories/conversation_repository.dart';
+import 'package:ihz_bql/utils/logger.dart';
 import 'package:web_socket_channel/io.dart';
 part 'chat_detail_state.dart';
 
@@ -66,7 +67,7 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
     state.socketChannel?.sink.add(
       jsonEncode(messageEvent),
     );
-    print("✅ [SOCKET_EMIT] Event: $messageEvent");
+    logger.d("✅ [SOCKET_EMIT] Event: $messageEvent");
   }
 
   void changeConversationStatusState({
@@ -112,14 +113,36 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
     );
   }
 
-  void removeConversationObjectives({
+  void updateSuggestConversationObjectives({
+    required List<String>? suggestObjectives,
+  }) {
+    emit(state.copyWith(
+      suggestObjectives: suggestObjectives,
+    ));
+  }
+
+  void removeCurrentConversationObjectives({
     required String objective,
   }) {
     final newLists = (state.currentObjectives ?? [])
-      ..removeWhere((item) => item == objective);
+      .where((item) => item != objective).toList();
+
     emit(
-      state.copyWith(currentObjectives: newLists),
+      state.copyWith(currentObjectives: [...newLists]),
     );
+
+  }
+
+  void removeSuggestConversationObjectives({
+    required String objective,
+  }) {
+    final newLists = (state.suggestObjectives ?? [])
+        .where((item) => item != objective).toList();
+
+    emit(
+      state.copyWith(suggestObjectives: [...newLists]),
+    );
+
   }
 
   void removeAllConversationObjectives() {

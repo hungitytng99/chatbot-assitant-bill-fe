@@ -7,6 +7,7 @@ enum ChatEventsName {
   conversationEnd,
   messageStreamError,
   connectionError,
+  topicRecommendation,
 }
 
 extension ChatEventsNameExtension on ChatEventsName {
@@ -25,7 +26,9 @@ extension ChatEventsNameExtension on ChatEventsName {
       case ChatEventsName.conversationEnd:
         return 'conversation_end';
       case ChatEventsName.messageStreamError:
-        return 'messageStreamError';
+        return 'message_stream_error';
+      case ChatEventsName.topicRecommendation:
+        return 'topic_recommendation';
       case ChatEventsName.connectionError:
         return 'connection_error';
     }
