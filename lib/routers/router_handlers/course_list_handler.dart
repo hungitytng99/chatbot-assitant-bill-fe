@@ -5,8 +5,10 @@ import 'package:ihz_bql/repositories/hashtag_repository.dart';
 import 'package:ihz_bql/ui/pages/course/course_list/course_list_cubit.dart';
 import 'package:ihz_bql/ui/pages/course/course_list/course_list_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ihz_bql/ui/pages/homepage/home_page.dart';
 
 Handler courseListHandler = Handler(handlerFunc: (context, parameters) {
+  HomePageArgument? args = context!.arguments as HomePageArgument?;
   return BlocProvider(
     create: (context) {
       ExerciseRepository exerciseRepository =
@@ -18,6 +20,8 @@ Handler courseListHandler = Handler(handlerFunc: (context, parameters) {
         hashTagsRepository: hashTagsRepository,
       );
     },
-    child: const CourseListPage(),
+    child: CourseListPage(
+      expertEntity: args?.expertEntity,
+    ),
   );
 });

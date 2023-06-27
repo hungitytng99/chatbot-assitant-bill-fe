@@ -15,10 +15,12 @@ import 'package:ihz_bql/ui/pages/course/course_list/course_list_cubit.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CourseListPage extends StatefulWidget {
-  final ExpertEntity? expertEntity;
-  const CourseListPage({
+  ExpertEntity? expertEntity;
+  final Function? resetExpertEntity;
+  CourseListPage({
     Key? key,
     this.expertEntity,
+    this.resetExpertEntity,
   }) : super(key: key);
   @override
   _CourseListPageState createState() => _CourseListPageState();
@@ -31,6 +33,7 @@ class _CourseListPageState extends State<CourseListPage> {
   int activeHashTagIndex = 0;
   bool isFilterByExpert = true;
   Timer? _searchExerciseDebounce;
+
   final PagingController<int, ExerciseEntity> _pagingController =
       PagingController(firstPageKey: 0);
 
@@ -107,9 +110,9 @@ class _CourseListPageState extends State<CourseListPage> {
                         margin: const EdgeInsets.only(left: 15, top: 4),
                         child: Row(
                           children: [
-                            const Text("Tìm kiếm theo các khóa học của "),
+                            const Text("Lọc bài tập của "),
                             Text(
-                              'Vũ Ngọc Nam',
+                              widget.expertEntity?.name ?? "",
                               style: AppTextStyle.blackS14Bold,
                             ),
                             const SizedBox(
@@ -120,6 +123,9 @@ class _CourseListPageState extends State<CourseListPage> {
                                 setState(() {
                                   isFilterByExpert = false;
                                 });
+                                widget.resetExpertEntity!();
+                                widget.expertEntity = null;
+                                _pagingController.refresh();
                               },
                               child: const Icon(
                                 Icons.highlight_off,

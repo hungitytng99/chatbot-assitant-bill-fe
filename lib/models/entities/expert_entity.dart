@@ -20,10 +20,10 @@ class ExpertEntity {
 
   ExpertEntity({
     required this.id,
-    required this.desc,
-    required this.avatarLink,
-    required this.alias,
-    required this.objectives,
+    this.desc,
+    this.avatarLink = "",
+    this.alias,
+    this.objectives,
     required this.name,
   });
 

@@ -7,6 +7,7 @@ import 'package:ihz_bql/common/app_shadow.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:ihz_bql/database/share_preferences_helper.dart';
 import 'package:ihz_bql/globals/global_data.dart';
+import 'package:ihz_bql/models/entities/expert_entity.dart';
 import 'package:ihz_bql/repositories/conversation_repository.dart';
 import 'package:ihz_bql/repositories/diary_repository.dart';
 import 'package:ihz_bql/repositories/diary_repository.dart';
@@ -57,9 +58,12 @@ class HomePage extends StatefulWidget {
       GlobalKey<NavigatorState>();
 
   int pageIndex;
+  ExpertEntity? expertEntity;
+
   HomePage({
     Key? key,
     this.pageIndex = 2,
+    this.expertEntity,
   }) : super(key: key);
 
   @override
@@ -87,7 +91,7 @@ class _HomePageState extends State<HomePage>
 
   List<Tabs> listTabs = [
     Tabs(index: 0, title: 'Khám phá', iconUrl: AppImages.icDoExercise),
-    Tabs(index: 1, title: 'Danh bạ', iconUrl: AppImages.icContactBook),
+    Tabs(index: 1, title: 'Chuyên gia', iconUrl: AppImages.icContactBook),
     Tabs(index: 2, title: 'Đoạn chat', iconUrl: AppImages.icChatBubble),
     Tabs(index: 3, title: 'Nhật ký', iconUrl: AppImages.icDiary),
   ];
@@ -129,7 +133,12 @@ class _HomePageState extends State<HomePage>
                   BlocProvider.value(value: _homeCubit),
                   BlocProvider.value(value: _courseListCubit),
                 ],
-                child: const CourseListPage(),
+                child: CourseListPage(
+                  expertEntity: widget.expertEntity,
+                  resetExpertEntity: () {
+                    widget.expertEntity = null;
+                  }
+                ),
               );
               break;
           }
@@ -146,7 +155,6 @@ class _HomePageState extends State<HomePage>
         onGenerateRoute: (routeSettings) {
           late Widget page;
           final keyboardSize = MediaQuery.of(context).viewInsets.bottom;
-          print(keyboardSize);
           switch (routeSettings.name) {
             case "/":
               page = const Text("Contact page");
@@ -576,7 +584,9 @@ class _HomePageState extends State<HomePage>
 
 class HomePageArgument {
   int pageIndex;
+  ExpertEntity? expertEntity;
   HomePageArgument({
     required this.pageIndex,
+    this.expertEntity,
   });
 }

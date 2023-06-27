@@ -552,7 +552,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               transition: TransitionType.inFromLeft,
               routeSettings: RouteSettings(
                 arguments: HomePageArgument(
-                  pageIndex: 2,
+                  pageIndex: 0,
+                  expertEntity: widget.conversationHistoryItemArg?.expertEntity,
                 ),
               ),
             );

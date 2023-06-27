@@ -9,6 +9,9 @@ Handler homeHandler = Handler(handlerFunc: (context, parameters) {
     create: (context) {
       return HomeCubit();
     },
-    child: HomePage(pageIndex: param.pageIndex),
+    child: HomePage(
+      pageIndex: param.pageIndex,
+      expertEntity: param.expertEntity,
+    ),
   );
 });
