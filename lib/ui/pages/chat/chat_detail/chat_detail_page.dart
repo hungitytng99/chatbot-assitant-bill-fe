@@ -69,8 +69,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     if (widget.conversationHistoryItemArg?.isCreateNewConversation ?? false) {
       _chatDetailCubit.createNewConversations(
         body: CreateConversationBody(
-            expertId:
-                widget.conversationHistoryItemArg?.expertEntity?.id ?? ""),
+          expertId: widget.conversationHistoryItemArg?.expertEntity?.id ?? "",
+        ),
       );
     }
   }
@@ -156,7 +156,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       if (isLastPage) {
         _pagingController.appendLastPage(chatConversation);
       } else {
-         int nextPageKey = pageKey + 1;
+        int nextPageKey = pageKey + 1;
         _pagingController.appendPage(chatConversation, nextPageKey);
       }
     } catch (error) {
@@ -198,6 +198,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           Expanded(
             child: BlocListener<ChatDetailCubit, ChatDetailState>(
               listener: (context, state) {
+                logger.d(
+                    '[SOCKET] Start connection to ${state.createConversationEntity?.socketPath ?? ""}');
                 if (state.createConversationStatus == LoadStatus.success) {
                   logger.d(
                       '[SOCKET] Connect to ${state.createConversationEntity?.socketPath ?? ""}');
@@ -535,6 +537,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             return Expanded(
               child: UserAvatarCardHorizontal(
                 userFullName: correctTitle,
+                isAnimated: state.conversationStatus != ConversationStatus.ended,
                 description:
                     '${widget.conversationHistoryItemArg?.expertEntity?.name ?? ""} • Đang hoạt động',
                 avatarLink: widget

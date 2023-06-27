@@ -114,6 +114,7 @@ dependencies:
   table_calendar: ^3.0.8
   web_socket_channel: ^2.4.0
   uuid: ^3.0.7
+  animated_text_kit: ^4.2.1
 
 dev_dependencies:
   flutter_test:

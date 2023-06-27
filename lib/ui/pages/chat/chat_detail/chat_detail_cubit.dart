@@ -24,17 +24,19 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
   Future<void> createNewConversations({
     CreateConversationBody? body,
   }) async {
-    emit(state.copyWith(createConversationStatus: LoadStatus.loading));
-    try {
-      final CreateConversationEntity result =
-          await conversationsRepository.createNewConversations(body: body);
+    if (state.conversationStatus != ConversationStatus.ended) {
+      emit(state.copyWith(createConversationStatus: LoadStatus.loading));
+      try {
+        final CreateConversationEntity result =
+            await conversationsRepository.createNewConversations(body: body);
 
-      emit(state.copyWith(
-        createConversationStatus: LoadStatus.success,
-        createConversationEntity: result,
-      ));
-    } catch (e) {
-      emit(state.copyWith(createConversationStatus: LoadStatus.failure));
+        emit(state.copyWith(
+          createConversationStatus: LoadStatus.success,
+          createConversationEntity: result,
+        ));
+      } catch (e) {
+        emit(state.copyWith(createConversationStatus: LoadStatus.failure));
+      }
     }
   }
 

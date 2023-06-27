@@ -1,6 +1,9 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/enums/user_online_status.dart';
+import 'package:ihz_bql/ui/pages/chat/chat_detail/chat_detail_cubit.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_item.dart';
 
 class UserAvatarCardHorizontal extends StatefulWidget {
@@ -13,6 +16,8 @@ class UserAvatarCardHorizontal extends StatefulWidget {
   String time;
   double width;
 
+  bool isAnimated;
+
   UserAvatarCardHorizontal({
     required this.userFullName,
     required this.avatarLink,
@@ -22,6 +27,7 @@ class UserAvatarCardHorizontal extends StatefulWidget {
     this.status = UserOnlineStatusEnum.ONLINE,
     this.description = 'Bắt đầu trò chuyện ngay nào',
     this.time = "",
+    this.isAnimated = false,
     Key? key,
   }) : super(key: key);
   @override
@@ -30,9 +36,11 @@ class UserAvatarCardHorizontal extends StatefulWidget {
 }
 
 class _UserAvatarCardHorizontalState extends State<UserAvatarCardHorizontal> {
+  late final ChatDetailCubit _chatDetailCubit;
   @override
   void initState() {
     super.initState();
+    _chatDetailCubit = BlocProvider.of<ChatDetailCubit>(context);
   }
 
   @override
@@ -61,12 +69,27 @@ class _UserAvatarCardHorizontalState extends State<UserAvatarCardHorizontal> {
               Container(
                 padding: const EdgeInsets.only(top: 6, bottom: 6),
                 width: widget.width,
-                child: Text(
-                  widget.userFullName.trim(),
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyle.blackS14W600,
-                  maxLines: 1,
-                ),
+                child: (_chatDetailCubit.state.conversationTitle?.isNotEmpty ??
+                        false)
+                    ? AnimatedTextKit(
+                        onFinished: () {},
+                        isRepeatingAnimation: true,
+                        animatedTexts: [
+                          TypewriterAnimatedText(
+                            widget.userFullName.trim(),
+                            textStyle: AppTextStyle.blackS14W600,
+                            speed: const Duration(milliseconds: 100),
+                          ),
+                        ],
+                        totalRepeatCount: 1,
+                        displayFullTextOnTap: true,
+                      )
+                    : Text(
+                        widget.userFullName.trim(),
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyle.blackS14W600,
+                        maxLines: 1,
+                      ),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,

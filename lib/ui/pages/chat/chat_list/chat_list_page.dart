@@ -11,6 +11,7 @@ import 'package:ihz_bql/models/enums/conversation_status.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
+import 'package:ihz_bql/ui/pages/chat/chat_detail/chat_detail_cubit.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_cubit.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_vertical.dart';
@@ -29,12 +30,13 @@ class _ChatListPageState extends State<ChatListPage> {
   late ChatListCubit _chatListCubit;
   final PagingController<int, ConversationHistoryItemEntity> _pagingController =
       PagingController(firstPageKey: 1);
+  late ChatDetailCubit _chatDetailCubit;
   @override
   void initState() {
     super.initState();
     _chatListCubit = BlocProvider.of<ChatListCubit>(context);
     _chatListCubit.getActiveExpert();
-
+    _chatDetailCubit = BlocProvider.of<ChatDetailCubit>(context);
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -143,11 +145,7 @@ class _ChatListPageState extends State<ChatListPage> {
                                                   conversationId: "",
                                                   conversationTitle:
                                                       "Đoạn hội thoại mới",
-                                                  conversationStatus:
-                                                      ConversationStatus
-                                                          .initial,
-                                                  isCreateNewConversation:
-                                                      true,
+                                                  isCreateNewConversation: true,
                                                 ),
                                               ),
                                             );
@@ -165,8 +163,7 @@ class _ChatListPageState extends State<ChatListPage> {
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height - 280,
-                      child:
-                          PagedListView<int, ConversationHistoryItemEntity>(
+                      child: PagedListView<int, ConversationHistoryItemEntity>(
                         pagingController: _pagingController,
                         builderDelegate: PagedChildBuilderDelegate<
                             ConversationHistoryItemEntity>(
@@ -186,8 +183,7 @@ class _ChatListPageState extends State<ChatListPage> {
                           ),
                           itemBuilder: (context, conversationHistory, index) {
                             return Container(
-                              padding:
-                                  const EdgeInsets.only(top: 8, bottom: 8),
+                              padding: const EdgeInsets.only(top: 8, bottom: 8),
                               child: UserAvatarCardHorizontal(
                                 userFullName: conversationHistory.title ?? "",
                                 description:
@@ -199,9 +195,13 @@ class _ChatListPageState extends State<ChatListPage> {
                                   conversationHistory.updatedAt,
                                   format: "HH:mm",
                                 ),
-                                width:
-                                    MediaQuery.of(context).size.width - 125,
+                                width: MediaQuery.of(context).size.width - 125,
                                 onPressed: () {
+                                  _chatDetailCubit
+                                      .changeConversationStatusState(
+                                    conversationStatus:
+                                    ConversationStatus.ended,
+                                  );
                                   Application.router.navigateTo(
                                     context,
                                     Routes.chatDetail,
@@ -211,8 +211,7 @@ class _ChatListPageState extends State<ChatListPage> {
                                           ConversationHistoryItemArgument(
                                         expertEntity:
                                             conversationHistory.expert,
-                                        conversationId:
-                                            conversationHistory.id,
+                                        conversationId: conversationHistory.id,
                                         conversationTitle:
                                             conversationHistory.title,
                                         conversationStatus:
