@@ -255,8 +255,12 @@ class _CourseListPageState extends State<CourseListPage> {
   }
 
   Widget _buildListCourses() {
+    double normalWidgetHeight = MediaQuery.of(context).size.height - 238;
+    if(widget.expertEntity != null) {
+      normalWidgetHeight = normalWidgetHeight - 22;
+    }
     return Container(
-      height: MediaQuery.of(context).size.height - 260,
+      height: normalWidgetHeight,
       width: double.infinity,
       margin: const EdgeInsets.only(
         left: 14,
