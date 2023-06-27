@@ -27,7 +27,6 @@ import 'package:ihz_bql/utils/logger.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:uuid/uuid.dart';
-import 'package:collection/collection.dart';
 
 class ChatDetailPage extends StatefulWidget {
   final ConversationHistoryItemArgument? conversationHistoryItemArg;
@@ -266,121 +265,140 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   Widget _buildSuggestTopics() {
-    return Row(
-      children: [
-        BlocBuilder<ChatDetailCubit, ChatDetailState>(
-          buildWhen: (prev, current) {
-            return prev.currentObjectives != current.currentObjectives;
-          },
-          builder: (context, state) {
-            return Row(
-              children: [
-                for (int i = 0;
-                    i < (state.currentObjectives ?? []).length;
-                    i++) ...[
-                  Stack(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(
-                          left: 8,
-                          right: 8,
-                          bottom: 4,
-                          top: 6,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        children: [
+          BlocBuilder<ChatDetailCubit, ChatDetailState>(
+            buildWhen: (prev, current) {
+              return prev.currentObjectives != current.currentObjectives;
+            },
+            builder: (context, state) {
+              return Row(
+                children: [
+                  for (int i = 0;
+                      i < (state.currentObjectives ?? []).length;
+                      i++) ...[
+                    Stack(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(
+                            left: 8,
+                            right: 8,
+                            bottom: 4,
+                            top: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: AppColors.primary),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(4)),
+                          ),
+                          margin: EdgeInsets.only(
+                            left: i == 0 ? 15 : 8,
+                            top: 6,
+                          ),
+                          child: Text(
+                            state.currentObjectives?[i] ?? "",
+                            style: AppTextStyle.primary,
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: AppColors.primary),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(4)),
-                        ),
-                        margin: EdgeInsets.only(
-                          left: i == 0 ? 15 : 8,
-                          top: 6,
-                        ),
-                        child: Text(
-                          state.currentObjectives?[i] ?? "",
-                          style: AppTextStyle.primary,
-                        ),
-                      ),
-                      Positioned(
-                        child: InkWell(
-                          onTap: () {
-                            _chatDetailCubit
-                                .removeCurrentConversationObjectives(
-                                    objective:
-                                        state.currentObjectives?[i] ?? "");
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
+                        Positioned(
+                          child: InkWell(
+                            onTap: () {
+                              _chatDetailCubit
+                                  .removeCurrentConversationObjectives(
+                                      objective:
+                                          state.currentObjectives?[i] ?? "");
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.primary,
+                                ),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                                color: AppColors.white,
+                              ),
+                              child: Icon(
+                                Icons.close,
+                                size: 12,
                                 color: AppColors.primary,
                               ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              color: AppColors.white,
                             ),
-                            child: Icon(
-                              Icons.close,
-                              size: 12,
-                              color: AppColors.primary,
+                          ),
+                          right: 0,
+                          top: 1,
+                        )
+                      ],
+                    ),
+                  ],
+                ],
+              );
+            },
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: BlocBuilder<ChatDetailCubit, ChatDetailState>(
+              buildWhen: (prev, current) =>
+                  prev.suggestObjectives != current.suggestObjectives,
+              builder: (context, state) {
+                return SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      for (int i = 0;
+                          i < (state.suggestObjectives ?? []).length;
+                          i++) ...[
+                        InkWell(
+                          onTap: () {
+                            _chatDetailCubit.addConversationObjectives(
+                              objective: state.suggestObjectives?[i] ?? "",
+                            );
+                            _chatDetailCubit
+                                .removeSuggestConversationObjectives(
+                              objective: state.suggestObjectives?[i] ?? "",
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                              left: 8,
+                              right: 8,
+                              bottom: 4,
+                              top: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: AppColors.grayLighter),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(4)),
+                            ),
+                            margin: EdgeInsets.only(
+                              left: i == 0 ? 0 : 8,
+                              top: 4,
+                            ),
+                            child: Text(
+                              state.suggestObjectives?[0] ?? "",
+                              style: AppTextStyle.grey,
                             ),
                           ),
                         ),
-                        right: 0,
-                        top: 1,
-                      )
+                      ],
                     ],
                   ),
-                ],
-              ],
-            );
-          },
-        ),
-        BlocBuilder<ChatDetailCubit, ChatDetailState>(
-          buildWhen: (prev, current) =>
-              prev.suggestObjectives != current.suggestObjectives,
-          builder: (context, state) {
-            return Row(
-              children: [
-                for (int i = 0;
-                    i < (state.suggestObjectives ?? []).length;
-                    i++) ...[
-                  InkWell(
-                    onTap: () {
-                      _chatDetailCubit.addConversationObjectives(
-                        objective: state.suggestObjectives?[i] ?? "",
-                      );
-                      _chatDetailCubit.removeSuggestConversationObjectives(
-                        objective: state.suggestObjectives?[i] ?? "",
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                        left: 8,
-                        right: 8,
-                        bottom: 4,
-                        top: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: AppColors.grayLighter),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                      ),
-                      margin: EdgeInsets.only(left: i == 0 ? 15 : 8),
-                      child: Text(
-                        state.suggestObjectives?[i] ?? "",
-                        style: AppTextStyle.grey,
-                      ),
-                    ),
-                  ),
-                ],
-              ],
-            );
-          },
-        ),
-      ],
+                );
+              },
+            ),
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+        ],
+      ),
     );
   }
 
