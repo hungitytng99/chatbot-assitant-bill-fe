@@ -5,9 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/conversation_message_entity.dart';
-import 'package:ihz_bql/models/entities/socket/user_send_message_entity.dart';
 import 'package:ihz_bql/models/enums/chat_actor_type.dart';
-import 'package:ihz_bql/models/enums/chat_event_name.dart';
 import 'package:ihz_bql/models/enums/chat_event_type.dart';
 import 'package:ihz_bql/models/enums/conversation_status.dart';
 import 'package:ihz_bql/models/enums/user_online_status.dart';
@@ -16,7 +14,6 @@ import 'package:ihz_bql/ui/pages/chat/chat_detail/chat_detail_cubit.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_item.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:web_socket_channel/io.dart';
 
 class ChatConversation extends StatefulWidget {
   final PagingController<int, ConversationMessageEntity> pagingController;
@@ -41,7 +38,6 @@ class _ChatConversationState extends State<ChatConversation> {
   @override
   void dispose() {
     super.dispose();
-    widget.pagingController.dispose();
   }
 
   @override

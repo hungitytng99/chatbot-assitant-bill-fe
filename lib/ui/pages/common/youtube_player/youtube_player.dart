@@ -185,11 +185,15 @@ class _AppYoutubePlayerState extends State<AppYoutubePlayer> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              (widget.exerciseEntity.title ?? "").toUpperCase(),
-                              style: AppTextStyle.blackS16Bold,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 25,
+                              child: Text(
+                                (widget.exerciseEntity.title ?? "")
+                                    .toUpperCase(),
+                                style: AppTextStyle.blackS16Bold,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             const SizedBox(
                               height: 3,

@@ -45,7 +45,9 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
     try {
       final ConversationResponseEntity result =
           await conversationsRepository.getMessagesOfConversation(
+        page: pageKey,
         id: conversationId,
+        limit: 10,
       );
       return result.conversation.messages ?? [];
     } catch (e) {
@@ -125,24 +127,24 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
     required String objective,
   }) {
     final newLists = (state.currentObjectives ?? [])
-      .where((item) => item != objective).toList();
+        .where((item) => item != objective)
+        .toList();
 
     emit(
       state.copyWith(currentObjectives: [...newLists]),
     );
-
   }
 
   void removeSuggestConversationObjectives({
     required String objective,
   }) {
     final newLists = (state.suggestObjectives ?? [])
-        .where((item) => item != objective).toList();
+        .where((item) => item != objective)
+        .toList();
 
     emit(
       state.copyWith(suggestObjectives: [...newLists]),
     );
-
   }
 
   void removeAllConversationObjectives() {

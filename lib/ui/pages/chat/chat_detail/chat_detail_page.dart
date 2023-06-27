@@ -51,10 +51,12 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   void dispose() {
     super.dispose();
     channel?.sink.close();
+    _pagingController.dispose();
     _chatDetailCubit.changeConversationStatusState(
         conversationStatus: ConversationStatus.initial);
     _chatDetailCubit.changeConversationTitle(conversationTitle: "");
     _chatDetailCubit.removeAllConversationObjectives();
+    _chatDetailCubit.updateSuggestConversationObjectives(suggestObjectives: []);
   }
 
   @override
@@ -147,12 +149,14 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     try {
       final List<ConversationMessageEntity> chatConversation =
           await _chatDetailCubit.getChatConversation(
-              pageKey, widget.conversationHistoryItemArg?.conversationId ?? "");
-      final bool isLastPage = chatConversation.length < _pageSize;
+        pageKey + 1,
+        widget.conversationHistoryItemArg?.conversationId ?? "",
+      );
+      final bool isLastPage = chatConversation.length < 10;
       if (isLastPage) {
         _pagingController.appendLastPage(chatConversation);
       } else {
-        final int nextPageKey = pageKey + chatConversation.length;
+         int nextPageKey = pageKey + 1;
         _pagingController.appendPage(chatConversation, nextPageKey);
       }
     } catch (error) {
@@ -265,7 +269,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   Widget _buildSuggestTopics() {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Row(
         children: [
