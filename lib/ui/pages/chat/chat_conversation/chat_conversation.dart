@@ -200,7 +200,7 @@ class _ChatConversationState extends State<ChatConversation> {
                     objective: answer ?? "",
                   );
                   // Emit sự kiện
-                  _chatDetailCubit.sendClientMessage();
+                  _chatDetailCubit.sendClientMessage(message: answer ?? "");
                   // }
                 },
               )

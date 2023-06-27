@@ -47,8 +47,12 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
   @override
   void dispose() {
-    channel?.sink.close();
     super.dispose();
+    channel?.sink.close();
+    _chatDetailCubit.changeConversationStatusState(
+        conversationStatus: ConversationStatus.initial);
+    _chatDetailCubit.changeConversationTitle(conversationTitle: "");
+    _chatDetailCubit.removeAllConversationObjectives();
   }
 
   @override
@@ -83,11 +87,12 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         ),
         ...?_pagingController.itemList,
       ];
+      return;
     }
 
     if (socketEvent.event == ChatEventsName.messageStreaming.getString) {
       _chatDetailCubit.changeConversationStatusState(
-        conversationStatus: ConversationStatus.ready,
+        conversationStatus: ConversationStatus.request,
       );
       final SocketTextEntity socketContent = SocketTextEntity.fromJson(event);
       currentReply += socketContent.message;
@@ -103,6 +108,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         ),
         ...?_pagingController.itemList,
       ];
+      return;
     }
 
     if (socketEvent.event == ChatEventsName.messageStreamEnd.getString) {
@@ -110,6 +116,16 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         conversationStatus: ConversationStatus.ready,
       );
       currentReply = "";
+      return;
+    }
+
+    if (socketEvent.event == ChatEventsName.conversationTitle.getString) {
+      final SocketTextEntity socketContent = SocketTextEntity.fromJson(event);
+      _chatDetailCubit.changeConversationTitle(
+        conversationTitle: socketContent.message,
+      );
+      currentReply = "";
+      return;
     }
   }
 
@@ -340,20 +356,35 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             ),
           ),
         ),
-        Expanded(
-          child: UserAvatarCardHorizontal(
-            userFullName:
-                widget.conversationHistoryItemArg?.conversationTitle ??
-                    "Đoạn hội thoại mới",
-            description:
-                '${widget.conversationHistoryItemArg?.expertEntity?.name ?? ""} • Đang hoạt động',
-            avatarLink:
-                widget.conversationHistoryItemArg?.expertEntity?.avatarLink ??
+        BlocBuilder<ChatDetailCubit, ChatDetailState>(
+          buildWhen: (prev, current) =>
+              prev.conversationTitle != current.conversationTitle,
+          builder: (context, state) {
+            String correctTitle = "Đoạn hội thoại mới";
+            if (widget.conversationHistoryItemArg?.conversationTitle
+                    ?.isNotEmpty ??
+                false) {
+              correctTitle =
+                  widget.conversationHistoryItemArg?.conversationTitle ??
+                      "Đoạn hội thoại mới";
+            }
+            if (state.conversationTitle?.isNotEmpty ?? false) {
+              correctTitle = state.conversationTitle ?? "Đoạn hội thoại mới";
+            }
+            return Expanded(
+              child: UserAvatarCardHorizontal(
+                userFullName: correctTitle,
+                description:
+                    '${widget.conversationHistoryItemArg?.expertEntity?.name ?? ""} • Đang hoạt động',
+                avatarLink: widget
+                        .conversationHistoryItemArg?.expertEntity?.avatarLink ??
                     "",
-            avatarSize: 41,
-            onPressed: () {},
-            width: MediaQuery.of(context).size.width - 145,
-          ),
+                avatarSize: 41,
+                onPressed: () {},
+                width: MediaQuery.of(context).size.width - 145,
+              ),
+            );
+          },
         ),
         InkWell(
           onTap: () {

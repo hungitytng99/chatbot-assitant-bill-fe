@@ -58,14 +58,15 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
     changeConversationStatusState(
       conversationStatus: ConversationStatus.request,
     );
+    final messageEvent = UserSendMessageEntity(
+      event: ChatEventsName.clientMessage.getString,
+      message: message,
+      objectives: state.currentObjectives,
+    ).toJson();
     state.socketChannel?.sink.add(
-      jsonEncode(UserSendMessageEntity(
-        event: ChatEventsName.clientMessage.getString,
-        message: message,
-        objectives: state.currentObjectives,
-      ).toJson()),
+      jsonEncode(messageEvent),
     );
-    print("✅ [SOCKET_EMIT] Event: $message");
+    print("✅ [SOCKET_EMIT] Event: $messageEvent");
   }
 
   void changeConversationStatusState({
@@ -77,7 +78,7 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
   }
 
   void changeConversationTitle({
-    required String conversationTitle,
+    String? conversationTitle,
   }) {
     emit(
       state.copyWith(conversationTitle: conversationTitle),
@@ -118,6 +119,12 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
       ..removeWhere((item) => item == objective);
     emit(
       state.copyWith(currentObjectives: newLists),
+    );
+  }
+
+  void removeAllConversationObjectives() {
+    emit(
+      state.copyWith(currentObjectives: []),
     );
   }
 }
