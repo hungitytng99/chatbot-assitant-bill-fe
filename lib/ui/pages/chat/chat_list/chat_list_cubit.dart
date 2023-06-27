@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ihz_bql/models/entities/conversation_history_entity.dart';
+import 'package:ihz_bql/models/entities/conversation_history_item_entity.dart';
 import 'package:ihz_bql/models/entities/expert_entity.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/repositories/conversation_repository.dart';
@@ -30,19 +31,15 @@ class ChatListCubit extends Cubit<ChatListState> {
     }
   }
 
-  Future<void> getListConversationHistories(
+  Future<List<ConversationHistoryItemEntity>> getListConversationHistories(
       {int page = 1, int limit = 10}) async {
     emit(state.copyWith(getConversationHistoriesStatus: LoadStatus.loading));
     try {
       final ConversationHistoryEntity result = await conversationsRepository
           .getConversationHistories(page: page, limit: limit);
-
-      emit(state.copyWith(
-        getConversationHistoriesStatus: LoadStatus.success,
-        conversationHistoryEntity: result,
-      ));
+      return result.conversations;
     } catch (e) {
-      emit(state.copyWith(getConversationHistoriesStatus: LoadStatus.failure));
+      return [];
     }
   }
 }

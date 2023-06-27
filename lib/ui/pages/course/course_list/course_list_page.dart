@@ -35,7 +35,7 @@ class _CourseListPageState extends State<CourseListPage> {
   Timer? _searchExerciseDebounce;
 
   final PagingController<int, ExerciseEntity> _pagingController =
-      PagingController(firstPageKey: 0);
+      PagingController(firstPageKey: 1);
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class _CourseListPageState extends State<CourseListPage> {
     try {
       final List<ExerciseEntity> chatConversation =
           await _courseListCubit.getExercisesByFilter(
-        page: pageKey + 1,
+        page: pageKey,
         hashtag: _courseListCubit.state.hashtags.isEmpty
             ? null
             : _courseListCubit.state.hashtags[activeHashTagIndex],

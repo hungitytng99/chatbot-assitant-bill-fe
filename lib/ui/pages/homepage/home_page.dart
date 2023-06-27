@@ -134,11 +134,10 @@ class _HomePageState extends State<HomePage>
                   BlocProvider.value(value: _courseListCubit),
                 ],
                 child: CourseListPage(
-                  expertEntity: widget.expertEntity,
-                  resetExpertEntity: () {
-                    widget.expertEntity = null;
-                  }
-                ),
+                    expertEntity: widget.expertEntity,
+                    resetExpertEntity: () {
+                      widget.expertEntity = null;
+                    }),
               );
               break;
           }
@@ -569,12 +568,12 @@ class _HomePageState extends State<HomePage>
                   isCollapsed = !isCollapsed;
                 });
               },
-              child: AppCacheImage(
+              child: const AppCacheImage(
                 width: 40,
                 height: 40,
                 borderRadius: 45,
                 url:
-                    "https://assets1.cbsnewsstatic.com/hub/i/2018/11/06/0c1af1b8-155a-458e-b105-78f1e7344bf4/2018-11-06t054310z-1334124005-rc1be15a8050-rtrmadp-3-people-sexiest-man.jpg",
+                    "https://res.cloudinary.com/dzhowprbg/image/upload/v1687864178/186510188_1680599485483470_1822133296017458249_n_ax9t52.jpg",
               )),
         )
       ],
