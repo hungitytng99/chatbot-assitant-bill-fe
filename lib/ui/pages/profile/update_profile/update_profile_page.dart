@@ -122,22 +122,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   Widget _buildUserAvatar() {
     return Stack(
       children: [
-        false
-            ? ClipRRect(
-                borderRadius: BorderRadius.circular(45),
-                child: Image.asset(
-                  AppImages.icImagePlaceHolder,
-                  height: 90,
-                  width: 90,
-                ),
-              )
-            : const AppCacheImage(
-                width: 90,
-                height: 90,
-                borderRadius: 45,
-                url:
-                    "https://assets1.cbsnewsstatic.com/hub/i/2018/11/06/0c1af1b8-155a-458e-b105-78f1e7344bf4/2018-11-06t054310z-1334124005-rc1be15a8050-rtrmadp-3-people-sexiest-man.jpg",
-              ),
+        const AppCacheImage(
+          width: 90,
+          height: 90,
+          borderRadius: 45,
+          url:
+              "https://res.cloudinary.com/dzhowprbg/image/upload/v1687864178/186510188_1680599485483470_1822133296017458249_n_ax9t52.jpg",
+        ),
         Positioned(
           bottom: -8,
           right: -8,

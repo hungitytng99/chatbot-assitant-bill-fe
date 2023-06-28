@@ -160,74 +160,79 @@ class _ChatListPageState extends State<ChatListPage> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height - 280,
-                      child: PagedListView<int, ConversationHistoryItemEntity>(
-                        pagingController: _pagingController,
-                        builderDelegate: PagedChildBuilderDelegate<
-                            ConversationHistoryItemEntity>(
-                          newPageProgressIndicatorBuilder: (context) => Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                child: const CircularProgressIndicator(
-                                  strokeWidth: 2,
+                    RefreshIndicator(
+                      onRefresh: () async {
+                        _pagingController.refresh();
+                      },
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height - 280,
+                        child: PagedListView<int, ConversationHistoryItemEntity>(
+                          pagingController: _pagingController,
+                          builderDelegate: PagedChildBuilderDelegate<
+                              ConversationHistoryItemEntity>(
+                            newPageProgressIndicatorBuilder: (context) => Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                  margin:
+                                      const EdgeInsets.only(top: 10, bottom: 6),
+                                  height: 14.0,
+                                  width: 14.0,
                                 ),
-                                margin:
-                                    const EdgeInsets.only(top: 10, bottom: 6),
-                                height: 14.0,
-                                width: 14.0,
-                              ),
-                            ],
-                          ),
-                          itemBuilder: (context, conversationHistory, index) {
-                            return Container(
-                              padding: const EdgeInsets.only(top: 8, bottom: 8),
-                              child: UserAvatarCardHorizontal(
-                                userFullName: conversationHistory.title ?? "",
-                                description:
-                                    "${conversationHistory.expert?.name} • ${conversationHistory.lastMessage}",
-                                avatarLink:
-                                    conversationHistory.expert?.avatarLink ??
-                                        "",
-                                time: AppDateUtils.toDateDisplayString(
-                                  conversationHistory.updatedAt,
-                                  format: "HH:mm",
-                                ),
-                                width: MediaQuery.of(context).size.width - 125,
-                                onPressed: () {
-                                  _chatDetailCubit
-                                      .changeConversationStatusState(
-                                    conversationStatus:
-                                    ConversationStatus.ended,
-                                  );
-                                  Application.router.navigateTo(
-                                    context,
-                                    Routes.chatDetail,
-                                    rootNavigator: true,
-                                    routeSettings: RouteSettings(
-                                      arguments:
-                                          ConversationHistoryItemArgument(
-                                        expertEntity:
-                                            conversationHistory.expert,
-                                        conversationId: conversationHistory.id,
-                                        conversationTitle:
-                                            conversationHistory.title,
-                                        conversationStatus:
-                                            ConversationStatus.ended,
-                                        isCreateNewConversation: false,
+                              ],
+                            ),
+                            itemBuilder: (context, conversationHistory, index) {
+                              return Container(
+                                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                                child: UserAvatarCardHorizontal(
+                                  userFullName: conversationHistory.title ?? "",
+                                  description:
+                                      "${conversationHistory.expert?.name} • ${conversationHistory.lastMessage}",
+                                  avatarLink:
+                                      conversationHistory.expert?.avatarLink ??
+                                          "",
+                                  time: AppDateUtils.toDateDisplayString(
+                                    conversationHistory.updatedAt,
+                                    format: "HH:mm",
+                                  ),
+                                  width: MediaQuery.of(context).size.width - 125,
+                                  onPressed: () {
+                                    _chatDetailCubit
+                                        .changeConversationStatusState(
+                                      conversationStatus:
+                                      ConversationStatus.ended,
+                                    );
+                                    Application.router.navigateTo(
+                                      context,
+                                      Routes.chatDetail,
+                                      rootNavigator: true,
+                                      routeSettings: RouteSettings(
+                                        arguments:
+                                            ConversationHistoryItemArgument(
+                                          expertEntity:
+                                              conversationHistory.expert,
+                                          conversationId: conversationHistory.id,
+                                          conversationTitle:
+                                              conversationHistory.title,
+                                          conversationStatus:
+                                              ConversationStatus.ended,
+                                          isCreateNewConversation: false,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                            noItemsFoundIndicatorBuilder: (_) => Container(
+                              margin: const EdgeInsets.only(top: 15),
+                              child: const Center(
+                                child: Text(
+                                    'Hãy chọn 1 chuyên gia để bắt đầu trò chuyện ngay nào'),
                               ),
-                            );
-                          },
-                          noItemsFoundIndicatorBuilder: (_) => Container(
-                            margin: const EdgeInsets.only(top: 15),
-                            child: const Center(
-                              child: Text(
-                                  'Hãy chọn 1 chuyên gia để bắt đầu trò chuyện ngay nào'),
                             ),
                           ),
                         ),

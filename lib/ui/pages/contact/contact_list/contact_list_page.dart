@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/models/enums/user_online_status.dart';
+import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
@@ -104,6 +105,15 @@ class _ContactListPageState extends State<ContactListPage> {
                                 context,
                                 Routes.chatDetail,
                                 rootNavigator: true,
+                                routeSettings: RouteSettings(
+                                  arguments: ConversationHistoryItemArgument(
+                                    expertEntity: _contactListCubit
+                                        .state.activeExperts[i],
+                                    conversationId: "",
+                                    conversationTitle: "Đoạn hội thoại mới",
+                                    isCreateNewConversation: true,
+                                  ),
+                                ),
                               );
                             },
                           ),

@@ -54,18 +54,6 @@ class _MyProfilePageState extends State<MyProfilePage>
           bloc: _profileCubit,
           listenWhen: (prev, curr) => true,
           listener: (context, state) {
-            // if (state.updateAvatarStatus == LoadStatus.SUCCESS) {
-            //   FlushBarUtils.showSuccessDialog(
-            //     context: context,
-            //     message: S.current.pickFile_updateAvatarSuccessfully,
-            //   );
-            // }
-            // if (state.updateAvatarStatus == LoadStatus.FAILURE) {
-            //   FlushBarUtils.showErrorDialog(
-            //     context: context,
-            //     message: S.current.common_error_occur,
-            //   );
-            // }
           },
           builder: (context, state) {
             return _buildBody();
@@ -77,7 +65,6 @@ class _MyProfilePageState extends State<MyProfilePage>
 
   Widget _buildBody() {
     return OTPLayout(
-      // isShowBack: !(widget.redirectFromHomePage ?? true),
       body: SafeArea(
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -199,7 +186,7 @@ class _MyProfilePageState extends State<MyProfilePage>
                 height: 90,
                 borderRadius: 45,
                 url:
-                    "https://assets1.cbsnewsstatic.com/hub/i/2018/11/06/0c1af1b8-155a-458e-b105-78f1e7344bf4/2018-11-06t054310z-1334124005-rc1be15a8050-rtrmadp-3-people-sexiest-man.jpg",
+                    "https://res.cloudinary.com/dzhowprbg/image/upload/v1687864178/186510188_1680599485483470_1822133296017458249_n_ax9t52.jpg",
               ),
         Positioned(
           bottom: -8,
