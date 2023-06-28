@@ -206,6 +206,9 @@ flutter:
     - assets/images/diary.png
     - assets/images/clock.png
     - assets/vectors/success.json
+    - assets/images/ic_info.png
+    - assets/images/meditation.png
+
   fonts:
     - family: Quicksand
       fonts:

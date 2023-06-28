@@ -74,6 +74,17 @@ class ChatDetailCubit extends Cubit<ChatDetailState> {
     logger.d("✅ [SOCKET_EMIT] Event: $messageEvent");
   }
 
+  void endConversation() {
+    changeConversationStatusState(conversationStatus: ConversationStatus.ended);
+    final messageEvent = UserSendMessageEntity(
+      event: ChatEventsName.clientEndConversation.getString,
+    ).toJson();
+    state.socketChannel?.sink.add(
+      jsonEncode(messageEvent),
+    );
+    logger.d("✅ [SOCKET_EMIT] Event: $messageEvent");
+  }
+
   void changeConversationStatusState({
     required ConversationStatus conversationStatus,
   }) {

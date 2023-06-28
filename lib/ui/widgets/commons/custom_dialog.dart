@@ -19,7 +19,7 @@ class CustomDialog {
   final String? description;
   final String? okText;
   final VoidCallback? onOkPressed;
-  final String cancelText;
+  final String? cancelText;
   final VoidCallback? onCancelPressed;
   final bool dismissible;
   final VoidCallback? onDismissed;
@@ -102,13 +102,13 @@ class CustomDialog {
                                 horizontal: AppDimens.paddingS12, vertical: 4),
                             child: Column(
                               children: [
-                                const SizedBox(height: 20),
-                                _buildHeaderIcon,
-                                const SizedBox(height: 5),
-                                _buildTitleText,
-                                // _buildDescriptionText,
-                                _buildActions,
                                 const SizedBox(height: 10),
+                                _buildHeaderIcon,
+                                const SizedBox(height: 6),
+                                _buildTitleText,
+                                const SizedBox(height: 6),
+                                _buildActions,
+                                const SizedBox(height: 2),
                               ],
                             ),
                           ),
@@ -182,13 +182,13 @@ class CustomDialog {
 
   Widget get _buildActions {
     bool showOkButton = (okText ?? '').isNotEmpty;
-    bool showCancelButton = (cancelText).isNotEmpty;
+    bool showCancelButton = (cancelText)?.isNotEmpty ?? true;
     List<Widget> buttons = [];
-    if (showOkButton) {
-      buttons.add(_buildOkButton);
-    }
     if (showCancelButton) {
       buttons.add(_buildCancelButton);
+    }
+    if (showOkButton) {
+      buttons.add(_buildOkButton);
     }
     if (buttons.isEmpty) {
       return Container(height: 14);
@@ -198,34 +198,49 @@ class CustomDialog {
       height: 36,
       // padding: EdgeInsets.only(bottom: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: buttons,
       ),
     );
   }
 
   Widget get _buildOkButton {
-    return TextButton(
-      onPressed: () {
-        dismiss();
-        onOkPressed?.call();
-      },
-      child: Text(
-        okText!,
-        style: AppTextStyle.tintS14.copyWith(height: 1.4,color: AppColors.primary),
-      ),
+    return Row(
+      children: [
+        const SizedBox(
+          width: 15,
+        ),
+        TextButton(
+          onPressed: () {
+            dismiss();
+            onOkPressed?.call();
+          },
+          child: Text(
+            okText!,
+            style: AppTextStyle.tintS14
+                .copyWith(height: 1.4, color: AppColors.primary),
+          ),
+        )
+      ],
     );
   }
 
-  Widget get _buildCancelButton => TextButton(
-        onPressed: () {
-          dismiss();
-          onCancelPressed?.call();
-        },
-        child: Text(
-          cancelText,
-          style: AppTextStyle.tintS14BoldH14,
-        ),
+  Widget get _buildCancelButton => Row(
+        children: [
+          const SizedBox(
+            width: 15,
+          ),
+          TextButton(
+            onPressed: () {
+              dismiss();
+              onCancelPressed?.call();
+            },
+            child: Text(
+              cancelText ?? "",
+              style: AppTextStyle.tintS14BoldH14,
+            ),
+          ),
+        ],
       );
 
   dismiss() {

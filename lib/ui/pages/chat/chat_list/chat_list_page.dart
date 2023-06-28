@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
-import 'package:ihz_bql/models/entities/conversation_history_entity.dart';
 import 'package:ihz_bql/models/entities/conversation_history_item_entity.dart';
 import 'package:ihz_bql/models/entities/expert_entity.dart';
 import 'package:ihz_bql/models/enums/conversation_status.dart';
-import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/routers/application.dart';
 import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_detail/chat_detail_cubit.dart';
@@ -132,8 +130,8 @@ class _ChatListPageState extends State<ChatListPage> {
                                               .state.activeExperts[i].name,
                                           avatarLink: _chatListCubit.state
                                               .activeExperts[i].avatarLink,
-                                          onPressed: () {
-                                            Application.router.navigateTo(
+                                          onPressed: () async {
+                                            await Application.router.navigateTo(
                                               context,
                                               Routes.chatDetail,
                                               rootNavigator: true,
@@ -149,6 +147,7 @@ class _ChatListPageState extends State<ChatListPage> {
                                                 ),
                                               ),
                                             );
+                                            _pagingController.refresh();
                                           },
                                         ),
                                       ),

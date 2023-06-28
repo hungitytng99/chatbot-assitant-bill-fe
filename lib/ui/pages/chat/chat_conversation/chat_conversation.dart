@@ -40,6 +40,25 @@ class _ChatConversationState extends State<ChatConversation> {
     super.dispose();
   }
 
+  Widget getMessageFromConversationStatus(
+      ConversationStatus? conversationStatus) {
+    if(conversationStatus == ConversationStatus.initial) {
+      return Column(
+        children: const [
+          SizedBox(
+            height: 22,
+          ),
+          CircularProgressIndicator(),
+          SizedBox(
+            height: 14,
+          ),
+          Text('Đang khởi tạo kết nối...')
+        ],
+      );
+    }
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PagedListView<int, ConversationMessageEntity>(
@@ -61,42 +80,28 @@ class _ChatConversationState extends State<ChatConversation> {
         ),
         itemBuilder: (context, chatContent, index) {
           if (chatContent.actor == ChatActorType.user.getActor &&
-              chatContent.content!.isNotEmpty) {
+              chatContent.content != "") {
             return _buildOwnerMessage(
               conversationMessage: chatContent,
             );
           }
-          if (chatContent.actor == ChatActorType.bot.getActor) {
+          if (chatContent.actor == ChatActorType.bot.getActor &&
+              chatContent.content != "") {
             return _buildPartnerMessage(
               conversationMessage: chatContent,
             );
           }
-          if (chatContent.actor == ChatActorType.system.getActor) {
+          if (chatContent.actor == ChatActorType.system.getActor &&
+              chatContent.content != "") {
             return _buildPartnerMessage(
               conversationMessage: chatContent,
             );
           }
           return Container();
         },
-        noItemsFoundIndicatorBuilder: (_) =>
-            _chatDetailCubit.state.conversationStatus ==
-                    ConversationStatus.initial
-                ? Column(
-                    children: const [
-                      SizedBox(
-                        height: 22,
-                      ),
-                      CircularProgressIndicator(),
-                      SizedBox(
-                        height: 14,
-                      ),
-                      Text('Đang khởi tạo kết nối...')
-                    ],
-                  )
-                : const Center(
-                    child: Text(
-                    'Đã kết nối thành công. Vui lòng đặt câu hỏi',
-                  )),
+        noItemsFoundIndicatorBuilder: (_) => getMessageFromConversationStatus(
+          _chatDetailCubit.state.conversationStatus,
+        ),
       ),
     );
   }
@@ -181,23 +186,23 @@ class _ChatConversationState extends State<ChatConversation> {
                 answers: conversationMessage.answers,
                 onSelectAnswer: (answer) {
                   // Cập nhật giao diện
-                  // if (_chatDetailCubit.state.conversationStatus !=
-                  //     ConversationStatus.request) {
-                  widget.pagingController.itemList = [
-                    ConversationMessageEntity(
-                      id: answer ?? "",
-                      type: ChatEventType.text.getString,
-                      actor: ChatActorType.user.getActor,
-                      content: answer,
-                    ),
-                    ...?widget.pagingController.itemList,
-                  ];
-                  _chatDetailCubit.addConversationObjectives(
-                    objective: answer ?? "",
-                  );
-                  // Emit sự kiện
-                  _chatDetailCubit.sendClientMessage(message: answer ?? "");
-                  // }
+                  if (_chatDetailCubit.state.conversationStatus !=
+                      ConversationStatus.ended) {
+                    widget.pagingController.itemList = [
+                      ConversationMessageEntity(
+                        id: answer ?? "",
+                        type: ChatEventType.text.getString,
+                        actor: ChatActorType.user.getActor,
+                        content: answer,
+                      ),
+                      ...?widget.pagingController.itemList,
+                    ];
+                    _chatDetailCubit.addConversationObjectives(
+                      objective: answer ?? "",
+                    );
+                    // Emit sự kiện
+                    _chatDetailCubit.sendClientMessage(message: answer ?? "");
+                  }
                 },
               )
             ],

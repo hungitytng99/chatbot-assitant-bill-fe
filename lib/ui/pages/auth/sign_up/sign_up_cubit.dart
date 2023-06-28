@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
+import 'package:ihz_bql/models/params/auth/sign_up_body.dart';
 import 'package:ihz_bql/repositories/auth_repository.dart';
 import 'package:ihz_bql/utils/validator_utils.dart';
 
@@ -10,8 +11,6 @@ class SignUpCubit extends Cubit<SignUpState> {
   final AuthRepository authRepository;
 
   SignUpCubit({required this.authRepository}) : super(const SignUpState());
-
-
 
   void changeName(String name) {
     emit(state.copyWith(name: name));
@@ -25,8 +24,20 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(password: password));
   }
 
-  void changeBornDate(DateTime datetime) {
-    emit(state.copyWith(bornDate: datetime));
+  Future<void> signUp() async {
+    emit(state.copyWith(signUpStatus: LoadStatus.loading));
+    try {
+      await authRepository.signUp(SignUpBody(
+        fullName: state.name,
+        password: state.password,
+        username: state.email,
+      ));
+      emit(state.copyWith(
+        signUpStatus: LoadStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(signUpStatus: LoadStatus.failure));
+    }
   }
 
   @override

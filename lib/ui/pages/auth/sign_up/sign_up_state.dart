@@ -23,10 +23,8 @@ class SignUpState extends Equatable {
 
   bool get isValidData {
     return name.trim().isNotEmpty &&
-        //fix lỗi sử dụng validator password cho số điện thoại
-        bornDate != null &&
         ValidatorUtils.validateEmail(email) &&
-        ValidatorUtils.validatePassword(password);
+        password.trim().isNotEmpty;
   }
 
   SignUpState copyWith({

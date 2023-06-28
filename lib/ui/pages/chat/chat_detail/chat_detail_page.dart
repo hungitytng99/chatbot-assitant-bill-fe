@@ -3,6 +3,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ihz_bql/common/app_colors.dart';
+import 'package:ihz_bql/common/app_confirm.dart';
 import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/models/entities/conversation_message_entity.dart';
@@ -23,6 +24,7 @@ import 'package:ihz_bql/ui/pages/chat/chat_detail/chat_detail_cubit.dart';
 import 'package:ihz_bql/ui/pages/chat/chat_list/chat_list_page.dart';
 import 'package:ihz_bql/ui/pages/common/user_avatar/user_avatar_card_horizontal.dart';
 import 'package:ihz_bql/ui/pages/homepage/home_page.dart';
+import 'package:ihz_bql/ui/widgets/commons/app_dialog.dart';
 import 'package:ihz_bql/utils/logger.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:web_socket_channel/io.dart';
@@ -140,6 +142,31 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           SocketRecommendEntity.fromJson(event);
       _chatDetailCubit.updateSuggestConversationObjectives(
         suggestObjectives: socketContent.objectives,
+      );
+      return;
+    }
+
+    if (socketEvent.event == ChatEventsName.conversationEnd.getString) {
+      AppDialog.showInfoDialog(
+        context,
+        title: "Cuộc hội thoại đã kết thúc",
+        okText: "Xác nhận",
+        onOkPressed: () {
+          try {
+            Navigator.of(context, rootNavigator: true).pop();
+          } catch (e) {}
+        },
+        icon: Column(
+          children: [
+            const SizedBox(
+              height: 6,
+            ),
+            Image.asset(
+              AppImages.icInfo,
+              width: 30,
+            ),
+          ],
+        ),
       );
       return;
     }
@@ -504,7 +531,22 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.of(context, rootNavigator: true).pop();
+            if (_chatDetailCubit.state.conversationStatus ==
+                ConversationStatus.ended) {
+              Navigator.of(context, rootNavigator: true).pop();
+              return;
+            }
+            AppDialog.showInfoDialog(
+              context,
+              title: "Bạn có muốn kết thúc trò chuyện?",
+              okText: "Xác nhận",
+              cancelText: "Hủy bỏ",
+              onOkPressed: () {
+                _chatDetailCubit.endConversation();
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+              icon: Container(),
+            );
           },
           child: Container(
             margin: const EdgeInsets.only(
@@ -537,7 +579,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             return Expanded(
               child: UserAvatarCardHorizontal(
                 userFullName: correctTitle,
-                isAnimated: state.conversationStatus != ConversationStatus.ended,
+                isAnimated:
+                    state.conversationStatus != ConversationStatus.ended,
                 description:
                     '${widget.conversationHistoryItemArg?.expertEntity?.name ?? ""} • Đang hoạt động',
                 avatarLink: widget
@@ -569,7 +612,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             width: 30,
             height: 30,
             child: Image.asset(
-              AppImages.icDoExercise,
+              AppImages.icMeditation,
               color: AppColors.primary,
             ),
           ),

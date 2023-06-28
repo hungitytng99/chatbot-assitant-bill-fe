@@ -60,13 +60,7 @@ class _AppPasswordInputState extends State<AppPasswordInput> {
                   isRequire: widget.isRequire,
                   keyboardType: TextInputType.emailAddress,
                   validator: (text) {
-                    if (ValidatorUtils.validatePassword(text ?? "")) {
-                      return "";
-                    } else if (text!.isEmpty) {
                       return '';
-                    } else {
-                      return S.current.common_validatorNumberCharacter;
-                    }
                   },
                   obscureText: _obscuredText,
                   suffixIcon: GestureDetector(

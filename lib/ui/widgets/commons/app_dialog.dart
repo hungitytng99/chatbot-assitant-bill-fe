@@ -60,6 +60,7 @@ class AppDialog {
     Widget? icon,
     required String title,
     String? okText,
+    String? cancelText,
     bool autoDismiss = false,
     bool showCloseButton = false,
     VoidCallback? onOkPressed,
@@ -73,6 +74,37 @@ class AppDialog {
       icon: icon ?? Image.asset(AppImages.icSuccess),
       title: title,
       okText: okText,
+      cancelText: cancelText,
+      onOkPressed: onOkPressed,
+      autoDismiss: autoDismiss,
+      showCloseButton: showCloseButton,
+      onDismissed: onDismissed,
+      dismissible: dismissible,
+      marginHorizontal: marginHorizontal,
+      iconPosition: iconPosition,
+    ).show();
+  }
+
+  static void showInfoDialog(
+      BuildContext context, {
+        Widget? icon,
+        required String title,
+        String? okText,
+        String? cancelText,
+        bool autoDismiss = false,
+        bool showCloseButton = false,
+        VoidCallback? onOkPressed,
+        VoidCallback? onDismissed,
+        bool dismissible = false,
+        double? marginHorizontal,
+        double? iconPosition,
+      }) {
+    CustomDialog(
+      context: context,
+      icon: icon ?? Image.asset(AppImages.icSuccess),
+      title: title,
+      okText: okText,
+      cancelText: cancelText,
       onOkPressed: onOkPressed,
       autoDismiss: autoDismiss,
       showCloseButton: showCloseButton,
@@ -110,60 +142,6 @@ class AppDialog {
       iconPosition: iconPosition,
     ).show();
   }
-
-  // static void showDatePicker(
-  //   BuildContext context, {
-  //   DateTime? minTime,
-  //   DateTime? maxTime,
-  //   DateChangedCallback? onConfirm,
-  //   LocaleType? localeType,
-  //   DateTime? currentTime,
-  // }) {
-  //   DatePicker.showDatePicker(
-  //     context,
-  //     minTime: minTime,
-  //     maxTime: maxTime,
-  //     onConfirm: onConfirm,
-  //     locale: localeType ?? LocaleType.vi,
-  //     currentTime: currentTime,
-  //     theme: const DatePickerTheme(),
-  //   );
-  // }
-  //
-  // static void showDateTimePicker(
-  //   BuildContext context, {
-  //   DateTime? minTime,
-  //   DateTime? maxTime,
-  //   DateChangedCallback? onConfirm,
-  //   LocaleType? localeType,
-  //   DateTime? currentTime,
-  // }) {
-  //   DatePicker.showDateTimePicker(
-  //     context,
-  //     minTime: minTime,
-  //     maxTime: maxTime,
-  //     onConfirm: onConfirm,
-  //     locale: LocaleType,
-  //     currentTime: currentTime,
-  //     theme: const DatePickerTheme(),
-  //   );
-  // }
-  //
-  // static void showTimePicker(
-  //   BuildContext context, {
-  //   DateChangedCallback? onConfirm,
-  //   LocaleType? localeType,
-  //   DateTime? currentTime,
-  // }) {
-  //   DatePicker.showTimePicker(
-  //     context,
-  //     onConfirm: onConfirm,
-  //     locale: localeType ?? LocaleType.vi,
-  //     currentTime: currentTime,
-  //     showSecondsColumn: false,
-  //     theme: const DatePickerTheme(),
-  //   );
-  // }
 
   static Future<int?> showBottomSheetMenus({
     required List<String> menus,
@@ -252,11 +230,14 @@ class AppDialog {
           ),
         );
       } else {
-        showDialogRequest(content: 'Truy cập vào Settings để cho phép chọn ảnh!', context: context, title: '');
+        showDialogRequest(
+            content: 'Truy cập vào Settings để cho phép chọn ảnh!',
+            context: context,
+            title: '');
       }
       // TODO
       String fileImage = "";
-          // await FlutterAbsolutePath.getAbsolutePath(resultList[0].identifier ?? "") ?? "";
+      // await FlutterAbsolutePath.getAbsolutePath(resultList[0].identifier ?? "") ?? "";
       return File(fileImage);
     } catch (e) {
       logger.d(e);
@@ -273,7 +254,8 @@ class AppDialog {
         bottom: 30,
       ),
       decoration: const BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       child: Stack(
         children: [
           Container(
@@ -353,7 +335,8 @@ class AppDialog {
         bottom: 30,
       ),
       decoration: const BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       child: Stack(
         children: [
           Container(
@@ -432,7 +415,10 @@ class AppDialog {
         maxWidth: 1024,
       );
     } else {
-      showDialogRequest(content: 'Truy cập vào Settings để cho phép Camera!', context: context, title: '');
+      showDialogRequest(
+          content: 'Truy cập vào Settings để cho phép Camera!',
+          context: context,
+          title: '');
     }
 
     final path = image?.path;
@@ -443,7 +429,8 @@ class AppDialog {
     }
   }
 
-  static Future<List<File>?> pickMultiMediaFromGallery(BuildContext context) async {
+  static Future<List<File>?> pickMultiMediaFromGallery(
+      BuildContext context) async {
     FilePickerResult? result;
     PermissionStatus status = await Permission.photos.status;
     if (status.isGranted) {
@@ -457,7 +444,10 @@ class AppDialog {
         type: FileType.media,
       );
     } else {
-      showDialogRequest(content: 'Truy cập vào Settings để cho phép chọn ảnh và video!', context: context, title:'');
+      showDialogRequest(
+          content: 'Truy cập vào Settings để cho phép chọn ảnh và video!',
+          context: context,
+          title: '');
     }
 
     if (result != null) {
@@ -491,7 +481,7 @@ class AppDialog {
           list.add(file);
           return list;
         }
-      }else {
+      } else {
         return await pickMultiMediaFromGallery(context);
       }
     }
@@ -500,7 +490,8 @@ class AppDialog {
 
   static Future<List<File>?> pickMultiFile(BuildContext context) async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(allowMultiple: true);
       if (result != null) {
         return result.files.map((e) => File(e.path!)).toList();
       }
@@ -511,7 +502,9 @@ class AppDialog {
   }
 
   static void showDialogRequest(
-      {required BuildContext context, required String title, required String content}) {
+      {required BuildContext context,
+      required String title,
+      required String content}) {
     showDialog(
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(

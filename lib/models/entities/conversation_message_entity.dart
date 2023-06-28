@@ -6,7 +6,7 @@ part 'conversation_message_entity.g.dart';
 class ConversationMessageEntity {
   @JsonKey()
   final String id;
-  @JsonKey()
+  @JsonKey(name: "message")
   final String? content;
   @JsonKey()
   final String type;

@@ -4,20 +4,20 @@ part 'sign_up_body.g.dart';
 
 @JsonSerializable()
 class SignUpBody {
-  @JsonKey()
+  @JsonKey(name: 'fullname')
   String? fullName;
 
   @JsonKey()
-  String? email;
+  String? username;
 
   @JsonKey()
   String? password;
 
-  SignUpBody({this.fullName, this.email, this.password});
+  SignUpBody({this.fullName, this.username, this.password});
 
   factory SignUpBody.fromEmail(
-      String email, String fullName, String password) {
-    return SignUpBody(fullName: fullName, email: email, password: password);
+      String username, String fullName, String password) {
+    return SignUpBody(fullName: fullName, username: username, password: password);
   }
 
   factory SignUpBody.fromJson(Map<String, dynamic> json) =>

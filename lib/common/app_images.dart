@@ -34,4 +34,6 @@ class AppImages {
   static const icSend = 'assets/images/ic_send.png';
   static const icDiary = 'assets/images/diary.png';
   static const icClock = 'assets/images/clock.png';
+  static const icMeditation = 'assets/images/meditation.png';
+  static const icInfo = 'assets/images/ic_info.png';
 }

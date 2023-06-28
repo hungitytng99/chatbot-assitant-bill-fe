@@ -9,9 +9,12 @@ import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/common/app_vectors.dart';
 import 'package:ihz_bql/models/enums/load_status.dart';
 import 'package:ihz_bql/repositories/auth_repository.dart';
+import 'package:ihz_bql/routers/application.dart';
+import 'package:ihz_bql/routers/routers.dart';
 import 'package:ihz_bql/ui/pages/auth/sign_up/sign_up_cubit.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_button.dart';
 import 'package:ihz_bql/ui/widgets/buttons/app_back_button.dart';
+import 'package:ihz_bql/ui/widgets/commons/app_dialog.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_email_input.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_label_text_field.dart';
 import 'package:ihz_bql/ui/widgets/textfields/app_password_input.dart';
@@ -31,13 +34,13 @@ class _SignUpPageState extends State<SignUpPage> {
   final _passwordController = TextEditingController(text: '');
   final _obscureTextController = ObscureTextController(obscureText: true);
 
-  late SignUpCubit _cubit;
+  late SignUpCubit _signUpCubit;
   final lstBuilding = ['Hotel', 'Nhà nghỉ', 'kangnam', 'sun'];
 
   @override
   void initState() {
     final authRepository = RepositoryProvider.of<AuthRepository>(context);
-    _cubit = SignUpCubit(authRepository: authRepository);
+    _signUpCubit = SignUpCubit(authRepository: authRepository);
     super.initState();
   }
 
@@ -48,7 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: BlocBuilder<SignUpCubit, SignUpState>(
-                bloc: _cubit,
+                bloc: _signUpCubit,
                 builder: (context, state) {
                   return Column(
                     children: [
@@ -84,7 +87,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               controller: _fullNameController,
                               isRequire: true,
                               onChanged: (value) {
-                                _cubit.changeName(value);
+                                _signUpCubit.changeName(value);
                               },
                             ),
                             const SizedBox(height: 16),
@@ -92,7 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               textEditingController: _emailController,
                               isRequire: true,
                               onChanged: (value) {
-                                _cubit.changeEmail(value);
+                                _signUpCubit.changeEmail(value);
                               },
                             ),
                             AppPasswordInput(
@@ -100,7 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               textEditingController: _passwordController,
                               isRequire: true,
                               onChanged: (value) {
-                                _cubit.changePassword(value);
+                                _signUpCubit.changePassword(value);
                               },
                             ),
                             const SizedBox(height: 20),
@@ -120,13 +123,24 @@ class _SignUpPageState extends State<SignUpPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         BlocConsumer<SignUpCubit, SignUpState>(
-          bloc: _cubit,
+          bloc: _signUpCubit,
           listenWhen: (previous, current) {
-            return previous.checkUserStatus != current.checkUserStatus;
+            return previous.checkUserStatus != current.checkUserStatus ||
+                previous.signUpStatus != current.signUpStatus;
           },
           listener: (context, state) {
-            if (state.checkUserStatus == LoadStatus.success) {
-
+            if (state.signUpStatus == LoadStatus.success) {
+              AppDialog.showSuccessDialog(
+                context,
+                title: "Đăng ký thành công. Vui lòng đăng nhập",
+                okText: "Xác nhận",
+                onOkPressed: () {
+                  Application.router.navigateTo(
+                    context,
+                    Routes.signIn,
+                  );
+                },
+              );
             }
           },
           buildWhen: (previous, current) => true,
@@ -138,8 +152,10 @@ class _SignUpPageState extends State<SignUpPage> {
               cornerRadius: 25,
               backgroundColor: AppColors.signInPrimary,
               disableBackgroundColor: Colors.black,
-              onPressed: () {},
-              isLoading: false,
+              onPressed: () {
+                _signUpCubit.signUp();
+              },
+              isLoading: state.signUpStatus == LoadStatus.loading,
             );
           },
         ),
@@ -159,5 +175,4 @@ class _SignUpPageState extends State<SignUpPage> {
       ],
     );
   }
-
 }
