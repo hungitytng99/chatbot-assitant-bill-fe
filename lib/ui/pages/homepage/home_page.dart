@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ihz_bql/blocs/app_cubit.dart';
@@ -436,7 +438,18 @@ class _HomePageState extends State<HomePage>
       children: [
         Text(
           AppConfigs.appName,
-          style: AppTextStyle.blackS18Bold.copyWith(fontSize: 20),
+          style: AppTextStyle.primaryS18Bold.copyWith(fontSize: 20),
+        ),
+        const SizedBox(
+          height: 2,
+        ),
+        Text(
+          "Thư thái - Sáng suốt - Năng động",
+          style: AppTextStyle.primaryS14.copyWith(
+            fontSize: 12,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         const SizedBox(
           height: 25,

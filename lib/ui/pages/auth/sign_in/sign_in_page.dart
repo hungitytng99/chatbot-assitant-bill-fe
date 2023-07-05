@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ihz_bql/blocs/app_cubit.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_dimens.dart';
+import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/common/app_vectors.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
@@ -326,8 +327,27 @@ class _SignInPageState extends State<SignInPage> {
       child: Column(
         children: [
           const SizedBox(height: 72),
-          SvgPicture.asset(AppVectors.icLogo, width: 164, height: 100),
-          const SizedBox(height: 72),
+          Image.asset(AppImages.icLogo, width: 164, height: 100),
+          // SvgPicture.asset(AppVectors.icLogo, width: 164, height: 100),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            AppConfigs.appName,
+            style: AppTextStyle.primaryS18Bold.copyWith(fontSize: 20),
+          ),
+          const SizedBox(
+            height: 2,
+          ),
+          Text(
+            "Thư thái - Sáng suốt - Năng động",
+            style: AppTextStyle.primaryS18.copyWith(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          const SizedBox(height: 50),
         ],
       ),
     );

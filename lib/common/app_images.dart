@@ -1,6 +1,7 @@
 class AppImages {
   /// Common
-  static const icLogo = 'assets/images/ic_logo.png';
+  static const icLogo = 'assets/images/logo.png';
+  static const icLogoText = 'assets/images/logo_text.png';
   static const bgImagePlaceholder = 'assets/images/bg_image_placeholder.png';
   static const icAvatar = 'assets/images/ic_logo.png';
   static const icEyeClose = 'assets/images/ic_eye_close.png';

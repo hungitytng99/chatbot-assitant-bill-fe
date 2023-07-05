@@ -208,6 +208,8 @@ flutter:
     - assets/vectors/success.json
     - assets/images/ic_info.png
     - assets/images/meditation.png
+    - assets/images/logo.png
+    - assets/images/logo_text.png
 
   fonts:
     - family: Quicksand

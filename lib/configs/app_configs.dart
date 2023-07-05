@@ -3,7 +3,7 @@ import 'env_configs.dart';
 class AppConfigs {
   AppConfigs._();
 
-  static const String appName = 'Chatbot assistant';
+  static const String appName = 'INSIDE';
 
   static Environment env = Environment.prod;
 

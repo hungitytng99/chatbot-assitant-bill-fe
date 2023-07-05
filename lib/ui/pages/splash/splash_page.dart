@@ -9,11 +9,11 @@ import 'package:ihz_bql/blocs/app_cubit.dart';
 import 'package:ihz_bql/blocs/setting/app_setting_cubit.dart';
 import 'package:ihz_bql/common/app_colors.dart';
 import 'package:ihz_bql/common/app_dimens.dart';
+import 'package:ihz_bql/common/app_images.dart';
 import 'package:ihz_bql/common/app_text_styles.dart';
 import 'package:ihz_bql/common/app_vectors.dart';
 import 'package:ihz_bql/configs/app_configs.dart';
 import 'package:ihz_bql/configs/env_configs.dart';
-import 'package:ihz_bql/repositories/auth_repository.dart';
 import 'package:ihz_bql/repositories/user_repository.dart';
 import 'package:ihz_bql/ui/pages/splash/splash_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +66,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _setup() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 50));
     //Request permission
     await Permission.photos.request();
     await Permission.camera.request();
@@ -91,63 +91,66 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                AppColors.appBarGradientTop,
-                AppColors.appBarGradientBottom,
-              ],
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerRight,
+                end: Alignment.centerLeft,
+                colors: [
+                  AppColors.appBarGradientTop,
+                  AppColors.appBarGradientBottom,
+                ],
+              ),
+            ),
+            child: Center(
+              child: Image.asset(
+                AppImages.icLogoText,
+                // width: 300,
+                // height: 400,
+              ),
             ),
           ),
-          child: Center(
-            child: SvgPicture.asset(
-              AppVectors.bgSplash,
-              width: 188,
-              height: 115,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Container(),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    alignment: Alignment.bottomCenter,
-                    margin:
-                        const EdgeInsets.only(bottom: AppDimens.marginLarge),
-                    child: Visibility(
-                      visible: _packageInfo.version != 'Unknown',
-                      child: Text(
-                        AppConfigs.env == Environment.prod
-                            ? "Phiên bản ${_packageInfo.version}"
-                            : "Phiên bản ${AppConfigs.envName}-${_packageInfo.version}(${_packageInfo.buildNumber})",
-                        textAlign: TextAlign.center,
-                        style: AppTextStyle.whiteS16,
+          SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Container(),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      margin:
+                          const EdgeInsets.only(bottom: AppDimens.marginLarge),
+                      child: Visibility(
+                        visible: _packageInfo.version != 'Unknown',
+                        child: Text(
+                          AppConfigs.env == Environment.prod
+                              ? "Phiên bản ${_packageInfo.version}"
+                              : "Phiên bản ${AppConfigs.envName}-${_packageInfo.version}(${_packageInfo.buildNumber})",
+                          textAlign: TextAlign.center,
+                          style: AppTextStyle.whiteS16.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
-    ));
+        ],
+      ),
+    );
   }
 }

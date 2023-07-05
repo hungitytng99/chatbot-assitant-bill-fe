@@ -8,7 +8,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="Real Building"
+        android:label="INSIDE"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         >

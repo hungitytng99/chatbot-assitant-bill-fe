@@ -25,8 +25,8 @@ class AppColors {
   static const Color _defaultPrimaryLighter = Color(0xFFFFE4CE);
   static const Color _defaultSecondary = Color(0xFFD20043);
   static const Color _defaultSecondaryLighter = Color(0xFFFFDEE9);
-  static const Color _defaultGradientStart = Color(0xFFf17b00);
-  static const Color _defaultGradientEnd = Color(0xFFD20043);
+  static const Color _defaultGradientStart = Color(0xFFff3131);
+  static const Color _defaultGradientEnd = Color(0xFFff914d);
 
   ///Dynamic color
   static Color primary = _defaultPrimary;
